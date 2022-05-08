@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_page"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/friends"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_people"
+        android:title="Friend" />
+    <item
+        android:id="@+id/run"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_run"
+        android:title="Run" />
+    <item
+        android:id="@+id/status"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_status"
+        android:title="Status" />
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_profile"
+        android:title="Profile" />
+</menu>

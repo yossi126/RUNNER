@@ -8,9 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.runner.databinding.ActivityLoginBinding;
@@ -92,7 +89,7 @@ public class Login extends AppCompatActivity {
                     // send verified email to user
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     if(firebaseUser.isEmailVerified()){
-                        startActivity(new Intent(Login.this, MainProfile.class));
+                        startActivity(new Intent(Login.this, HomePage.class));
                     }else{
                         firebaseUser.sendEmailVerification();
                         Toast.makeText(Login.this,"check your email bitch",Toast.LENGTH_SHORT).show();

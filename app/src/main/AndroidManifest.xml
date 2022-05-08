@@ -10,10 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RUNNER">
         <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPassword"
             android:exported="false" />
         <activity
-            android:name=".MainProfile"
+            android:name=".HomePage"
             android:exported="false" />
         <activity
             android:name=".Login"
