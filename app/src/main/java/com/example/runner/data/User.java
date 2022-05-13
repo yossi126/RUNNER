@@ -5,6 +5,8 @@ public class User {
     private String name;
     private String email;
     private String pass;
+    private String uid;
+    private boolean isConnected;
 
     public User() {
     }
@@ -15,6 +17,35 @@ public class User {
         this.pass = pass;
     }
 
+    public User(String name, String email, String pass, boolean isConnected) {
+        this.name = name;
+        this.email = email;
+        this.pass = pass;
+        this.isConnected = isConnected;
+    }
+
+    public User(String name, String email, String pass, String uid) {
+        this.name = name;
+        this.email = email;
+        this.pass = pass;
+        this.uid = uid;
+    }
+
+    public boolean getIsConnected() {
+        return isConnected;
+    }
+
+    public void setIsConnected(boolean online) {
+        isConnected = online;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
     public String getName() {
         return name;
     }

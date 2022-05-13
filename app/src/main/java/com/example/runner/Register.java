@@ -37,6 +37,7 @@ public class Register extends AppCompatActivity {
         registerBtn = findViewById(R.id.btn_reg_register);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        String uid = firebaseAuth.getCurrentUser().getUid();
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +69,9 @@ public class Register extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
-                                    User newUser = new User (name,email,pass);
+                                    // to do - change the ctor later we have 3 now
+                                    //User newUser = new User (name,email,pass);
+                                    User newUser = new User (name,email,pass,uid);
 
                                     FirebaseDatabase.getInstance().getReference("users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

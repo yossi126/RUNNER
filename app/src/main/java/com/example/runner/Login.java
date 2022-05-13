@@ -8,10 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.runner.databinding.ActivityLoginBinding;
-import com.example.runner.databinding.ActivityMainBinding;
+//import com.example.runner.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -36,7 +37,7 @@ public class Login extends AppCompatActivity {
         setContentView(view);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
+        //enterEmail = findViewById(R.id.edit_text_name_register);
 
         binding.loginActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +60,7 @@ public class Login extends AppCompatActivity {
 
     private void userLogin() {
         String email = binding.loginEnterEmailEt.getText().toString().trim();
+        //String email2 =  binding.
         String password = binding.loginEnterPassEt.getText().toString().trim();
 
         if(email.isEmpty()){
@@ -87,13 +89,15 @@ public class Login extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     // send verified email to user
+                    // to do ---> Verification not working now....
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                    if(firebaseUser.isEmailVerified()){
-                        startActivity(new Intent(Login.this, HomePage.class));
-                    }else{
-                        firebaseUser.sendEmailVerification();
-                        Toast.makeText(Login.this,"check your email bitch",Toast.LENGTH_SHORT).show();
-                    }
+                    startActivity(new Intent(Login.this, HomePage.class));
+//                    if(firebaseUser.isEmailVerified()){
+//                        startActivity(new Intent(Login.this, HomePage.class));
+//                    }else{
+//                        firebaseUser.sendEmailVerification();
+//                        Toast.makeText(Login.this,"check your email bitch",Toast.LENGTH_SHORT).show();
+//                    }
                 }else{
                     Toast.makeText(Login.this,"Failed to login",Toast.LENGTH_SHORT).show();
                 }
