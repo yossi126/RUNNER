@@ -8,13 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.runner.data.User;
 import com.example.runner.databinding.ActivityHomePageBinding;
 import com.example.runner.databinding.ActivityProfileBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,12 +45,6 @@ public class Profile extends AppCompatActivity {
                     case R.id.logOut:
                         Intent intent = new Intent(Profile.this,MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(Profile.this,"user is logout",Toast.LENGTH_SHORT).show();
-                            }
-                        });
                         FirebaseAuth.getInstance().signOut();
                         startActivity(intent);
                         break;
@@ -75,15 +66,13 @@ public class Profile extends AppCompatActivity {
                         //finish();
                         break;
                     case R.id.club:
-                        Intent intentC = new Intent(Profile.this,Club.class);
-                        startActivity(intentC);
-                        overridePendingTransition(0, 0);
                         break;
                     case R.id.run:
                         break;
                     case R.id.status:
                         break;
                     case R.id.profile:
+
                         break;
                 }
                 return true;
