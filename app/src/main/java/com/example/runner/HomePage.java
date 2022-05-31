@@ -78,6 +78,9 @@ public class HomePage extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         break;
                     case R.id.run:
+                        Intent intentR = new Intent(HomePage.this,Run.class);
+                        startActivity(intentR);
+                        overridePendingTransition(0, 0);
                         break;
                     case R.id.status:
                         break;
