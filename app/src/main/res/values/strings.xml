@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">RUNNER</string>
     <string name="title_activity_run">Run</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
 </resources>

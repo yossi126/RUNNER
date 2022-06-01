@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.runner.Adapter.ClubAdapterRecyclerView;
+import com.example.runner.Profile;
 import com.example.runner.data.User;
 import com.example.runner.databinding.ActivityClubBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -87,11 +87,14 @@ public class Club extends AppCompatActivity {
                     case R.id.club:
                         break;
                     case R.id.run:
+                        Intent intentR = new Intent(Club.this,Run.class);
+                        startActivity(intentR);
+                        overridePendingTransition(0, 0);
                         break;
                     case R.id.status:
                         break;
                     case R.id.profile:
-                        Intent intentP = new Intent(Club.this,Profile.class);
+                        Intent intentP = new Intent(Club.this, Profile.class);
                         startActivity(intentP);
                         overridePendingTransition(0, 0);
                         break;
