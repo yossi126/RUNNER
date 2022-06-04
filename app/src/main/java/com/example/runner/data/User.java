@@ -6,6 +6,11 @@ public class User {
     private String email;
     private String pass;
     private String uid;
+    private String date;
+    private String height;
+    private String weight;
+    private String gender;
+
     private boolean isConnected;
 
     public User() {
@@ -24,11 +29,16 @@ public class User {
         this.isConnected = isConnected;
     }
 
-    public User(String name, String email, String pass, String uid) {
+    public User(String name, String email, String pass, String uid, String date,
+                String height, String weight, String gender) {
         this.name = name;
         this.email = email;
         this.pass = pass;
         this.uid = uid;
+        this.date=date;
+        this.height=height;
+        this.weight= weight;
+        this.gender=gender;
     }
 
     public boolean getIsConnected() {
@@ -46,6 +56,7 @@ public class User {
     public void setUid(String uid) {
         this.uid = uid;
     }
+
     public String getName() {
         return name;
     }
@@ -68,5 +79,37 @@ public class User {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

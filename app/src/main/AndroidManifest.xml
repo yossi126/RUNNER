@@ -14,9 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RUNNER">
         <activity
-            android:name=".ProfileEdit"
-            android:exported="false" />
-        <activity
             android:name=".Profile"
             android:exported="false" />
         <activity

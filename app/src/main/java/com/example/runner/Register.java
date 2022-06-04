@@ -41,6 +41,12 @@ public class Register extends AppCompatActivity {
         registerBtn = findViewById(R.id.btn_reg_register);
         progressBar = findViewById(R.id.progressBar2);
 
+        //DEFAULT USER PREFERENCES
+        String date = " ";
+        String height = " ";
+        String weight= " ";
+        String gender=" ";
+
         progressBar.setVisibility(View.GONE);
         firebaseAuth = FirebaseAuth.getInstance();
         //String uid = firebaseAuth.getCurrentUser().getUid();
@@ -80,7 +86,7 @@ public class Register extends AppCompatActivity {
                                     //User newUser = new User (name,email,pass);
 
                                     String uid = firebaseAuth.getCurrentUser().getUid();
-                                    User newUser = new User (name,email,pass,uid);
+                                    User newUser = new User (name,email,pass,uid,date,height,weight,gender);
 
                                     FirebaseDatabase.getInstance().getReference("users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -89,7 +95,7 @@ public class Register extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
                                                 Toast.makeText(Register.this,"Register Complete Successful!",Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(Register.this,MainActivity.class));
+                                                startActivity(new Intent(Register.this,Login.class));
                                                 progressBar.setVisibility(View.GONE);
                                                 finish();
                                             }else
