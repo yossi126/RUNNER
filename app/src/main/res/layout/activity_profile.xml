@@ -44,12 +44,10 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
-        android:text="userName"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewHeader"
-        tools:text="FOXY THE DOG" />
+        app:layout_constraintStart_toEndOf="@+id/profilePhoto"
+        app:layout_constraintTop_toBottomOf="@+id/coverPhoto" />
 
     <TextView
         android:id="@+id/userEmail"
@@ -57,11 +55,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="foxy@gmail.com"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
+        app:layout_constraintStart_toEndOf="@+id/profilePhoto"
         app:layout_constraintTop_toBottomOf="@+id/userName" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -80,7 +77,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="210 cm"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -91,7 +87,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="MALE"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/textView8"
@@ -138,7 +133,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="55 kg"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/textView7"
@@ -149,7 +143,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="06/05/1989"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/selectedDate3"
@@ -169,7 +162,7 @@
         app:layout_constraintTop_toBottomOf="@+id/userEmail" />
 
     <ImageView
-        android:id="@+id/imageViewHeader"
+        android:id="@+id/coverPhoto"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:contentDescription="@null"
@@ -180,14 +173,14 @@
         app:srcCompat="@drawable/background" />
 
     <ImageView
-        android:id="@+id/imageViewProfile"
+        android:id="@+id/profilePhoto"
         android:layout_width="128dp"
         android:layout_height="92dp"
         android:contentDescription="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewHeader"
+        app:layout_constraintBottom_toBottomOf="@+id/coverPhoto"
         app:layout_constraintDimensionRatio="w,2:3"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewHeader"
+        app:layout_constraintTop_toBottomOf="@+id/coverPhoto"
         app:srcCompat="@drawable/profile" />
 
     <androidx.constraintlayout.widget.Guideline
