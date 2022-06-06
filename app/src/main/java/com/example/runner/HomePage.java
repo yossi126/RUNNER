@@ -37,6 +37,8 @@ public class HomePage extends AppCompatActivity {
         binding = ActivityHomePageBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        //firebase
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
