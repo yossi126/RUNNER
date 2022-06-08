@@ -1,33 +1,41 @@
 package com.example.runner;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.runner.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
-//ctrl + alt + L
+
     ActivityLoginBinding binding;
     //EditText enterEmail;
     //EditText enterPassword;
     FirebaseAuth firebaseAuth;
     //Button loginButton;
 
+    //CREATE HASH PASSWORD
+    private static String hashPassword(String password) {
+        String hashPass = Register.encryptSha256(password);
+        return hashPass;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +59,15 @@ public class Login extends AppCompatActivity {
         binding.forgotPassTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showRecoverPasswordDailog();
+                showRecoverPasswordDialog();
+            }
+        });
+
+        binding.toSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
             }
         });
 
@@ -64,29 +80,36 @@ public class Login extends AppCompatActivity {
         Log.d("TAG", "onBackPressed: ");
     }
 
-    private void showRecoverPasswordDailog() {
-        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
+    private void showRecoverPasswordDialog() {
+        AlertDialog dialogRecover = new AlertDialog.Builder(Login.this)
+                .setTitle("Recover password")
+                .setPositiveButton("Send", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+
         final EditText recoverEmailEt = new EditText(this);
         recoverEmailEt.setHint("Email");
-        recoverEmailEt.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        materialAlertDialogBuilder.setView(recoverEmailEt);
+        dialogRecover.setView(recoverEmailEt);
+        recoverEmailEt.requestFocus();
+        dialogRecover.show();
 
-
-        materialAlertDialogBuilder.setTitle("Recover password").setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+        Button positiveButtonR = dialogRecover.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButtonR.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+            public void onClick(View view) {
+                final String email = recoverEmailEt.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(Login.this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
+                    recoverEmailEt.setError("error");
+                } else {
+                    sendEmail(email);
+                }
             }
-        }).setPositiveButton("send", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String email = recoverEmailEt.getText().toString().trim();
-                sendEmail(email);
-                dialogInterface.dismiss();
-            }
-        }).show();
-
-
+        });
 
 
 //                 1
@@ -155,9 +178,9 @@ public class Login extends AppCompatActivity {
     }
 
     private void userLogin() {
-        String email = binding.loginEnterEmailEt.getText().toString().trim();
+        String email = binding.etEmail.getText().toString().trim();
         //String email2 =  binding.
-        String password = binding.loginEnterPassEt.getText().toString().trim();
+        String password = binding.etPassword.getText().toString().trim();
 
         //CHECK PASS HASH SHA256
         password = hashPassword(password);
@@ -209,13 +232,6 @@ public class Login extends AppCompatActivity {
                 Log.d("onFailure", "onComplete: " + e.getMessage());
             }
         });
-    }
-
-    //CREATE HASH PASSWORD
-    private static String hashPassword(String password) {
-
-        String hashPass= Register.encryptSha256(password);
-        return hashPass;
     }
 
 }
