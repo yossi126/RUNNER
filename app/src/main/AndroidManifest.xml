@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RUNNER">
         <activity
+
             android:name=".Profile"
             android:exported="false" />
         <activity
@@ -24,6 +25,10 @@
             android:exported="false"
             android:label="@string/title_activity_profile"
             android:theme="@style/Theme.RUNNER.NoActionBar" />
+
+            android:name=".NewRun"
+            android:exported="false" />
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

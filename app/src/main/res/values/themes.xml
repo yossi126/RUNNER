@@ -22,4 +22,9 @@
     <style name="Theme.RUNNER.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.RUNNER.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="myButton">
+        <item name="backgroundTint">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/accent</item>
+    </style>
 </resources>

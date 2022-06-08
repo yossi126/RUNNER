@@ -21,9 +21,17 @@
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/edit_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/edit_profile_popup_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_home.xml" value="0.2265" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2265" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_online.xml" value="0.2265" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_run.xml" value="0.2265" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/round_button.xml" value="0.2265" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/round_button_new_run.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_club.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_login.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_new_run.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_register.xml" value="0.3009833262077811" />
+
       </map>
     </option>
   </component>
