@@ -3,6 +3,9 @@
     package="com.example.runner">
     <!-- Internet Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -14,8 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RUNNER">
         <activity
+
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileBasicActivity.Profile"
+            android:exported="false"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.RUNNER.NoActionBar" />
+
             android:name=".NewRun"
             android:exported="false" />
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -33,9 +46,6 @@
 
         <activity
             android:name=".Run"
-            android:exported="false" />
-        <activity
-            android:name=".Profile"
             android:exported="false" />
         <activity
             android:name=".Club"

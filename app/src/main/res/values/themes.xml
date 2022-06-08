@@ -14,6 +14,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.RUNNER.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.RUNNER.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.RUNNER.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="myButton">
         <item name="backgroundTint">@color/black</item>
         <item name="android:textSize">20sp</item>
