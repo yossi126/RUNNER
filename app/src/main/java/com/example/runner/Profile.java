@@ -92,7 +92,7 @@ public class Profile extends AppCompatActivity {
                         binding.coverPhoto.setImageResource(R.drawable.background);
                     if (binding.profilePhoto == null)
                         //DEFAULT PROFILE PHOTO
-                        binding.profilePhoto.setImageResource(R.drawable.profile); //DEFAULT PROFILE PHOTO
+                        binding.profilePhoto.setImageResource(R.drawable.profile);
                 }
 
             }
