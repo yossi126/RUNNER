@@ -28,6 +28,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     //Button loginButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class Login extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         //enterEmail = findViewById(R.id.edit_text_name_register);
+
 
         binding.loginActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +159,9 @@ public class Login extends AppCompatActivity {
         //String email2 =  binding.
         String password = binding.loginEnterPassEt.getText().toString().trim();
 
+        //CHECK PASS HASH SHA256
+        password = hashPassword(password);
+
         if (email.isEmpty()) {
             binding.loginEnterEmailEt.setError("Email is requierd");
             binding.loginEnterEmailEt.requestFocus();
@@ -206,5 +211,11 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    //CREATE HASH PASSWORD
+    private static String hashPassword(String password) {
+
+        String hashPass= Register.encryptSha256(password);
+        return hashPass;
+    }
 
 }

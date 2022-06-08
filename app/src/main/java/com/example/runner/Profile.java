@@ -2,7 +2,6 @@ package com.example.runner;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +9,6 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -42,14 +40,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.cert.CertPathBuilder;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
-import java.util.Objects;
 
 public class Profile extends AppCompatActivity {
 
@@ -95,7 +87,7 @@ public class Profile extends AppCompatActivity {
                     binding.userHeight.setText(user.getHeight() + " cm");
                     binding.userWeight.setText(user.getWeight() + " kg");
                     binding.userGender.setText(user.getGender());
-                    if (binding.coverPhoto  == null)
+                    if (binding.coverPhoto == null)
                         //DEFAULT COVER PHOTO
                         binding.coverPhoto.setImageResource(R.drawable.background);
                     if (binding.profilePhoto == null)
@@ -266,14 +258,14 @@ public class Profile extends AppCompatActivity {
                                 materialDatePicker.addOnPositiveButtonClickListener(
                                         new MaterialPickerOnPositiveButtonClickListener() {
                                             public void onPositiveButtonClick(Object selection) {
-                                                String value = materialDatePicker.getHeaderText().toString();
+                                                String value = materialDatePicker.getHeaderText();
                                                 //CHANGE DATE FORMAT
                                                 value = parseDate(value);
                                                 //UPDATE USER VALUE
                                                 databaseReference.getRef().child(userID).child("date").setValue(value).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                        Toast.makeText(Profile.this, "Date Update Successful " , Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(Profile.this, "Date Update Successful ", Toast.LENGTH_SHORT).show();
                                                         materialDatePicker.dismiss();
                                                     }
                                                 });
@@ -425,13 +417,11 @@ public class Profile extends AppCompatActivity {
 
 
     //FUNCTION TO CHECK AND REQUEST PERMISSION
-    public void checkPermission(String permission, int requestCode)
-    {
+    private void checkPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(Profile.this, permission) == PackageManager.PERMISSION_DENIED) {
             // Requesting the permission
-            ActivityCompat.requestPermissions(Profile.this, new String[] { permission }, requestCode);
-        }
-        else {
+            ActivityCompat.requestPermissions(Profile.this, new String[]{permission}, requestCode);
+        } else {
             Toast.makeText(Profile.this, "Permission already granted", Toast.LENGTH_SHORT).show();
         }
     }
@@ -475,11 +465,11 @@ public class Profile extends AppCompatActivity {
 
 
     //CHANGE DATE FORMAT EXAMPLE MAY 02,2022 --> 02/05/2022
-    public String parseDate(String dateStr) {
+    private String parseDate(String dateStr) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("MMM dd, yyyy");
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        Date date=new Date(dateStr);
+        Date date = new Date(dateStr);
         String str = null;
 
         try {

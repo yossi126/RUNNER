@@ -21,6 +21,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 public class Register extends AppCompatActivity {
 
     private EditText editName;
@@ -58,7 +67,8 @@ public class Register extends AppCompatActivity {
             public void onClick(View view) {
                 String name=editName.getText().toString().trim();
                 String email=editEmail.getText().toString().trim();
-                String pass=editPass.getText().toString().trim();
+                String newPassword=editPass.getText().toString().trim();
+                String passEncrypt =  encryptSha256(newPassword);
 
                 if(name.isEmpty()){
                     editName.setError("Name is required!");
@@ -66,7 +76,7 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                if(pass.length() < 6){
+                if(newPassword.length() < 6){
                     editPass.setError("Password length at least 6 characters!");
                     editPass.requestFocus();
                     return;
@@ -79,7 +89,7 @@ public class Register extends AppCompatActivity {
                 }
                 progressBar.setVisibility(View.VISIBLE);
                 
-                firebaseAuth.createUserWithEmailAndPassword(email,pass)
+                firebaseAuth.createUserWithEmailAndPassword(email,passEncrypt)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -88,7 +98,7 @@ public class Register extends AppCompatActivity {
                                     //User newUser = new User (name,email,pass);
 
                                     String uid = firebaseAuth.getCurrentUser().getUid();
-                                    User newUser = new User (name,email,pass,uid,date,height,weight,gender,
+                                    User newUser = new User (name,email,passEncrypt,uid,date,height,weight,gender,
                                             profilePhoto,coverPhoto);
 
                                     FirebaseDatabase.getInstance().getReference("users")
@@ -122,5 +132,39 @@ public class Register extends AppCompatActivity {
 
     }
 
+    //STORE PASS WITH HASH SHA256- secure one-way hash-cannot be decrypt
+    public static String encryptSha256(String base) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(base.getBytes("UTF-8"));
+            StringBuffer hexString = new StringBuffer();
+
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /*private SecretKeySpec generateKey(String password)
+    {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes("UTF-8"));
+            digest.update(hash, 0 , hash.length);
+            byte[] hashKey = digest.digest();
+            SecretKeySpec secretKeySpec = new SecretKeySpec(hashKey, "AES128");
+            return secretKeySpec;
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+    }*/
 
 }
