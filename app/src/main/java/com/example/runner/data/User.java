@@ -10,35 +10,27 @@ public class User {
     private String height;
     private String weight;
     private String gender;
-
+    private String profilePhoto;
+    private String coverPhoto;
     private boolean isConnected;
 
     public User() {
     }
 
-    public User(String name, String email, String pass) {
-        this.name = name;
-        this.email = email;
-        this.pass = pass;
-    }
-
-    public User(String name, String email, String pass, boolean isConnected) {
-        this.name = name;
-        this.email = email;
-        this.pass = pass;
-        this.isConnected = isConnected;
-    }
-
+    //NEW USER C'TOR
     public User(String name, String email, String pass, String uid, String date,
-                String height, String weight, String gender) {
+                String height, String weight, String gender, String profilePhoto,
+                String coverPhoto) {
         this.name = name;
         this.email = email;
         this.pass = pass;
         this.uid = uid;
-        this.date=date;
-        this.height=height;
-        this.weight= weight;
-        this.gender=gender;
+        this.date = date;
+        this.height = height;
+        this.weight = weight;
+        this.gender = gender;
+        this.profilePhoto = profilePhoto;
+        this.coverPhoto = coverPhoto;
     }
 
     public boolean getIsConnected() {
@@ -111,5 +103,21 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public String getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(String coverPhoto) {
+        this.coverPhoto = coverPhoto;
     }
 }

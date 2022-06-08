@@ -46,6 +46,8 @@ public class Register extends AppCompatActivity {
         String height = " ";
         String weight= " ";
         String gender=" ";
+        String profilePhoto=" ";
+        String coverPhoto = " ";
 
         progressBar.setVisibility(View.GONE);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -86,7 +88,8 @@ public class Register extends AppCompatActivity {
                                     //User newUser = new User (name,email,pass);
 
                                     String uid = firebaseAuth.getCurrentUser().getUid();
-                                    User newUser = new User (name,email,pass,uid,date,height,weight,gender);
+                                    User newUser = new User (name,email,pass,uid,date,height,weight,gender,
+                                            profilePhoto,coverPhoto);
 
                                     FirebaseDatabase.getInstance().getReference("users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

@@ -2,12 +2,15 @@ package com.example.runner;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +27,8 @@ import com.example.runner.data.User;
 import com.example.runner.databinding.ActivityProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointBackward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -37,11 +42,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.cert.CertPathBuilder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.Date;
+import java.util.Objects;
+
 public class Profile extends AppCompatActivity {
 
     //CAMERA AND STORAGE PERMISSION
-    private static final int CAMERA_REQUEST_CODE = 1;
-    private static final int STORAGE_REQUEST_CODE = 2;
+    private static final int CAMERA_PERMISSION_CODE = 100;
+    private static final int STORAGE_PERMISSION_CODE = 101;
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 3;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 4;
     String[] cameraPermissions;
@@ -66,7 +80,7 @@ public class Profile extends AppCompatActivity {
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        //GET USER PREFERENCES
+        //GET USER PROFILE PREFERENCES
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         userID = firebaseUser.getUid();
@@ -81,12 +95,12 @@ public class Profile extends AppCompatActivity {
                     binding.userHeight.setText(user.getHeight() + " cm");
                     binding.userWeight.setText(user.getWeight() + " kg");
                     binding.userGender.setText(user.getGender());
-                    /*SET DEFAULT PHOTOS FOR USERS
                     if (binding.coverPhoto  == null)
+                        //DEFAULT COVER PHOTO
                         binding.coverPhoto.setImageResource(R.drawable.background);
                     if (binding.profilePhoto == null)
-                        binding.profilePhoto.setImageResource(R.drawable.profile);
-                    */
+                        //DEFAULT PROFILE PHOTO
+                        binding.profilePhoto.setImageResource(R.drawable.profile); //DEFAULT PROFILE PHOTO
                 }
 
             }
@@ -240,14 +254,29 @@ public class Profile extends AppCompatActivity {
                                 //CREATE DATE PICKER DIALOG
                                 MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
                                 materialDateBuilder.setTitleText("Select  Birthdate");
+
+                                // CONSTRAINT LIMITS TO PICK FUTURE DATES
+                                CalendarConstraints.Builder calendarConstraintBuilder = new CalendarConstraints.Builder();
+                                calendarConstraintBuilder.setValidator(DateValidatorPointBackward.now());
+                                materialDateBuilder.setCalendarConstraints(calendarConstraintBuilder.build());
+
                                 final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
                                 materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+
                                 materialDatePicker.addOnPositiveButtonClickListener(
                                         new MaterialPickerOnPositiveButtonClickListener() {
                                             public void onPositiveButtonClick(Object selection) {
-                                                Toast.makeText(Profile.this, materialDatePicker.getHeaderText(), Toast.LENGTH_SHORT).show();
-                                                mainBuilder.show();
-                                                materialDatePicker.dismiss();
+                                                String value = materialDatePicker.getHeaderText().toString();
+                                                //CHANGE DATE FORMAT
+                                                value = parseDate(value);
+                                                //UPDATE USER VALUE
+                                                databaseReference.getRef().child(userID).child("date").setValue(value).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Toast.makeText(Profile.this, "Date Update Successful " , Toast.LENGTH_SHORT).show();
+                                                        materialDatePicker.dismiss();
+                                                    }
+                                                });
                                             }
                                         });
                                 materialDatePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
@@ -368,7 +397,7 @@ public class Profile extends AppCompatActivity {
     }
 
 
-    //SHOW IMAGE PICK DIALOG
+    //IMAGE UPLOAD ALERT DIALOG MENU
     private void showImagePicDialog() {
         String[] options = {"Camera", "Gallery"};
         MaterialAlertDialogBuilder picBuilder = new MaterialAlertDialogBuilder(Profile.this);
@@ -378,19 +407,10 @@ public class Profile extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (i == 0) {
                     //CAMERA CLICKED
-                    if (!checkCameraPermission() && !checkStoragePermission()) {
-                        requestCameraPermission();
-                        requestStoragePermission();
-                    } else
-                        pickFromCamera();
-
-
+                    checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
                 } else if (i == 1) {
-                    //GALLERY CLICKED (STORAGE)
-                    if (!checkStoragePermission())
-                        requestStoragePermission();
-                    else
-                        pickFromGallery();
+                    //GALLERY CLICKED
+                    checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
                 }
             }
         });
@@ -403,79 +423,74 @@ public class Profile extends AppCompatActivity {
         picBuilder.show();
     }
 
-    //CAMERA AND STORAGE -CHECK PERMISSION
-    private boolean checkStoragePermission() {
-        //CHECK IF STORAGE PERMISSION IS ENABLED RETURN TRUE OR FALSE
-        boolean resultStorage = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                (PackageManager.PERMISSION_GRANTED);
-        return resultStorage;
+
+    //FUNCTION TO CHECK AND REQUEST PERMISSION
+    public void checkPermission(String permission, int requestCode)
+    {
+        if (ContextCompat.checkSelfPermission(Profile.this, permission) == PackageManager.PERMISSION_DENIED) {
+            // Requesting the permission
+            ActivityCompat.requestPermissions(Profile.this, new String[] { permission }, requestCode);
+        }
+        else {
+            Toast.makeText(Profile.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void requestStoragePermission() {
-        //REQUEST RUNTIME STORAGE PERMISSION
-        ActivityCompat.requestPermissions(Profile.this, storagePermissions, STORAGE_REQUEST_CODE);
-    }
-
-    private boolean checkCameraPermission() {
-        //CHECK IF STORAGE PERMISSION IS ENABLED RETURN TRUE OR FALSE
-        boolean resultCamera = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA) ==
-                (PackageManager.PERMISSION_GRANTED);
-
-        boolean resultStorage = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                (PackageManager.PERMISSION_GRANTED);
-
-        return resultCamera && resultStorage;
-    }
-
-    private void requestCameraPermission() {
-        //REQUEST RUNTIME STORAGE PERMISSION
-        ActivityCompat.requestPermissions(Profile.this, cameraPermissions, CAMERA_REQUEST_CODE);
-    }
 
     //CHECK CAMERA AND STORAGE PERMISSION RESULT-USER PRESS ALLOW OR DENY
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case CAMERA_REQUEST_CODE:
-                if (grantResults.length > 0) {
-                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted && writeStorageAccepted) {
-                        //PERMISSION ALLOW
-                        pickFromCamera();
-                    }
+        {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (requestCode == CAMERA_PERMISSION_CODE) {
+                // Checking whether user granted the permission or not.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickFromCamera();
                 } else {
-                    //PERMISSION DENY
-                    Toast.makeText(Profile.this, "Please enable camera and storage permission ", Toast.LENGTH_SHORT).show();
-                }
-            case STORAGE_REQUEST_CODE:
-                if (grantResults.length > 0) {
-                    boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (writeStorageAccepted) {
-                        //PERMISSION ALLOW
-                        pickFromGallery();
-                    } else {
-                        //PERMISSION DENY
-                        Toast.makeText(Profile.this, "Please enable storage permission ", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(Profile.this, "Camera Permission Denied", Toast.LENGTH_SHORT).show();
                 }
 
+            } else if (requestCode == STORAGE_PERMISSION_CODE) {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickFromGallery();
+                } else {
+                    Toast.makeText(Profile.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 
     //CHOOSE PIC FROM GALLERY
     private void pickFromGallery() {
         Toast.makeText(Profile.this, "PICK FROM GALLERY", Toast.LENGTH_LONG).show();
     }
 
+
     //CHOOSE PIC FROM CAMERA
     private void pickFromCamera() {
         Toast.makeText(Profile.this, "PICK FROM CAMERA", Toast.LENGTH_LONG).show();
     }
+
+
+    //CHANGE DATE FORMAT EXAMPLE MAY 02,2022 --> 02/05/2022
+    public String parseDate(String dateStr) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date date=new Date(dateStr);
+        String str = null;
+
+        try {
+            date = inputFormat.parse(dateStr);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return (str);
+    }
+
 
     @Override
     protected void onRestart() {
