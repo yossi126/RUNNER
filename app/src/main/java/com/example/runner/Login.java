@@ -65,6 +65,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        //GO TO REGISTER
         binding.toSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

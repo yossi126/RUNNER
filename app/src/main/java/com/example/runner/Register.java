@@ -31,7 +31,7 @@ public class Register extends AppCompatActivity {
     private Button registerBtn;
     private FirebaseAuth firebaseAuth;
     private ProgressBar progressBar;
-    private TextView toLogin;
+    private TextView toLogin2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,8 @@ public class Register extends AppCompatActivity {
         editEmail = findViewById(R.id.etEmail);
         editPass = findViewById(R.id.etPassword);
         registerBtn = findViewById(R.id.btn_reg_register);
-        progressBar = findViewById(R.id.progressBar2);
-        toLogin = findViewById(R.id.toSignUp);
+        progressBar = findViewById(R.id.progressBar);
+        toLogin2 = findViewById(R.id.toLogin2);
 
         //DEFAULT USER PREFERENCES
         String date = " ";
@@ -57,9 +57,21 @@ public class Register extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         //String uid = firebaseAuth.getCurrentUser().getUid();
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        //TO LOGIN
+        toLogin2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(Register.this, Login.class);
+                startActivity(intent);
+            }
+        });
+
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 String name=editName.getText().toString().trim();
                 String email=editEmail.getText().toString().trim();
                 String newPassword=editPass.getText().toString().trim();
@@ -68,30 +80,23 @@ public class Register extends AppCompatActivity {
                 if(name.isEmpty()){
                     editName.setError("Name is required!");
                     editName.requestFocus();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
 
                 if(newPassword.length() < 6){
                     editPass.setError("Password length at least 6 characters!");
                     editPass.requestFocus();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
 
                 if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                     editEmail.setError("Email is not valid !");
                     editEmail.requestFocus();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
-                progressBar.setVisibility(View.VISIBLE);
-
-                //TO LOGIN
-                toLogin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(Register.this, Login.class);
-                        startActivity(intent);
-                    }
-                });
 
 
                 firebaseAuth.createUserWithEmailAndPassword(email,passEncrypt)
@@ -114,14 +119,17 @@ public class Register extends AppCompatActivity {
                                             if (task.isSuccessful()){
                                                 Toast.makeText(Register.this,"Register Complete Successful!",Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(Register.this,Login.class));
-                                                progressBar.setVisibility(View.GONE);
                                                 finish();
                                             }else
                                                 Toast.makeText(Register.this,"Register Failed!",Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.GONE);
+
                                         }
                                     });
                                 }else
                                     Toast.makeText(Register.this,"Error Create User with email!",Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.GONE);
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
