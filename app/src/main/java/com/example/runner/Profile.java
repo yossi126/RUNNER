@@ -65,8 +65,6 @@ public class Profile extends AppCompatActivity {
     //CAMERA AND STORAGE PERMISSION
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
-    private static final int IMAGE_PICK_CAMERA_CODE = 201;
-    private static final int IMAGE_PICK_GALLERY_REQUEST = 202;
     String[] cameraPermissions;
     String[] storagePermissions;
 
@@ -444,11 +442,12 @@ public class Profile extends AppCompatActivity {
                 if (i == 0) {
                     //CAMERA CLICKED
                     checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
-                    pickFromCamera();
                 } else if (i == 1) {
                     //GALLERY CLICKED
                     checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-                    pickFromGallery();
+                } else {
+                    Toast.makeText(Profile.this, "Try Again....", Toast.LENGTH_SHORT).show();
+                    dialogInterface.dismiss();
                 }
             }
         });
