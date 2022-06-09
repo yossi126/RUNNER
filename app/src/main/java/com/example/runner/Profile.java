@@ -61,7 +61,6 @@ import java.util.Date;
 public class Profile extends AppCompatActivity {
 
     private ActivityProfileBinding binding;
-    private ProgressBar progressBar;
 
     //CAMERA AND STORAGE PERMISSION AND HANDLES
     private static final int CAMERA_PERMISSION_CODE = 100;

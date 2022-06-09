@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -52,6 +53,7 @@ public class Login extends AppCompatActivity {
         binding.loginActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.progressBar.setVisibility(View.VISIBLE);
                 userLogin();
             }
         });
@@ -188,21 +190,25 @@ public class Login extends AppCompatActivity {
         if (email.isEmpty()) {
             binding.loginEnterEmailEt.setError("Email is requierd");
             binding.loginEnterEmailEt.requestFocus();
+            binding.progressBar.setVisibility(View.GONE);
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.loginEnterEmailEt.setError("please fill valid Email");
             binding.loginEnterEmailEt.requestFocus();
+            binding.progressBar.setVisibility(View.GONE);
             return;
         }
         if (password.isEmpty()) {
             binding.loginEnterPassEt.setError("Password is requierd");
             binding.loginEnterPassEt.requestFocus();
+            binding.progressBar.setVisibility(View.GONE);
             return;
         }
         if (password.length() < 6) {
             binding.loginEnterPassEt.setError("Min password length is 6 characters");
             binding.loginEnterPassEt.requestFocus();
+            binding.progressBar.setVisibility(View.GONE);
             return;
         }
 
@@ -223,6 +229,7 @@ public class Login extends AppCompatActivity {
 //                    }
                 } else {
                     Toast.makeText(Login.this, "Failed to login", Toast.LENGTH_SHORT).show();
+                    binding.progressBar.setVisibility(View.GONE);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
