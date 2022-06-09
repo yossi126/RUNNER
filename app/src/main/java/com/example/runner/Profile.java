@@ -6,18 +6,18 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -55,30 +55,30 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.text.ParseException;
 import java.util.Date;
 
 public class Profile extends AppCompatActivity {
 
     private ActivityProfileBinding binding;
+    private ProgressBar progressBar;
 
-    //CAMERA AND STORAGE PERMISSION
+    //CAMERA AND STORAGE PERMISSION AND HANDLES
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
     String[] cameraPermissions;
     String[] storagePermissions;
+    private String profileOrCoverPhoto;
+    private String cameraOrGalley;
 
     // INSTANCE FOR FIREBASE STORAGE AND STORAGE REF
     FirebaseStorage storage;
     StorageReference storageReference;
-
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
     private String userID;
     private FloatingActionButton floatingEditButton;
-    private String profileOrCoverPhoto;
-    private String cameraOrGalley;
+
 
     // Uri INDICATES WHERE THE IMAGE WILL BE PICKED FROM
     Uri imageUri;
@@ -104,9 +104,12 @@ public class Profile extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         userID = firebaseUser.getUid();
+
         databaseReference.child(userID).addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
                     binding.userName.setText(user.getName());
@@ -128,6 +131,14 @@ public class Profile extends AppCompatActivity {
                         //GET STORAGE IMAGE USING GLIDE
                         getProfileImage(user.getUid());
                 }
+                //PROGRESS BAR DELAYED BY 2.5 SEC
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        binding.progressBar.setVisibility(View.GONE);
+                    }
+                }, 2500);
             }
 
             @Override
@@ -401,8 +412,7 @@ public class Profile extends AppCompatActivity {
                             binding.coverPhoto.setImageURI(imageUri);
 
                         uploadImage();
-                    }
-                    else
+                    } else
                         Toast.makeText(Profile.this, "Error Loading Camera Photo ", Toast.LENGTH_SHORT).show();
 
                 }
@@ -424,8 +434,7 @@ public class Profile extends AppCompatActivity {
                         //RESULT IS SET IN THE URI
                         imageUri = result;
                         uploadImage();
-                    }
-                    else
+                    } else
                         Toast.makeText(Profile.this, "Error Loading Gallery Photo", Toast.LENGTH_SHORT).show();
 
                 }
@@ -471,7 +480,7 @@ public class Profile extends AppCompatActivity {
             ActivityCompat.requestPermissions(Profile.this, new String[]{permission}, requestCode);
         } else {
             Toast.makeText(Profile.this, "Permission already granted", Toast.LENGTH_SHORT).show();
-            if(cameraOrGalley.equals("Camera"))
+            if (cameraOrGalley.equals("Camera"))
                 pickFromCamera();
             else
                 pickFromGallery();
@@ -525,7 +534,6 @@ public class Profile extends AppCompatActivity {
 
     //UPLOAD TO STORAGE AND REALTIME
     private void uploadImage() {
-
         if (imageUri != null) {
             if (profileOrCoverPhoto.equals("profile")) {
                 storageReference = storage.getReference().child("profile_images/" + firebaseUser.getUid());
