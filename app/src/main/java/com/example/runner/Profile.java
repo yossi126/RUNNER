@@ -31,6 +31,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.runner.data.User;
 import com.example.runner.databinding.ActivityProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -77,6 +78,7 @@ public class Profile extends AppCompatActivity {
     private String userID;
     private FloatingActionButton floatingEditButton;
     private String profileOrCoverPhoto;
+    private String cameraOrGalley;
 
     // Uri INDICATES WHERE THE IMAGE WILL BE PICKED FROM
     Uri imageUri;
@@ -117,7 +119,7 @@ public class Profile extends AppCompatActivity {
                         //DEFAULT COVER PHOTO
                         binding.coverPhoto.setImageResource(R.drawable.background);
                     else {
-                        //PICASSSO LOAD IMAGE
+                        getCoverImage(user.getUid());
                     }
                     if (user.getProfilePhoto().equals("1"))
                         //DEFAULT PROFILE PHOTO
@@ -440,9 +442,11 @@ public class Profile extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //String uploadOption = options[i];
                 if (i == 0) {
+                    cameraOrGalley = options[i];
                     //CAMERA CLICKED
                     checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
                 } else if (i == 1) {
+                    cameraOrGalley = options[i];
                     //GALLERY CLICKED
                     checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
                 } else {
@@ -467,6 +471,11 @@ public class Profile extends AppCompatActivity {
             ActivityCompat.requestPermissions(Profile.this, new String[]{permission}, requestCode);
         } else {
             Toast.makeText(Profile.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+            if(cameraOrGalley.equals("Camera"))
+                pickFromCamera();
+            else
+                pickFromGallery();
+
         }
     }
 
@@ -563,7 +572,30 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    Glide.with(Profile.this).load(task.getResult()).into(binding.profilePhoto);
+                    Glide.with(Profile.this)
+                            .load(task.getResult())
+                            .apply(RequestOptions.centerCropTransform())
+                            .into(binding.profilePhoto);
+                } else {
+                    Toast.makeText(Profile.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    //GET COVER IMAGE
+    private void getCoverImage(String uid) {
+        storageReference = storage.getReference().child("cover_images/").child(uid);
+        //Glide.with(Profile.this).load("https://firebasestorage.googleapis.com/v0/b/runner-3fa14.appspot.com/o/profile_images%2FpnZK4vYApdOeP51gLxHAfhwKoln2?alt=media&token=80c2c20b-0e5d-4eac-b049-af74808a92cf").into(binding.profilePhoto);
+        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Glide.with(Profile.this)
+                            .load(task.getResult())
+                            .apply(RequestOptions.centerCropTransform())
+                            .into(binding.coverPhoto);
                 } else {
                     Toast.makeText(Profile.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
