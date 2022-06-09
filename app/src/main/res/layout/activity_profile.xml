@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomePage">
+    tools:context=".HomePage"
+    android:id="@+id/rootLayout">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -169,8 +170,7 @@
         app:layout_constraintDimensionRatio="h,16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:srcCompat="@drawable/background" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"/>
 
     <ImageView
         android:id="@+id/profilePhoto"
@@ -180,8 +180,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/coverPhoto"
         app:layout_constraintDimensionRatio="w,2:3"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/coverPhoto"
-        app:srcCompat="@drawable/profile" />
+        app:layout_constraintTop_toBottomOf="@+id/coverPhoto" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

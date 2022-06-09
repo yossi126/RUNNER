@@ -21,11 +21,6 @@
             android:name=".Profile"
             android:exported="false" />
         <activity
-            android:name=".ProfileBasicActivity.Profile"
-            android:exported="false"
-            android:label="@string/title_activity_profile"
-            android:theme="@style/Theme.RUNNER.NoActionBar" />
-
             android:name=".NewRun"
             android:exported="false" />
 

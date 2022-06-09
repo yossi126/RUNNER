@@ -3,7 +3,6 @@ package com.example.runner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.runner.data.User;
@@ -21,14 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 public class Register extends AppCompatActivity {
 
@@ -38,6 +31,7 @@ public class Register extends AppCompatActivity {
     private Button registerBtn;
     private FirebaseAuth firebaseAuth;
     private ProgressBar progressBar;
+    private TextView toLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +43,15 @@ public class Register extends AppCompatActivity {
         editPass = findViewById(R.id.etPassword);
         registerBtn = findViewById(R.id.btn_reg_register);
         progressBar = findViewById(R.id.progressBar2);
+        toLogin = findViewById(R.id.toSignUp);
 
         //DEFAULT USER PREFERENCES
         String date = " ";
         String height = " ";
         String weight= " ";
         String gender=" ";
-        String profilePhoto=" ";
-        String coverPhoto = " ";
+        String profilePhoto="1";
+        String coverPhoto = "1";
 
         progressBar.setVisibility(View.GONE);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -88,7 +83,17 @@ public class Register extends AppCompatActivity {
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
-                
+
+                //TO LOGIN
+                toLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Register.this, Login.class);
+                        startActivity(intent);
+                    }
+                });
+
+
                 firebaseAuth.createUserWithEmailAndPassword(email,passEncrypt)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -150,21 +155,5 @@ public class Register extends AppCompatActivity {
             throw new RuntimeException(ex);
         }
     }
-
-    /*private SecretKeySpec generateKey(String password)
-    {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes("UTF-8"));
-            digest.update(hash, 0 , hash.length);
-            byte[] hashKey = digest.digest();
-            SecretKeySpec secretKeySpec = new SecretKeySpec(hashKey, "AES128");
-            return secretKeySpec;
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-    }*/
 
 }

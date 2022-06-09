@@ -49,6 +49,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toBottomOf="@+id/loginEnterEmailEt"
@@ -72,18 +73,21 @@
         android:id="@+id/toSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="208dp"
         android:text="Dont have an account ? Sign Up Now"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/forgotPassTv"
-        app:layout_constraintStart_toStartOf="@+id/forgotPassTv" />
+        app:layout_constraintStart_toStartOf="@+id/forgotPassTv"
+        app:layout_constraintTop_toBottomOf="@+id/forgotPassTv" />
 
     <TextView
         android:id="@+id/forgotPassTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Forgot Password?"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -96,6 +100,7 @@
         android:id="@+id/loginActivityBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Login"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintHorizontal_bias="0.0"
