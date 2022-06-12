@@ -2,8 +2,12 @@ package com.example.runner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,17 +39,25 @@ public class Club extends AppCompatActivity {
     private String userID;
     private ArrayList<User> userArrayList;
     ClubAdapterRecyclerView clubAdapterRecyclerView;
+    String searchUser = "";
+    private EditText etSearch;
+    public static User currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_club);
+
 
         binding = ActivityClubBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
+        //GET PATH OF DB NAMED "USERS"
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         //userID = currentFirebaseUser.getUid();
         userArrayList = new ArrayList<>();
 
@@ -55,7 +67,27 @@ public class Club extends AppCompatActivity {
         //SETTING BOTTOM NAV BAR
         bottomNavBar();
 
+        //SEARCH FOR USER
+        //Log.i("shukim", searchUser);
 
+        //ActivityClubBinding activityDataClubBinding = DataBindingUtil.setContentView(this, R.id.club);
+
+        etSearch = findViewById(R.id.etSearch);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchUser = s.toString();
+                getUser(searchUser);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        //activityDataClubBinding.setVarSearchUser("ddddd");
+
+        //GET ALL USERS FROM REALTIME DB
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -83,6 +115,31 @@ public class Club extends AppCompatActivity {
 
 
     }
+
+    private void getUser(String searchUser) {
+        //get all data from path
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userArrayList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    User user = ds.getValue(User.class);
+                    //get all users except currently signed in user
+                    if (!user.getUid().equals(currentFirebaseUser.getUid()) && user.getName().startsWith(searchUser)){
+                        userArrayList.add(user);
+                    } else {
+                        currentUser = user;
+                    }
+
+                    //set adapter to recycler view
+                    binding.clubRV.setAdapter(clubAdapterRecyclerView);
+                }
+            }
+            @Override public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+
+    }
+
 
     private void bottomNavBar() {
         //setting up the bottom nav
@@ -135,6 +192,13 @@ public class Club extends AppCompatActivity {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(intent);
                         break;
+                    case R.id.search:
+                        if (binding.etSearch.getVisibility() == View.VISIBLE) {
+                            binding.etSearch.setVisibility(View.GONE);
+
+                        } else {
+                            binding.etSearch.setVisibility(View.VISIBLE);
+                        }
                 }
                 return true;
             }
@@ -148,4 +212,5 @@ public class Club extends AppCompatActivity {
         binding.bottomNavBar.setSelectedItemId(R.id.club);
         overridePendingTransition(0, 0);
     }
+
 }

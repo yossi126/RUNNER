@@ -4,7 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable-anydpi/ic_action_search.xml" value="0.2585" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable-anydpi/ic_baseline_logout_black.xml" value="0.269" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable-anydpi/ic_search_white.xml" value="0.2585" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/border_custom.xml" value="0.269" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/edit_text_border.xml" value="0.2595" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_baseline_home.xml" value="0.2265" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_baseline_logout_24.xml" value="0.2585" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_baseline_logout_white_24.xml" value="0.2585" />
@@ -15,7 +18,7 @@
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_baseline_stop_24.xml" value="0.154" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2425" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_search_24dp.xml" value="0.2585" />
-        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_club.xml" value="0.264" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_club.xml" value="0.20308483290488433" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_home_page.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_main.xml" value="0.264" />
@@ -23,6 +26,7 @@
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_profile_edit.xml" value="0.264" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_register.xml" value="0.2" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/content_profile.xml" value="0.24909420289855072" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/edit_text_border.xml" value="0.13508612873980055" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/fragment_first.xml" value="0.24909420289855072" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/user_list_item.xml" value="0.264" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/bottom_nav.xml" value="0.25416666666666665" />
