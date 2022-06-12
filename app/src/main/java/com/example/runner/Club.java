@@ -46,6 +46,7 @@ public class Club extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("shukim", "ONCREATE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club);
 
@@ -71,14 +72,18 @@ public class Club extends AppCompatActivity {
         //SEARCH FOR USER USING ON CHANGE LISTENER
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchUser = s.toString();
                 getUser(searchUser);
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
 
@@ -108,7 +113,6 @@ public class Club extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void getUser(String searchUser) {
@@ -117,10 +121,10 @@ public class Club extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userArrayList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     User user = ds.getValue(User.class);
                     //get all users except currently signed in user
-                    if (!user.getUid().equals(currentFirebaseUser.getUid()) && user.getName().startsWith(searchUser)){
+                    if (!user.getUid().equals(currentFirebaseUser.getUid()) && user.getName().startsWith(searchUser)) {
                         userArrayList.add(user);
                     } else {
                         currentUser = user;
@@ -129,7 +133,10 @@ public class Club extends AppCompatActivity {
                     binding.clubRV.setAdapter(clubAdapterRecyclerView);
                 }
             }
-            @Override public void onCancelled(@NonNull DatabaseError databaseError) {}
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
 
     }
@@ -185,6 +192,8 @@ public class Club extends AppCompatActivity {
                         });
                         FirebaseAuth.getInstance().signOut();
                         startActivity(intent);
+                        //INITIALIZE ON DESTROY
+                        finish();
                         break;
                     case R.id.search:
                         if (binding.etSearch.getVisibility() == View.VISIBLE) {
@@ -200,11 +209,42 @@ public class Club extends AppCompatActivity {
 
     }
 
+
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        binding.bottomNavBar.setSelectedItemId(R.id.club);
-        overridePendingTransition(0, 0);
+    protected void onDestroy() {
+        //WHEN LOGOUT
+        super.onDestroy();
+        Log.i("shukim", "ONDESTORY");
+        statusOffline();
     }
 
+    @Override
+    protected void onStop() {
+        //WHEN ACTIVITY IS HIDDEN/STOPPED
+        super.onStop();
+        Log.i("shukim", "ONSTOP");
+        statusOffline();
+    }
+
+    @Override
+    protected void onRestart() {
+        //WHEN STARTING ACTIVITY
+        super.onRestart();
+        Log.i("shukim", "ONRESTART");
+        binding.bottomNavBar.setSelectedItemId(R.id.club);
+        overridePendingTransition(0, 0);
+        statusOnline();
+    }
+
+    private void statusOnline() {
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(true);
+    }
+
+    private void statusOffline() {
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
+    }
 }

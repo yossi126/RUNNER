@@ -39,29 +39,23 @@ public class HomePage extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-        //setting up top nav bar
-        binding.topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        //SETTING TOP NAV BAR
+        topNavBar();
+
+        //SETTING BOTTOM NAV BAR
+        bottomNavBar();
+
+        databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch(item.getItemId()){
-                    case R.id.logOut:
-                        Intent intent = new Intent(HomePage.this,MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(HomePage.this,"user is logout",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(intent);
-                        break;
-                }
-                return true;
+            public void onComplete(@NonNull Task<Void> task) {
+
             }
         });
+    }
 
-        //setting up the bottom nav
+
+    //SETTING BOTTOM NAV BAR
+    private void bottomNavBar() {
         binding.bottomNavBar.setSelectedItemId(R.id.home_page); // to keep the icon on
         binding.bottomNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -92,16 +86,29 @@ public class HomePage extends AppCompatActivity {
                 return true;
             }
         });
+    }
 
-        databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+    //SETTING BOTTOM NAV BAR
+    private void topNavBar() {
+        //SETTING TOP NAV BAR
+        binding.topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.logOut:
+                        Intent intent = new Intent(HomePage.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(intent);
+                        break;
+                }
+                return true;
             }
         });
     }
 
-    // for smooth transitions between activity & for the botton-nav button to be pressed
+    // for smooth transitions between activity & for the bottom-nav button to be pressed
     @Override
     protected void onRestart() {
         super.onRestart();

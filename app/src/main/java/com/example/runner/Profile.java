@@ -117,13 +117,13 @@ public class Profile extends AppCompatActivity {
                     binding.userHeight.setText(user.getHeight() + " cm");
                     binding.userWeight.setText(user.getWeight() + " kg");
                     binding.userGender.setText(user.getGender());
-                    if (user.getCoverPhoto().equals("1"))
+                    if (user.getCoverPhoto().equals("1") || user.getCoverPhoto() == null)
                         //DEFAULT COVER PHOTO
                         binding.coverPhoto.setImageResource(R.drawable.background);
                     else {
                         getCoverImage(user.getUid());
                     }
-                    if (user.getProfilePhoto().equals("1"))
+                    if (user.getProfilePhoto().equals("1") || user.getCoverPhoto() == null)
                         //DEFAULT PROFILE PHOTO
                         binding.profilePhoto.setImageResource(R.drawable.profile);
                     else
@@ -584,6 +584,7 @@ public class Profile extends AppCompatActivity {
                             .apply(RequestOptions.centerCropTransform())
                             .into(binding.profilePhoto);
                 } else {
+                    binding.profilePhoto.setImageResource(R.drawable.profile);
                     Toast.makeText(Profile.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -604,6 +605,7 @@ public class Profile extends AppCompatActivity {
                             .apply(RequestOptions.centerCropTransform())
                             .into(binding.coverPhoto);
                 } else {
+                    binding.coverPhoto.setImageResource(R.drawable.background);
                     Toast.makeText(Profile.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
