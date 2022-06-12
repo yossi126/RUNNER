@@ -53,6 +53,7 @@ public class Club extends AppCompatActivity {
         binding = ActivityClubBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        etSearch = findViewById(R.id.etSearch);
 
         //GET PATH OF DB NAMED "USERS"
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
@@ -67,12 +68,7 @@ public class Club extends AppCompatActivity {
         //SETTING BOTTOM NAV BAR
         bottomNavBar();
 
-        //SEARCH FOR USER
-        //Log.i("shukim", searchUser);
-
-        //ActivityClubBinding activityDataClubBinding = DataBindingUtil.setContentView(this, R.id.club);
-
-        etSearch = findViewById(R.id.etSearch);
+        //SEARCH FOR USER USING ON CHANGE LISTENER
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -85,7 +81,6 @@ public class Club extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        //activityDataClubBinding.setVarSearchUser("ddddd");
 
         //GET ALL USERS FROM REALTIME DB
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -117,7 +112,7 @@ public class Club extends AppCompatActivity {
     }
 
     private void getUser(String searchUser) {
-        //get all data from path
+        //GET DATA FROM REALTIME FB PATH
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -130,7 +125,6 @@ public class Club extends AppCompatActivity {
                     } else {
                         currentUser = user;
                     }
-
                     //set adapter to recycler view
                     binding.clubRV.setAdapter(clubAdapterRecyclerView);
                 }
