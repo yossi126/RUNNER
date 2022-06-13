@@ -1,5 +1,9 @@
 package com.example.runner.data;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class User {
 
     private String name;
@@ -120,4 +124,5 @@ public class User {
     public void setCoverPhoto(String coverPhoto) {
         this.coverPhoto = coverPhoto;
     }
+
 }

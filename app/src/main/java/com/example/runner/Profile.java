@@ -585,7 +585,6 @@ public class Profile extends AppCompatActivity {
                             .into(binding.profilePhoto);
                 } else {
                     binding.profilePhoto.setImageResource(R.drawable.profile);
-                    Toast.makeText(Profile.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -606,7 +605,6 @@ public class Profile extends AppCompatActivity {
                             .into(binding.coverPhoto);
                 } else {
                     binding.coverPhoto.setImageResource(R.drawable.background);
-                    Toast.makeText(Profile.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

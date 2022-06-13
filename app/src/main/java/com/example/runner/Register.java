@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ public class Register extends AppCompatActivity {
     private EditText editName;
     private EditText editEmail;
     private EditText editPass;
+    private EditText editConfirmPass;
     private Button registerBtn;
     private FirebaseAuth firebaseAuth;
     private ProgressBar progressBar;
@@ -44,6 +46,7 @@ public class Register extends AppCompatActivity {
         registerBtn = findViewById(R.id.btn_reg_register);
         progressBar = findViewById(R.id.progressBar);
         toLogin2 = findViewById(R.id.toLogin2);
+        editConfirmPass = findViewById(R.id.etConfirmPass);
 
         //DEFAULT USER PREFERENCES
         String date = " ";
@@ -75,6 +78,7 @@ public class Register extends AppCompatActivity {
                 String name=editName.getText().toString().trim();
                 String email=editEmail.getText().toString().trim();
                 String newPassword=editPass.getText().toString().trim();
+                String confirmPass=editConfirmPass.getText().toString().trim();
                 String passEncrypt =  encryptSha256(newPassword);
 
                 if(name.isEmpty()){
@@ -87,6 +91,14 @@ public class Register extends AppCompatActivity {
                 if(newPassword.length() < 6){
                     editPass.setError("Password length at least 6 characters!");
                     editPass.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+                if(!confirmPass.equals(newPassword))
+                {
+                    editConfirmPass.setError("Passwords not the same!");
+                    editConfirmPass.requestFocus();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }

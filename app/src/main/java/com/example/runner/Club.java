@@ -141,7 +141,7 @@ public class Club extends AppCompatActivity {
 
     }
 
-
+    //SETTING BOTTOM NAV BAR
     private void bottomNavBar() {
         //setting up the bottom nav
         binding.bottomNavBar.setSelectedItemId(R.id.club); // to keep the icon on
@@ -175,7 +175,7 @@ public class Club extends AppCompatActivity {
         });
     }
 
-    //setting up top nav bar
+    //SETTING TOP NAV BAR
     private void topNavBar() {
         binding.topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -192,8 +192,6 @@ public class Club extends AppCompatActivity {
                         });
                         FirebaseAuth.getInstance().signOut();
                         startActivity(intent);
-                        //INITIALIZE ON DESTROY
-                        finish();
                         break;
                     case R.id.search:
                         if (binding.etSearch.getVisibility() == View.VISIBLE) {
@@ -209,21 +207,12 @@ public class Club extends AppCompatActivity {
 
     }
 
-
-    @Override
-    protected void onDestroy() {
-        //WHEN LOGOUT
-        super.onDestroy();
-        Log.i("shukim", "ONDESTORY");
-        statusOffline();
-    }
-
     @Override
     protected void onStop() {
         //WHEN ACTIVITY IS HIDDEN/STOPPED
         super.onStop();
         Log.i("shukim", "ONSTOP");
-        statusOffline();
+        databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
     }
 
     @Override
@@ -233,18 +222,6 @@ public class Club extends AppCompatActivity {
         Log.i("shukim", "ONRESTART");
         binding.bottomNavBar.setSelectedItemId(R.id.club);
         overridePendingTransition(0, 0);
-        statusOnline();
-    }
-
-    private void statusOnline() {
-        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(true);
-    }
-
-    private void statusOffline() {
-        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
     }
 }

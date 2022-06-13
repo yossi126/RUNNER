@@ -35,9 +35,12 @@ public class HomePage extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        //firebase
+        //FIREBASE - GET CURRENT USER ID +GET PATH OF DB NAMED "USERS"
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        //SET USER STATUS ONLINE
+        databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(true);
+
 
         //SETTING TOP NAV BAR
         topNavBar();
@@ -45,12 +48,6 @@ public class HomePage extends AppCompatActivity {
         //SETTING BOTTOM NAV BAR
         bottomNavBar();
 
-        databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-            }
-        });
     }
 
 

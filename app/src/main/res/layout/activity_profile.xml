@@ -50,6 +50,16 @@
         app:layout_constraintStart_toEndOf="@+id/profilePhoto"
         app:layout_constraintTop_toBottomOf="@+id/coverPhoto" />
 
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:dividerInsetEnd="16dp"
+        app:dividerInsetStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/userEmail"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/userDate" />
+
     <TextView
         android:id="@+id/userEmail"
         android:layout_width="0dp"
