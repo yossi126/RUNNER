@@ -21,17 +21,23 @@
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/edit_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/edit_profile_popup_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/yossib/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.195382642154767" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_home.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_online.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_run.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/round_button.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/round_button_new_run.xml" value="0.2265" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_club.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_end_run_summary.xml" value="0.33" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_home_page.xml" value="0.5" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_login.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_new_run.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_profile.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_register.xml" value="0.3009833262077811" />
-
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_run.xml" value="0.14709569577935647" />
+        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_show_run.xml" value="0.195382642154767" />
       </map>
     </option>
   </component>

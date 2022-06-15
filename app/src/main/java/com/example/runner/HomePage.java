@@ -76,7 +76,6 @@ public class HomePage extends AppCompatActivity {
                                 //ADD TO DATES LIST TO HIGHLIGHT DATES CALENDAR
                                 dateArrayList.add(dateString);
                                 //Log.d(TAG, dateArrayList.toString());
-                                //Log.d(TAG, document.getId() + " => " + document.getData());
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -133,6 +132,9 @@ public class HomePage extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         break;
                     case R.id.status:
+                        Intent intentS = new Intent(HomePage.this,Activity.class);
+                        startActivity(intentS);
+                        overridePendingTransition(0, 0);
                         break;
                     case R.id.profile:
                         Intent intent = new Intent(HomePage.this, Profile.class);

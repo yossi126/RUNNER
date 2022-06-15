@@ -653,6 +653,9 @@ public class Profile extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         break;
                     case R.id.status:
+                        Intent intentS = new Intent(Profile.this,Activity.class);
+                        startActivity(intentS);
+                        overridePendingTransition(0, 0);
                         break;
                     case R.id.profile:
                         break;

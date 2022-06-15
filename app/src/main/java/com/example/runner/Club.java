@@ -164,6 +164,9 @@ public class Club extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         break;
                     case R.id.status:
+                        Intent intentS = new Intent(Club.this,Activity.class);
+                        startActivity(intentS);
+                        overridePendingTransition(0, 0);
                         break;
                     case R.id.profile:
                         Intent intentP = new Intent(Club.this, Profile.class);

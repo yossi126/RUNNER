@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -130,7 +129,9 @@ public class Run extends AppCompatActivity implements OnMapReadyCallback{
                     case R.id.run:
                         break;
                     case R.id.status:
-                        // no status yet
+                        Intent intentS = new Intent(Run.this, Activity.class);
+                        startActivity(intentS);
+                        overridePendingTransition(0, 0);
                         break;
                     case R.id.profile:
                         Intent intent = new Intent(Run.this,Profile.class);
