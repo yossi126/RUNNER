@@ -612,7 +612,7 @@ public class Profile extends AppCompatActivity {
     }
 
 
-    //CHANGE DATE FORMAT EXAMPLE MAY 02,2022 --> 02/05/2022
+    //PARSE DATE OBJECT TO STRING FORMAT EXAMPLE MAY 02,2022 --> 02/05/2022
     private String parseDate(String dateStr) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("MMM dd, yyyy");
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");

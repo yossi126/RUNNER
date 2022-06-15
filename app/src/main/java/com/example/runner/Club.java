@@ -61,6 +61,7 @@ public class Club extends AppCompatActivity {
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //userID = currentFirebaseUser.getUid();
+
         userArrayList = new ArrayList<>();
 
         //SETTING TOP NAV BAR
