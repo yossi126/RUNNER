@@ -37,6 +37,13 @@ import java.util.List;
 
 public class NewRun extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener{
 
+    /*
+    shortcuts
+    All Methods Collapse -> CTRL + SHIFT + -
+    All Methods Expand -> CTRL + SHIFT + +
+    Ctrl+Shift+Alt+L
+    */
+
     // Views
     private TextView distanceText;
     private Chronometer chronometer;
@@ -44,7 +51,7 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener, V
 
     //fragment vars
     private GoogleMap map;
-    private  Polyline polyline;
+    private Polyline polyline;
     private PolylineOptions polylineOptions;
 
     // current location
@@ -204,11 +211,11 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener, V
     @Override
     public boolean onLongClick(View v) {
         if (v.getId() == R.id.endBtn) {
-//            Intent intent = new Intent(RunActivity.this, EndRunActivity.class);
-//            intent.putExtra("time", chronometer.getText());
-//            intent.putExtra("distance", distanceText.getText().toString());
-//            intent.putExtra("polylines", polylineOptions);
-//            startActivity(intent);
+            Intent intent = new Intent(NewRun.this, EndRunSummary.class);
+            //intent.putExtra("time", chronometer.getText());
+            intent.putExtra("distance", distanceText.getText().toString());
+            intent.putExtra("polylines", polylineOptions);
+            startActivity(intent);
             finish();
         }
         return false;

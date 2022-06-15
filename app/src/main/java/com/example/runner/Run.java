@@ -66,7 +66,7 @@ public class Run extends AppCompatActivity implements OnMapReadyCallback{
 
 
     //binding
-    ActivityRunBinding binding;
+    private ActivityRunBinding binding;
 
     //firebase
     private FirebaseUser firebaseUser;
