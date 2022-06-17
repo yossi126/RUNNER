@@ -18,10 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ShowRunActivity extends AppCompatActivity {
 
-    private static final String TAG = "onItemClick";
+    private static final String TAG = "ShowRunActivity";
+    //binding
     ActivityShowRunBinding binding;
-    private Bundle extras;
 
+    private Bundle extras;
     private String timestamp, distance;
 
     @Override

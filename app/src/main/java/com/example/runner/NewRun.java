@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.runner.databinding.ActivityNewRunBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -27,7 +28,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +35,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
-public class NewRun extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener{
+public class NewRun extends AppCompatActivity implements View.OnClickListener{
 
     /*
     shortcuts
@@ -44,10 +44,16 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener, V
     Ctrl+Shift+Alt+L
     */
 
+    //binding
+    ActivityNewRunBinding binding;
+
     // Views
-    private TextView distanceText;
-    private Chronometer chronometer;
+    //private TextView distanceText;
+    //private Chronometer chronometer;
     private Button startStop, endBtn, focus;
+    // my edit
+    private ImageButton startPauseButton;
+
 
     //fragment vars
     private GoogleMap map;
@@ -62,48 +68,52 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener, V
     private Looper looper;
 
     // Vars
-    private boolean stopStart, opened;
+
+    //Chronometer vars
+    private boolean stopStart;
     private long pauseOffset;
+
     private float distanceFar;
     private float lat1, lng1, lat2, lng2;
     private int length;
 
-    //my edit
-    ImageButton imageButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_run);
-
-        //my edit
-        imageButton = findViewById(R.id.imageButton);
+        //binding
+        binding = ActivityNewRunBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         // Initialize:
         supportMapFragment = (SupportMapFragment)  getSupportFragmentManager().findFragmentById(R.id.google_map);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         polylineOptions = new PolylineOptions();
-        startStop = findViewById(R.id.startStop);
-        focus = findViewById(R.id.focus_btn_nd);
-        startStop.setOnClickListener(this);
-        endBtn = findViewById(R.id.endBtn);
-        endBtn.setOnLongClickListener(this);
-        endBtn.setOnClickListener(this);
-        opened = false;
+        //my edit
+        startPauseButton = findViewById(R.id.imageButtonStartPause);
+        //startStop = findViewById(R.id.startStop);
+        //focus = findViewById(R.id.focus_btn_nd);
+        //startStop.setOnClickListener(this);
+        //endBtn = findViewById(R.id.endBtn);
+        //endBtn.setOnLongClickListener(this);
+        //endBtn.setOnClickListener(this);
+        //opened = false;
         //chronometer = findViewById(R.id.timeChronometer);
-        distanceText = findViewById(R.id.distanceText);
+        //distanceText = findViewById(R.id.distanceText);
         pauseOffset = 0;
         distanceFar = 0;
-        //resetTime();
+        resetChronometer();
         getCurrentLocation();
 
-        focus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawTrack();
-                Toast.makeText(NewRun.this,"focus?",Toast.LENGTH_SHORT).show();
-            }
-        });
+//        focus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                drawTrack();
+//                Toast.makeText(NewRun.this,"focus?",Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         // create a location callback
         locationCallback = new LocationCallback() {
@@ -126,7 +136,8 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener, V
                             System.out.println(text);
                         }
                         if (text.equals("0.0")){text = "0.00";}
-                        distanceText.setText("km: " + text);
+                        //distanceText.setText("km: " + text);
+                        binding.distanceText.setText("km: " + text);
 
                         drawTrack();
                     }
@@ -135,14 +146,33 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener, V
         };
 
         stopStart = true;
-        //timeRuns();
+        startChronometer();
         requestLocation();
+
+        //setting up stop button
+        stopButton();
+
+    }
+
+
+    private void stopButton() {
+        binding.imageButtonStop.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(NewRun.this, EndRunSummary.class);
+                intent.putExtra("chronometer",  binding.timeChronometer.getText());
+                intent.putExtra("distance", binding.distanceText.getText().toString());
+                intent.putExtra("polylines", polylineOptions);
+                startActivity(intent);
+                finish();
+                return false;
+            }
+        });
     }
 
     @SuppressLint("MissingPermission")
     void requestLocation() {
         // get the client location every second
-        //LocationRequest locationRequest = new LocationRequest();
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -164,12 +194,10 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener, V
                             googleMap.clear();
                             polyline = map.addPolyline(polylineOptions);
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            //MarkerOptions options = new MarkerOptions().position(latLng).title("You Are Here");
                             googleMap.setMyLocationEnabled(true);
                             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                             googleMap.getUiSettings().setRotateGesturesEnabled(false);
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
-                            //googleMap.addMarker(options);
                         }
                     });
                 }
@@ -180,59 +208,38 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener, V
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.startStop){
+        if (v.getId() == R.id.imageButtonStartPause){
             if (!stopStart) {
                 stopStart = true;
-                //timeRuns();
+                startChronometer();
                 requestLocation();
-                Toast.makeText(NewRun.this,"stopStart = true, requestLocation()",Toast.LENGTH_SHORT).show();
-                //startStop.setForeground(this.getResources().getDrawable(R.drawable.ic_pause));
-
-                //my edit
-                imageButton.setImageResource(R.drawable.ic_baseline_pause_24);
-
-
+                startPauseButton.setImageResource(R.drawable.ic_baseline_pause_24);
             } else {
                 stopStart = false;
-                //startStop.setForeground(this.getResources().getDrawable(R.drawable.ic_play_arrow));
-                //stopTime();
+                pauseChronometer();
                 fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-                Toast.makeText(NewRun.this," stopStart = false, removeLocationUpdates",Toast.LENGTH_SHORT).show();
-
-                //my edit
-                imageButton.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                startPauseButton.setImageResource(R.drawable.ic_baseline_play_arrow_24);
             }
         }
-        else if (v.getId() == R.id.endBtn){
+        else if (v.getId() == R.id.imageButtonStop){
             Toast.makeText(this, "Ending run with long click", Toast.LENGTH_SHORT).show();
         }
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        if (v.getId() == R.id.endBtn) {
-            Intent intent = new Intent(NewRun.this, EndRunSummary.class);
-            //intent.putExtra("time", chronometer.getText());
-            intent.putExtra("distance", distanceText.getText().toString());
-            intent.putExtra("polylines", polylineOptions);
-            startActivity(intent);
-            finish();
-        }
-        return false;
-    }
 
-//    private void timeRuns(){
-//        chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
-//        chronometer.start();
-//    }
-//    private void stopTime(){
-//        chronometer.stop();
-//        pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
-//    }
-//    private void resetTime(){
-//        chronometer.setBase(SystemClock.elapsedRealtime());
-//        pauseOffset = 0;
-//    }
+
+    private void startChronometer(){
+        binding.timeChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+        binding.timeChronometer.start();
+    }
+    private void pauseChronometer(){
+        binding.timeChronometer.stop();
+        pauseOffset = SystemClock.elapsedRealtime() - binding.timeChronometer.getBase();
+    }
+    private void resetChronometer(){
+        binding.timeChronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset = 0;
+    }
 
     private void getCurrentLocation() {
         // init the first location to avoid mistakes

@@ -50,10 +50,10 @@ public class Club extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club);
 
-
         binding = ActivityClubBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         etSearch = findViewById(R.id.etSearch);
 
         //GET PATH OF DB NAMED "USERS"

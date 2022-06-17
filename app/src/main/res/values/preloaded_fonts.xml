@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/merriweather</item>
+        <item>@font/sarabun</item>
+        <item>@font/sarabun_thin_italic</item>
+    </array>
+</resources>

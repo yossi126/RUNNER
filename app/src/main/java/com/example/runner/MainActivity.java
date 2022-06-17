@@ -9,20 +9,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.runner.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
 
-    Button signUpBtn;
-    Button loginBtn;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        signUpBtn=findViewById(R.id.sign_main_activity);
-        loginBtn=findViewById(R.id.login_main_activity);
-
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
+        binding.signMainActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //LONG  NEW INTENT
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        binding.loginMainActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // SHORT  NEW INTENT

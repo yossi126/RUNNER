@@ -85,8 +85,8 @@ public class Activity extends AppCompatActivity {
                             //Log.d(TAG, "onItemClick: "+ value.get("distance"));
                             //String d = value.get("distance");
                             Intent intent = new Intent(Activity.this, ShowRunActivity.class);
-                            Log.d(TAG, "onItemClick: "+ value.get("distance"));
-                            Log.d(TAG, "onItemClick: "+ value.get("timestamp"));
+                            //Log.d(TAG, "onItemClick: "+ value.get("distance"));
+                            //Log.d(TAG, "onItemClick: "+ value.get("timestamp"));
                             intent.putExtra("distance",value.get("distance").toString());
                             intent.putExtra("timestamp",value.get("timestamp").toString());
                             startActivity(intent);

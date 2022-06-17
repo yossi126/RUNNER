@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +52,7 @@ public class EndRunSummary extends AppCompatActivity {
     private Polyline polyline;
     private PolylineOptions polylineOptions;
     private Bundle extras;
-    private String time, distance;
+    private String chronometer, distance;
     private TextView distanceTv, timetv;
     //Button focusBtn, postBtn, deleteBtn;
 
@@ -87,27 +88,86 @@ public class EndRunSummary extends AppCompatActivity {
 
 
         if (extras != null) {
-            //time = extras.getString("time");
+            chronometer = extras.getString("chronometer");
             distance = extras.getString("distance");
             polylineOptions = (PolylineOptions) extras.get("polylines");
             points = polylineOptions.getPoints();
         }
         binding.distanceTv.setText(distance);
+        binding.timeTv.setText("Time: "+chronometer);
+        Log.d("current", "onCreate: "+getCurrentDate());
+        Log.d("current", "onCreate: "+getCurrentTime().substring(0,2));
+        Log.d("current", "onCreate: "+getCurrentDateTime());
         //tim.setText("Time:\n" + time);
         drawTrack();
+        //Log.d("chronometer", "onCreate: "+chronometer);
 
         // Create a new user with a first, middle, and last name
         Map<String, Object> run = new HashMap<>();
         run.put("distance", distance);
         run.put("points", points);
         run.put("timestamp", getCurrentDateTime());
-        //run.put("time", getCurrentTime());
-        //run.put("date", getCurrentDate());
+        run.put("chronometer", chronometer);
 
         saveToFireStore(run);
 
         testRead();
-        //Toast.makeText(EndRunSummary.this, firebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+
+        setSummaryTextView();
+    }
+
+    private void setSummaryTextView() {
+        StringBuilder firstLine = new StringBuilder();
+        StringBuilder secondLine = new StringBuilder();
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        String dayString = "";
+        switch (day) {
+            case Calendar.SUNDAY:
+                dayString = "Sunday";
+                break;
+            case Calendar.MONDAY:
+                dayString = "Monday";
+                break;
+            case Calendar.TUESDAY:
+                dayString = "Tuesday";
+                break;
+            case Calendar.WEDNESDAY:
+                dayString = "Wednesday";
+                break;
+            case Calendar.THURSDAY:
+                dayString = "Thursday";
+                break;
+            case Calendar.FRIDAY:
+                dayString = "Friday";
+                break;
+            case Calendar.SATURDAY:
+                dayString = "Saturday";
+                break;
+        }
+        String timesOfDay = "";
+        int first2 = Integer.parseInt(getCurrentTime().substring(0,2));
+
+        if(first2 > 0 && first2 < 5){
+            timesOfDay = "Midnight";
+           // binding.textView11.setText("Midnight");
+        }else if(first2 > 5 && first2 < 11){
+            timesOfDay = "Morning";
+           // binding.textView11.setText("Morning");
+        }else if(first2 > 11 && first2 < 18){
+            timesOfDay = "Afternoon";
+            //binding.textView11.setText("Afternoon");
+        }else{
+            timesOfDay = "Evening";
+            //binding.textView11.setText("Evening");
+        }
+
+        firstLine.append(dayString + " "+getCurrentTime().substring(0,5));
+        binding.firstLineTv.setText(firstLine);
+        secondLine.append(dayString + " "+timesOfDay+" Run");
+        binding.secondLineTv.setText(secondLine);
+
     }
 
     private void testRead() {
