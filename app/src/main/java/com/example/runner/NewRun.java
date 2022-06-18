@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.runner.data.Splits;
 import com.example.runner.databinding.ActivityNewRunBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -33,6 +35,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewRun extends AppCompatActivity implements View.OnClickListener{
@@ -77,6 +80,13 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
     private float lat1, lng1, lat2, lng2;
     private int length;
 
+    //splits
+    private ArrayList<Splits> splitsArrayList;
+    private String km;
+    private int totalKm;
+    private int kmToInt;
+    private int kmToran;
+
 
 
     @Override
@@ -106,6 +116,11 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
         distanceFar = 0;
         resetChronometer();
         getCurrentLocation();
+        //splits
+        totalKm = 0;
+        splitsArrayList = new ArrayList<>();
+        kmToInt=0;
+        kmToran=1;
 
 //        focus.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -128,17 +143,18 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
                     public void onMapReady(GoogleMap googleMap) {
                         getFarAway(polylineOptions);
                         double track = distanceFar / 1000;
-                        String text = String.valueOf(track);
+                        km = String.valueOf(track);
                         try {
-                            int dot = text.indexOf(".");
-                            text = text.substring(0, dot+3);
+                            int dot = km.indexOf(".");
+                            km = km.substring(0, dot+3);
                         }catch (Exception e){
-                            System.out.println(text);
+                            System.out.println(km);
                         }
-                        if (text.equals("0.0")){text = "0.00";}
+                        if (km.equals("0.0")){km = "0.00";}
                         //distanceText.setText("km: " + text);
-                        binding.distanceText.setText("km: " + text);
-
+                        binding.distanceText.setText("km: " + km);
+                        //Log.d("substring", "onMapReady: "+track);
+                        //calcSplits(km.substring(km.length()-1,1));
                         drawTrack();
                     }
                 });
@@ -152,6 +168,17 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
         //setting up stop button
         stopButton();
 
+    }
+
+    private void calcSplits(String km){
+        kmToInt = Integer.parseInt(km);
+        totalKm+=kmToInt;
+        if(totalKm > kmToran){
+            Splits splits = new Splits(binding.timeChronometer.getText().toString(),String.valueOf(totalKm/1));
+            splitsArrayList.add(splits);
+            kmToran++;
+            kmToInt = 0;
+        }
     }
 
 

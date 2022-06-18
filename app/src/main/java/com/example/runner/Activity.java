@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +13,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.example.runner.Adapter.ViewPagerAdapter;
 import com.example.runner.databinding.ActivityBinding;
 import com.example.runner.databinding.ActivityHomePageBinding;
+import com.example.runner.fragments.AllRunsFragment;
+import com.example.runner.fragments.StatisticsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -36,7 +43,7 @@ import java.util.ArrayList;
 public class Activity extends AppCompatActivity {
 
     private static final String TAG = "shukim";
-    ActivityBinding binding;
+    private ActivityBinding binding;
     //Firebase
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -48,6 +55,10 @@ public class Activity extends AppCompatActivity {
     private ArrayList<String> allRunArrayList;
     private ArrayAdapter<String> itemsAdapter;
 
+    //tabs
+    private TableLayout tableLayout;
+    private ViewPager2 viewPager2;
+    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,38 +77,60 @@ public class Activity extends AppCompatActivity {
         //GET ALL RUNS FB FIRESTORE
         allRunArrayList = new ArrayList<>();
         //getAllRunList();
-        getAllRunList();
+        //getAllRunList();
 
-        binding.allRunsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //tabs
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),getLifecycle());
+        viewPagerAdapter.addFragment(new AllRunsFragment(), "Runs List",R.drawable.ic_baseline_run_list_24);
+        viewPagerAdapter.addFragment(new StatisticsFragment(), "Statistics",R.drawable.ic_baseline_query_stats_24);
+        binding.viewPager2.setAdapter(viewPagerAdapter);
+
+        new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                //Log.d(TAG, "onItemClick: "+ allRunArrayList.get(position));
-                documentReference = firebaseFirestore.collection(firebaseUser.getUid()).document(allRunArrayList.get(position));
-                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Toast.makeText(Activity.this, "Error!", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "onItemClick: "+ error.toString());
-                            return;
-                        }
-                        if (value.exists()) {
-                            //Log.d(TAG, "onItemClick: "+ value.get("distance"));
-                            //String d = value.get("distance");
-                            Intent intent = new Intent(Activity.this, ShowRunActivity.class);
-                            //Log.d(TAG, "onItemClick: "+ value.get("distance"));
-                            //Log.d(TAG, "onItemClick: "+ value.get("timestamp"));
-                            intent.putExtra("distance",value.get("distance").toString());
-                            intent.putExtra("timestamp",value.get("timestamp").toString());
-                            startActivity(intent);
-
-                        }
-                    }
-                });
-
-
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(viewPagerAdapter.getPageTitle(position));
+                tab.setIcon(viewPagerAdapter.getDrawables(position));
             }
-        });
+
+        }).attach();
+        //binding.tabLayout.getTabAt(0).setText(viewPagerAdapter.getPageTitle(0));
+        //binding.tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_pause_24);
+        //binding.tabLayout.getTabAt(1).setText(viewPagerAdapter.getPageTitle(1));
+        //binding.tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_delete_24);
+
+
+
+
+//        binding.allRunsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                //Log.d(TAG, "onItemClick: "+ allRunArrayList.get(position));
+//                documentReference = firebaseFirestore.collection(firebaseUser.getUid()).document(allRunArrayList.get(position));
+//                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                        if (error != null) {
+//                            Toast.makeText(Activity.this, "Error!", Toast.LENGTH_SHORT).show();
+//                            //Log.d(TAG, "onItemClick: "+ error.toString());
+//                            return;
+//                        }
+//                        if (value.exists()) {
+//                            //Log.d(TAG, "onItemClick: "+ value.get("distance"));
+//                            //String d = value.get("distance");
+//                            Intent intent = new Intent(Activity.this, ShowRunActivity.class);
+//                            //Log.d(TAG, "onItemClick: "+ value.get("distance"));
+//                            //Log.d(TAG, "onItemClick: "+ value.get("timestamp"));
+//                            intent.putExtra("distance",value.get("distance").toString());
+//                            intent.putExtra("timestamp",value.get("timestamp").toString());
+//                            startActivity(intent);
+//
+//                        }
+//                    }
+//                });
+//
+//
+//            }
+//        });
 
 
         //SETTING TOP NAV BAR
@@ -107,31 +140,31 @@ public class Activity extends AppCompatActivity {
         bottomNavBar();
     }
 
-    private void getAllRunList() {
-        collectionReference.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //GET FIRESTORE DOCUMENT TITLE
-                                String runString = document.getId();
-                                //ADD TO RUN LIST
-                                allRunArrayList.add(runString);
-                                //Log.d(TAG, document.getId());
-                            }
-                            itemsAdapter = new ArrayAdapter<String>(Activity.this, android.R.layout.simple_list_item_1, allRunArrayList);
-                            binding.allRunsListView.setAdapter(itemsAdapter);
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }
+//    private void getAllRunList() {
+//        collectionReference.get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                //GET FIRESTORE DOCUMENT TITLE
+//                                String runString = document.getId();
+//                                //ADD TO RUN LIST
+//                                allRunArrayList.add(runString);
+//                                //Log.d(TAG, document.getId());
+//                            }
+//                            itemsAdapter = new ArrayAdapter<String>(Activity.this, android.R.layout.simple_list_item_1, allRunArrayList);
+//                            binding.allRunsListView.setAdapter(itemsAdapter);
+//                        } else {
+//                            Log.w(TAG, "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+//    }
 
     //SETTING BOTTOM NAV BAR
     private void bottomNavBar() {
-        binding.bottomNavBar.setSelectedItemId(R.id.home_page); // to keep the icon on
+        binding.bottomNavBar.setSelectedItemId(R.id.status); // to keep the icon on
         binding.bottomNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -182,5 +215,15 @@ public class Activity extends AppCompatActivity {
             }
         });
     }
+
+
+    // for smooth transitions between activity & for the botton-nav button to be pressed
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        binding.bottomNavBar.setSelectedItemId(R.id.status);
+        overridePendingTransition(0, 0);
+    }
+
 }
 

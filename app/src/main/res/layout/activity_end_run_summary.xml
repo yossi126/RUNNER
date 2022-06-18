@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/sarabun"
-        android:text="time"
+        android:text="01:23"
         android:textSize="45sp"
         app:layout_constraintEnd_toEndOf="@+id/distanceTv"
         app:layout_constraintStart_toStartOf="@+id/distanceTv"

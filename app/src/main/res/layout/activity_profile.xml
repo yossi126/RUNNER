@@ -24,7 +24,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/top_app_bar"
-            app:title="" />
+            app:title="RUNNER"
+            app:titleCentered="true"
+            />
     </com.google.android.material.appbar.AppBarLayout>
 
 
