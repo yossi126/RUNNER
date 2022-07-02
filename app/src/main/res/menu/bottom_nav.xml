@@ -18,10 +18,10 @@
         android:icon="@drawable/ic_baseline_run"
         android:title="Run" />
     <item
-        android:id="@+id/status"
+        android:id="@+id/activity"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_status"
-        android:title="Status" />
+        android:title="Activity" />
     <item
         android:id="@+id/profile"
         android:enabled="true"

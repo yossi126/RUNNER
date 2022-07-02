@@ -24,6 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Email"
+        app:startIconDrawable="@drawable/ic_baseline_email"
         app:layout_constraintBottom_toTopOf="@+id/loginEnterPassEt"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="@+id/loginEnterPassEt"

@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RUNNER">
         <activity
+            android:name=".utils.EventDay"
+            android:exported="false" />
+        <activity
             android:name=".Activity"
             android:exported="false" />
         <activity

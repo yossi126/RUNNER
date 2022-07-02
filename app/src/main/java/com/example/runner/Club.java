@@ -163,7 +163,7 @@ public class Club extends AppCompatActivity {
                         startActivity(intentR);
                         overridePendingTransition(0, 0);
                         break;
-                    case R.id.status:
+                    case R.id.activity:
                         Intent intentS = new Intent(Club.this,Activity.class);
                         startActivity(intentS);
                         overridePendingTransition(0, 0);

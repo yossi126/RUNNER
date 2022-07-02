@@ -3,40 +3,46 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable-anydpi/ic_baseline_email.xml" value="0.239" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable-mdpi/calendar_day_background.xml" value="0.1165" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_baseline_home.xml" value="0.2265" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_baseline_lock.xml" value="0.239" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_baseline_people.xml" value="0.2585" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_baseline_profile.xml" value="0.2585" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2425" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_club.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_event_day.xml" value="0.1" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_home_page.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_profile_edit.xml" value="0.264" />
-        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_register.xml" value="0.264" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_run.xml" value="0.1659111514052584" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/calendar_day_background.xml" value="0.1" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/content_profile.xml" value="0.24909420289855072" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/day_cell.xml" value="0.1659111514052584" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/fragment_first.xml" value="0.24909420289855072" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/user_list_item.xml" value="0.264" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/bottom_nav.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/edit_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/edit_profile_popup_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar_club.xml" value="0.20599409033347404" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar_endrunsummary.xml" value="0.11628901239846089" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar_new_run.xml" value="0.11628901239846089" />
         <entry key="..\:/Users/yossib/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.195382642154767" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_home.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2265" />
-        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_lock.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_online.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_run.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/round_button.xml" value="0.2265" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/round_button_new_run.xml" value="0.2265" />
-        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/font/architects_daughter.xml" value="0.3257802479692176" />
-        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/font/merriweather.xml" value="0.3257802479692176" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_club.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_end_run_summary.xml" value="0.33" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_home_page.xml" value="0.5" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_login.xml" value="0.3009833262077811" />
-        <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_main.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_new_run.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_profile.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/layout/activity_register.xml" value="0.3009833262077811" />

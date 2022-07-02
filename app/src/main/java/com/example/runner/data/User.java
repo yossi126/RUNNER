@@ -16,6 +16,7 @@ public class User {
     private String gender;
     private String profilePhoto;
     private String coverPhoto;
+    private String lastLogin;
     private boolean isConnected;
 
     public User() {
@@ -24,7 +25,7 @@ public class User {
     //NEW USER C'TOR
     public User(String name, String email, String pass, String uid, String date,
                 String height, String weight, String gender, String profilePhoto,
-                String coverPhoto) {
+                String coverPhoto, String lastLogin) {
         this.name = name;
         this.email = email;
         this.pass = pass;
@@ -35,6 +36,8 @@ public class User {
         this.gender = gender;
         this.profilePhoto = profilePhoto;
         this.coverPhoto = coverPhoto;
+        this.lastLogin = lastLogin;
+
     }
 
     public boolean getIsConnected() {
@@ -125,4 +128,11 @@ public class User {
         this.coverPhoto = coverPhoto;
     }
 
+    public String getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(String lastLogin) {
+        this.lastLogin = lastLogin;
+    }
 }
