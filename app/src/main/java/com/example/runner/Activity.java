@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,19 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
-import com.example.runner.Adapter.ViewPagerAdapter;
 import com.example.runner.databinding.ActivityBinding;
 import com.example.runner.databinding.ActivityHomePageBinding;
-import com.example.runner.fragments.AllRunsFragment;
-import com.example.runner.fragments.StatisticsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -43,7 +36,7 @@ import java.util.ArrayList;
 public class Activity extends AppCompatActivity {
 
     private static final String TAG = "shukim";
-    private ActivityBinding binding;
+    ActivityBinding binding;
     //Firebase
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -55,10 +48,6 @@ public class Activity extends AppCompatActivity {
     private ArrayList<String> allRunArrayList;
     private ArrayAdapter<String> itemsAdapter;
 
-    //tabs
-    private TableLayout tableLayout;
-    private ViewPager2 viewPager2;
-    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,28 +67,6 @@ public class Activity extends AppCompatActivity {
         allRunArrayList = new ArrayList<>();
         //getAllRunList();
         //getAllRunList();
-
-        //tabs
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),getLifecycle());
-        viewPagerAdapter.addFragment(new AllRunsFragment(), "Runs List",R.drawable.ic_baseline_run_list_24);
-        viewPagerAdapter.addFragment(new StatisticsFragment(), "Statistics",R.drawable.ic_baseline_query_stats_24);
-        binding.viewPager2.setAdapter(viewPagerAdapter);
-
-        new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(viewPagerAdapter.getPageTitle(position));
-                tab.setIcon(viewPagerAdapter.getDrawables(position));
-            }
-
-        }).attach();
-        //binding.tabLayout.getTabAt(0).setText(viewPagerAdapter.getPageTitle(0));
-        //binding.tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_pause_24);
-        //binding.tabLayout.getTabAt(1).setText(viewPagerAdapter.getPageTitle(1));
-        //binding.tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_delete_24);
-
-
-
 
 //        binding.allRunsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -164,7 +131,7 @@ public class Activity extends AppCompatActivity {
 
     //SETTING BOTTOM NAV BAR
     private void bottomNavBar() {
-        binding.bottomNavBar.setSelectedItemId(R.id.status); // to keep the icon on
+        binding.bottomNavBar.setSelectedItemId(R.id.activity); // to keep the icon on
         binding.bottomNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -184,7 +151,7 @@ public class Activity extends AppCompatActivity {
                         startActivity(intentR);
                         overridePendingTransition(0, 0);
                         break;
-                    case R.id.status:
+                    case R.id.activity:
                         break;
                     case R.id.profile:
                         Intent intent = new Intent(Activity.this, Profile.class);
@@ -215,15 +182,5 @@ public class Activity extends AppCompatActivity {
             }
         });
     }
-
-
-    // for smooth transitions between activity & for the botton-nav button to be pressed
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        binding.bottomNavBar.setSelectedItemId(R.id.status);
-        overridePendingTransition(0, 0);
-    }
-
 }
 

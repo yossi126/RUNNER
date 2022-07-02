@@ -128,7 +128,7 @@ public class Run extends AppCompatActivity implements OnMapReadyCallback{
                         break;
                     case R.id.run:
                         break;
-                    case R.id.status:
+                    case R.id.activity:
                         Intent intentS = new Intent(Run.this, Activity.class);
                         startActivity(intentS);
                         overridePendingTransition(0, 0);

@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
 
         android:hint="Name"
+        app:startIconDrawable="@drawable/ic_baseline_people"
         app:layout_constraintBottom_toTopOf="@+id/signEnterEmailEt"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="1.0"
@@ -62,6 +63,7 @@
 
         android:layout_marginTop="10dp"
         android:hint="Email"
+        app:startIconDrawable="@drawable/ic_baseline_email"
         app:layout_constraintBottom_toTopOf="@+id/signEnterPassEt"
         app:layout_constraintEnd_toEndOf="@+id/signEnterNameEt"
         app:layout_constraintHorizontal_bias="0.0"
@@ -108,7 +110,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signConfirmPassEt"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="288dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_reg_register"

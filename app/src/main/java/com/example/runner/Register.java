@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Register extends AppCompatActivity {
 
@@ -53,6 +55,7 @@ public class Register extends AppCompatActivity {
         String height = " ";
         String weight= " ";
         String gender=" ";
+        String lastLogin = HomePage.getCurrentDateTime();
         String profilePhoto="1";
         String coverPhoto = "1";
 
@@ -121,7 +124,7 @@ public class Register extends AppCompatActivity {
 
                                     String uid = firebaseAuth.getCurrentUser().getUid();
                                     User newUser = new User (name,email,passEncrypt,uid,date,height,weight,gender,
-                                            profilePhoto,coverPhoto);
+                                            profilePhoto,coverPhoto,lastLogin);
 
                                     FirebaseDatabase.getInstance().getReference("users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
