@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,7 +76,7 @@ public class Activity extends AppCompatActivity {
         collectionReference = firebaseFirestore.collection(firebaseUser.getUid());
 
         //GET ALL RUNS FB FIRESTORE
-        allRunArrayList = new ArrayList<>();
+        //allRunArrayList = new ArrayList<>();
         //getAllRunList();
         //getAllRunList();
 
@@ -223,6 +224,20 @@ public class Activity extends AppCompatActivity {
         super.onRestart();
         binding.bottomNavBar.setSelectedItemId(R.id.status);
         overridePendingTransition(0, 0);
+    }
+
+
+    ///???????????????????????????
+    @Override
+    public void onBackPressed() {
+        if (binding.viewPager2.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            binding.viewPager2.setCurrentItem(binding.viewPager2.getCurrentItem() - 1);
+        }
     }
 
 }

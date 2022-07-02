@@ -6,11 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ShowRunActivity">
 
-    <TextView
-        android:id="@+id/textView5555"
-        android:layout_width="261dp"
-        android:layout_height="253dp"
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="402dp"
+        android:layout_height="357dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <fragment
+            android:id="@+id/google_map_show_run"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

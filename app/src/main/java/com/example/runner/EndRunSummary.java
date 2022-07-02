@@ -42,7 +42,7 @@ import java.util.Map;
 
 public class EndRunSummary extends AppCompatActivity {
 
-    //
+    //binding
     private ActivityEndRunSummaryBinding binding;
 
     //Views
