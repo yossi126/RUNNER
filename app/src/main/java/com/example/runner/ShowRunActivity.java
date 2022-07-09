@@ -1,34 +1,30 @@
 package com.example.runner;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.runner.databinding.ActivityBinding;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.example.runner.data.Splits;
 import com.example.runner.databinding.ActivityShowRunBinding;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -48,7 +44,7 @@ public class ShowRunActivity extends AppCompatActivity {
     //binding
     private ActivityShowRunBinding binding;
     //var
-    private String position,chronometer,distance,timestamp;
+    private String position, chronometer, distance, timestamp;
     private Bundle extras;
     //map
     private List<LatLng> points;
@@ -81,6 +77,9 @@ public class ShowRunActivity extends AppCompatActivity {
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map_show_run);
         polylineOptions = new PolylineOptions();
 
+        //setting up top nav bar
+        topNavBar();
+
         extras = getIntent().getExtras();
         if (extras != null) {
             position = extras.getString("position");
@@ -91,46 +90,98 @@ public class ShowRunActivity extends AppCompatActivity {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                if (value.exists()) {
-//                    points = (List<LatLng>) value.get("points");
-//                }
-                // references for the points in firebase
-                final List<HashMap<String, Double>> points = (List<HashMap<String, Double>>) value.get("points");
-                // array list of all the latitude and longitude
-                final ArrayList<LatLng> latLngs = new ArrayList<>();
+                if (value.exists()) {
+                    //points = (List<LatLng>) value.get("points");
 
-                // looping the points in the firebase into the polylineOptions
-                for (HashMap<String, Double> point : points) {
-                    // getting the points from firebase into the polylineOptions again
-                    polylineOptions.add(new LatLng(point.get("latitude"), point.get("longitude")));
-                    // for zooming the map
-                    latLngs.add(new LatLng(point.get("latitude"), point.get("longitude")));
+                    // getting the points for drawing the map -- references for the points in firebase
+                    final List<HashMap<String, Double>> points = (List<HashMap<String, Double>>) value.get("points");
+                    // array list of all the latitude and longitude
+                    final ArrayList<LatLng> latLngs = new ArrayList<>();
+
+                    // looping the points in the firebase into the polylineOptions
+
+                    for (HashMap<String, Double> point : points) {
+                        // getting the points from firebase into the polylineOptions again
+                        polylineOptions.add(new LatLng(point.get("latitude"), point.get("longitude")));
+                        // for zooming the map
+                        latLngs.add(new LatLng(point.get("latitude"), point.get("longitude")));
+                    }
+
+
+                    // if the latLngs is empty the app will crash. so if the user didn't start the run and have no points it will show a toast message
+                    try {
+                        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                            final LatLng lastLatLng = latLngs.get(latLngs.size() / 2);
+
+                            @Override
+                            public void onMapReady(@NonNull GoogleMap googleMap) {
+                                googleMap.clear();
+                                polyline = googleMap.addPolyline(polylineOptions);
+                                //MarkerOptions options = new MarkerOptions().position(lastLatLng);
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
+                                //googleMap.addMarker(options);
+                            }
+                        });
+                    } catch (Exception e) {
+                        Toast.makeText(ShowRunActivity.this, "there is no road for this run", Toast.LENGTH_LONG).show();
+                    }
+
+                    // getting the splits
+                    final List<HashMap<String, Splits>> splits = (List<HashMap<String, Splits>>) value.get("splits");
+                    for(HashMap<String, Splits> split : splits){
+                        Log.d(TAG, "onEvent: "+split.get("km")+" "+split.get("time"));
+                    }
+
                 }
-
-                // if the latLngs is empty the app will crash. so if the user didn't start the run and have no points it will show a toast message
-                try {
-                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                        final LatLng lastLatLng = latLngs.get(latLngs.size() / 2);
-
-                        @Override
-                        public void onMapReady(@NonNull GoogleMap googleMap) {
-                            googleMap.clear();
-                            polyline = googleMap.addPolyline(polylineOptions);
-                            //MarkerOptions options = new MarkerOptions().position(lastLatLng);
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
-                            //googleMap.addMarker(options);
-                        }
-                    });
-                }
-                catch(Exception e) {
-                    Toast.makeText(ShowRunActivity.this,"there is no road for this run",Toast.LENGTH_LONG).show();
-                }
-
-
-
             }
         });
 
+    }
+
+    private void topNavBar() {
+        binding.topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        //when pressing delete alert dialog will show up
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ShowRunActivity.this);
+                        builder.setTitle("Delete this run?");
+                        //builder.setMessage("bla bla");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deleteRun();
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    //delete run method
+    private void deleteRun() {
+        documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(ShowRunActivity.this, "run is deleted", Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(new Intent(ShowRunActivity.this, Activity.class));
+                }
+            }
+        });
     }
 
     @Override

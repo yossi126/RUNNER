@@ -1,8 +1,5 @@
 package com.example.runner;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
@@ -12,11 +9,11 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runner.data.Splits;
 import com.example.runner.databinding.ActivityNewRunBinding;
@@ -37,41 +34,25 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class NewRun extends AppCompatActivity implements View.OnClickListener{
-
-    /*
-    shortcuts
-    All Methods Collapse -> CTRL + SHIFT + -
-    All Methods Expand -> CTRL + SHIFT + +
-    Ctrl+Shift+Alt+L
-    */
-
+public class NewRun extends AppCompatActivity implements View.OnClickListener {
     //binding
-    ActivityNewRunBinding binding;
-
-    // Views
-    //private TextView distanceText;
-    //private Chronometer chronometer;
-    private Button startStop, endBtn, focus;
+    private ActivityNewRunBinding binding;
     // my edit
     private ImageButton startPauseButton;
-
-
     //fragment vars
     private GoogleMap map;
     private Polyline polyline;
     private PolylineOptions polylineOptions;
-
     // current location
     private SupportMapFragment supportMapFragment;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private Location currentLocation;
     private Looper looper;
-
     // Vars
-
     //Chronometer vars
     private boolean stopStart;
     private long pauseOffset;
@@ -81,12 +62,19 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
     private int length;
 
     //splits
+    // stroe the splits objects
     private ArrayList<Splits> splitsArrayList;
+    //global var to store the km
     private String km;
-    private int totalKm;
-    private int kmToInt;
+    // iteration for counting the km for split
     private int kmToran;
 
+    //timer for splits
+    private Timer timer;
+    private TimerTask timerTask;
+    private Double time = 0.0;
+    private boolean timerStarted;
+    private String currentSplit;
 
 
     @Override
@@ -98,29 +86,24 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
         setContentView(view);
 
         // Initialize:
-        supportMapFragment = (SupportMapFragment)  getSupportFragmentManager().findFragmentById(R.id.google_map);
+        supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         polylineOptions = new PolylineOptions();
         //my edit
         startPauseButton = findViewById(R.id.imageButtonStartPause);
-        //startStop = findViewById(R.id.startStop);
-        //focus = findViewById(R.id.focus_btn_nd);
-        //startStop.setOnClickListener(this);
-        //endBtn = findViewById(R.id.endBtn);
-        //endBtn.setOnLongClickListener(this);
-        //endBtn.setOnClickListener(this);
-        //opened = false;
-        //chronometer = findViewById(R.id.timeChronometer);
-        //distanceText = findViewById(R.id.distanceText);
         pauseOffset = 0;
         distanceFar = 0;
         resetChronometer();
         getCurrentLocation();
         //splits
-        totalKm = 0;
         splitsArrayList = new ArrayList<>();
-        kmToInt=0;
-        kmToran=1;
+        kmToran = 1;
+
+        //timer
+        timer = new Timer();
+        currentSplit = "";
+        timerStarted = false;
+
 
 //        focus.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -143,18 +126,18 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
                     public void onMapReady(GoogleMap googleMap) {
                         getFarAway(polylineOptions);
                         double track = distanceFar / 1000;
+                        calcSplits(track);
                         km = String.valueOf(track);
                         try {
                             int dot = km.indexOf(".");
-                            km = km.substring(0, dot+3);
-                        }catch (Exception e){
+                            km = km.substring(0, dot + 3);
+                        } catch (Exception e) {
                             System.out.println(km);
                         }
-                        if (km.equals("0.0")){km = "0.00";}
-                        //distanceText.setText("km: " + text);
+                        if (km.equals("0.0")) {
+                            km = "0.00";
+                        }
                         binding.distanceText.setText("km: " + km);
-                        //Log.d("substring", "onMapReady: "+track);
-                        //calcSplits(km.substring(km.length()-1,1));
                         drawTrack();
                     }
                 });
@@ -162,22 +145,95 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
         };
 
         stopStart = true;
-        startChronometer();
         requestLocation();
+        // as the activity start both chronometer and the split timer will be activated
+        startSplitTimer();
+        startChronometer();
 
         //setting up stop button
         stopButton();
 
     }
 
-    private void calcSplits(String km){
-        kmToInt = Integer.parseInt(km);
-        totalKm+=kmToInt;
-        if(totalKm > kmToran){
-            Splits splits = new Splits(binding.timeChronometer.getText().toString(),String.valueOf(totalKm/1));
+    /* 
+             ----------------------------------   timer for splits methods -----------------------------------------------------
+     
+     
+     */
+
+    public void ResetSplitTimer() {
+        if (timerTask != null) {
+            timerTask.cancel();
+            time = 0.0;
+            timerStarted = false;
+        }
+    }
+
+    public void StartStopSplitTimer() {
+        if (timerStarted == true) {
+            timerStarted = false;
+            startSplitTimer();
+        } else if (timerStarted == false) {
+            timerStarted = true;
+            timerTask.cancel();
+        }
+    }
+
+    private void startSplitTimer() {
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+                Log.d("splitt", "run: "+time);
+//                runOnUiThread(new Runnable()
+//                {
+//                    @Override
+//                    public void run()
+//                    {
+//
+//                        Log.d("splitt", "run: "+time);
+//                    }
+//                });
+//                Log.d("run?", "run: "+time);
+            }
+
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
+
+    private String getSplitTimerText() {
+        int rounded = (int) Math.round(time);
+
+        int seconds = ((rounded % 86400) % 3600) % 60;
+        int minutes = ((rounded % 86400) % 3600) / 60;
+        //int hours = ((rounded % 86400) / 3600);
+        return formatTime(seconds, minutes);
+    }
+
+    private String formatTime(int seconds, int minutes) {
+        return String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
+    }
+
+
+    /* 
+                ------------------------------------ end - timer for splits methods -------------------------------------------------------
+     
+     
+     */
+
+    // method for calculate the splits of each km 
+    private void calcSplits(double track) {
+        if (track > kmToran) {
+            currentSplit = getSplitTimerText();
+            //Log.d("timer", "calcSplits: "+currentSplit);
+            ResetSplitTimer();
+            //create split obj
+            Splits splits = new Splits(currentSplit, (int) track);
             splitsArrayList.add(splits);
+            //Log.d("yossi", "calcSplits: "+splits.toString());
             kmToran++;
-            kmToInt = 0;
+            currentSplit = "";
+            startSplitTimer();
         }
     }
 
@@ -187,11 +243,15 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
             @Override
             public boolean onLongClick(View view) {
                 Intent intent = new Intent(NewRun.this, EndRunSummary.class);
-                intent.putExtra("chronometer",  binding.timeChronometer.getText());
+                //passing all the values to the next activity for saving it in firebase
+                intent.putExtra("chronometer", binding.timeChronometer.getText());
                 intent.putExtra("distance", binding.distanceText.getText().toString());
                 intent.putExtra("polylines", polylineOptions);
+                intent.putExtra("splits", splitsArrayList);
                 startActivity(intent);
                 finish();
+                // ending the split timer 
+                timerTask.cancel();
                 return false;
             }
         });
@@ -212,7 +272,7 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(final Location location) {
-                if (location != null){
+                if (location != null) {
                     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                         @SuppressLint("MissingPermission")
                         @Override
@@ -235,35 +295,39 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.imageButtonStartPause){
+        if (v.getId() == R.id.imageButtonStartPause) {
             if (!stopStart) {
                 stopStart = true;
                 startChronometer();
                 requestLocation();
                 startPauseButton.setImageResource(R.drawable.ic_baseline_pause_24);
+                StartStopSplitTimer();
             } else {
                 stopStart = false;
                 pauseChronometer();
                 fusedLocationProviderClient.removeLocationUpdates(locationCallback);
                 startPauseButton.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                StartStopSplitTimer();
+
             }
-        }
-        else if (v.getId() == R.id.imageButtonStop){
+        } else if (v.getId() == R.id.imageButtonStop) {
             Toast.makeText(this, "Ending run with long click", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-
-    private void startChronometer(){
+    // chronometer
+    private void startChronometer() {
         binding.timeChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
         binding.timeChronometer.start();
     }
-    private void pauseChronometer(){
+
+    private void pauseChronometer() {
         binding.timeChronometer.stop();
         pauseOffset = SystemClock.elapsedRealtime() - binding.timeChronometer.getBase();
     }
-    private void resetChronometer(){
+
+    private void resetChronometer() {
         binding.timeChronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0;
     }
@@ -273,28 +337,28 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
         @SuppressLint("MissingPermission") Task<Location> task = fusedLocationProviderClient.getLastLocation();
     }
 
-    public float distance (float lat_a, float lng_a, float lat_b, float lng_b ) {
+    public float distance(float lat_a, float lng_a, float lat_b, float lng_b) {
         // calculate the distance between 2 points
         double earthRadius = 3958.75;
-        double latDiff = Math.toRadians(lat_b-lat_a);
-        double lngDiff = Math.toRadians(lng_b-lng_a);
-        double a = Math.sin(latDiff /2) * Math.sin(latDiff /2) +
+        double latDiff = Math.toRadians(lat_b - lat_a);
+        double lngDiff = Math.toRadians(lng_b - lng_a);
+        double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
                 Math.cos(Math.toRadians(lat_a)) * Math.cos(Math.toRadians(lat_b)) *
-                        Math.sin(lngDiff /2) * Math.sin(lngDiff /2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        Math.sin(lngDiff / 2) * Math.sin(lngDiff / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = earthRadius * c;
         int meterConversion = 1609;
         return new Float(distance * meterConversion).floatValue();
     }
 
-    public void getFarAway(PolylineOptions road){
+    public void getFarAway(PolylineOptions road) {
         // calculating user's run by list of points
         List<LatLng> locations = road.getPoints();
         Object[] points = locations.toArray();
         length = points.length - 1;
-        if (length > 0 && points[length-1] instanceof LatLng && points[length] instanceof LatLng){
+        if (length > 0 && points[length - 1] instanceof LatLng && points[length] instanceof LatLng) {
             LatLng latlng1, latLng2;
-            latlng1 = (LatLng) points[length-1];
+            latlng1 = (LatLng) points[length - 1];
             latLng2 = (LatLng) points[length];
             lat1 = (float) latlng1.latitude;
             lng1 = (float) latlng1.longitude;
@@ -302,5 +366,12 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener{
             lng2 = (float) latLng2.longitude;
             distanceFar += distance(lat1, lng1, lat2, lng2);
         }
+    }
+
+    // cancel the split timer on back press
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        timerTask.cancel();
     }
 }
