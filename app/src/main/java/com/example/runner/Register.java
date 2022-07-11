@@ -3,11 +3,13 @@ package com.example.runner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -70,6 +72,7 @@ public class Register extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(Register.this, Login.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -77,6 +80,7 @@ public class Register extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                closeKeyBoard();
                 progressBar.setVisibility(View.VISIBLE);
                 String name=editName.getText().toString().trim();
                 String email=editEmail.getText().toString().trim();
@@ -158,6 +162,15 @@ public class Register extends AppCompatActivity {
         });
 
 
+    }
+
+    private void closeKeyBoard() {
+        View view = this.getCurrentFocus();
+        if (view != null)
+        {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     //STORE PASS WITH HASH SHA256- secure one-way hash-cannot be decrypt

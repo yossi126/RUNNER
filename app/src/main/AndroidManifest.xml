@@ -54,6 +54,7 @@
             android:exported="false" />
         <activity
             android:name=".Club"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
             android:exported="false" />
         <activity
             android:name=".HomePage"
