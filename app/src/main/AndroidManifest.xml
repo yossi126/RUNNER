@@ -17,9 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RUNNER">
         <activity
-            android:name=".utils.EventDay"
-            android:exported="false" />
-        <activity
             android:name=".Activity"
             android:exported="false" />
         <activity
@@ -57,6 +54,7 @@
             android:exported="false" />
         <activity
             android:name=".Club"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
             android:exported="false" />
         <activity
             android:name=".HomePage"

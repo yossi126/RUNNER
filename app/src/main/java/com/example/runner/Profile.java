@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -402,14 +403,12 @@ public class Profile extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-
                     if (result != null) {
                         //PROFILE OR COVER
                         if (profileOrCoverPhoto.equals("profile"))
                             binding.profilePhoto.setImageURI(imageUri);
                         else
                             binding.coverPhoto.setImageURI(imageUri);
-
                         uploadImage();
                     } else
                         Toast.makeText(Profile.this, "Error Loading Camera Photo ", Toast.LENGTH_SHORT).show();

@@ -1,59 +1,47 @@
 package com.example.runner;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.applandeo.materialcalendarview.CalendarUtils;
-import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.runner.databinding.ActivityHomePageBinding;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.EventListener;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HomePage extends AppCompatActivity {
 
-    private static final String TAG = "shukim";
     ActivityHomePageBinding binding;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private String userID;
     private String lastLogin;
     private List<Calendar> calendars;
-    //MaterialCardView calendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +64,7 @@ public class HomePage extends AppCompatActivity {
         //CREATE CALENDAR LIST
         calendars = new ArrayList<>();
 
-        //HIGHLIGHT RUNNINGG DATES IN CALENDAR
+        //HIGHLIGHT RUNNING DATES IN CALENDAR
         db.collection(firebaseUser.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -88,20 +76,21 @@ public class HomePage extends AppCompatActivity {
                                 String dateString = document.getId();
                                 //HIGHLIGHT DATES CALENDAR
                                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                                Calendar cal  = Calendar.getInstance();
+                                Calendar cal = Calendar.getInstance();
                                 try {
                                     cal.setTime(df.parse(dateString));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                                 calendars.add(cal);
-                                binding.calendarView.setHighlightedDays(calendars);
+                               binding.calendarView.setHighlightedDays(calendars);
                             }
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.w("logw", "Error getting documents.", task.getException());
                         }
                     }
                 });
+
 
         //GET USER LAST RUN + ASSIGN IN CARDVIEW
         db.collection(firebaseUser.getUid()).orderBy("timestamp", Query.Direction.DESCENDING).limit(1)
@@ -111,16 +100,16 @@ public class HomePage extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.d("logd", document.getId() + " => " + document.getData());
                                 String t = document.getData().get("timestamp").toString();
                                 String d = document.getData().get("distance").toString();
                                 String c = document.getData().get("chronometer").toString();
                                 binding.timestamp.setText("Time : " + t);
-                                binding.distance.setText("Distance " + d);
+                                binding.distance.setText("Distance in " + d);
                                 binding.chronometer.setText("Running Time (in min) :" + c);
                             }
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.w("logw", "Error getting documents.", task.getException());
                         }
                     }
                 });
@@ -133,7 +122,6 @@ public class HomePage extends AppCompatActivity {
         bottomNavBar();
 
     }
-
 
     //SETTING BOTTOM NAV BAR
     private void bottomNavBar() {
@@ -199,7 +187,6 @@ public class HomePage extends AppCompatActivity {
         overridePendingTransition(0, 0);
     }
 
-
     //GET PARAMETER FOR LAST LOGIN
     public static String getCurrentDateTime() {
         Date dNow = new Date();
@@ -207,5 +194,6 @@ public class HomePage extends AppCompatActivity {
         String datetime = ft.format(dNow);
         return datetime;
     }
+
 
 }

@@ -101,7 +101,6 @@ public class Club extends AppCompatActivity {
                         userArrayList.add(user);
                     }
                 }
-
                 clubAdapterRecyclerView = new ClubAdapterRecyclerView(userArrayList);
                 binding.clubRV.setHasFixedSize(true);
                 binding.clubRV.setLayoutManager(new LinearLayoutManager(Club.this));
