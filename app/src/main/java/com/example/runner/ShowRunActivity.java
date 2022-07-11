@@ -13,7 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.runner.Adapter.SplitsRvAdapter;
 import com.example.runner.data.Splits;
 import com.example.runner.databinding.ActivityShowRunBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +35,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,13 +55,14 @@ public class ShowRunActivity extends AppCompatActivity {
     private GoogleMap map;
     private Polyline polyline;
     private PolylineOptions polylineOptions;
-
     //Firebase
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference documentReference;
     private CollectionReference collectionReference;
+    //splits table
+    private SplitsRvAdapter splitsRvAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +84,16 @@ public class ShowRunActivity extends AppCompatActivity {
         //setting up top nav bar
         topNavBar();
 
+
         extras = getIntent().getExtras();
         if (extras != null) {
+            // for the position of the run in the fire-store
             position = extras.getString("position");
             documentReference = collectionReference.document(position);
 
         }
 
+        // in this snapshot we getting all in info about the run an putting it in the ui
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -99,7 +106,6 @@ public class ShowRunActivity extends AppCompatActivity {
                     final ArrayList<LatLng> latLngs = new ArrayList<>();
 
                     // looping the points in the firebase into the polylineOptions
-
                     for (HashMap<String, Double> point : points) {
                         // getting the points from firebase into the polylineOptions again
                         polylineOptions.add(new LatLng(point.get("latitude"), point.get("longitude")));
@@ -107,12 +113,10 @@ public class ShowRunActivity extends AppCompatActivity {
                         latLngs.add(new LatLng(point.get("latitude"), point.get("longitude")));
                     }
 
-
                     // if the latLngs is empty the app will crash. so if the user didn't start the run and have no points it will show a toast message
                     try {
                         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                             final LatLng lastLatLng = latLngs.get(latLngs.size() / 2);
-
                             @Override
                             public void onMapReady(@NonNull GoogleMap googleMap) {
                                 googleMap.clear();
@@ -127,15 +131,33 @@ public class ShowRunActivity extends AppCompatActivity {
                     }
 
                     // getting the splits
-                    final List<HashMap<String, Splits>> splits = (List<HashMap<String, Splits>>) value.get("splits");
-                    for(HashMap<String, Splits> split : splits){
-                        Log.d(TAG, "onEvent: "+split.get("km")+" "+split.get("time"));
-                    }
+                    final List<HashMap<String, Object>> splits = (List<HashMap<String, Object>>) value.get("splits");
+                    final ArrayList<Splits> splitsArrayList = new ArrayList<>();
+                    for(HashMap<String, Object> split : splits){
+                        //create split object and store it in the array list
+                        String time = (String) split.get("time");
+                        int km = ((Long)split.get("km")).intValue();
+                        splitsArrayList.add(new Splits(time,km));
 
+                    }
+                    // set up the RecyclerView and the Adapter to organize the table
+                    setUpRecyclerView(splitsArrayList);
+
+                    chronometer = (String) value.get("chronometer");
+                    distance = (String) value.get("distance");
+                    timestamp = (String) value.get("timestamp");
+                    Log.d(TAG, "onEvent: "+chronometer+" " +distance+" "+timestamp);
                 }
             }
         });
 
+    }
+
+    private void setUpRecyclerView(ArrayList<Splits> splitsArrayList){
+        binding.tableRecyclerView.hasFixedSize();
+        binding.tableRecyclerView.setLayoutManager(new LinearLayoutManager(ShowRunActivity.this));
+        splitsRvAdapter = new SplitsRvAdapter(ShowRunActivity.this,splitsArrayList);
+        binding.tableRecyclerView.setAdapter(splitsRvAdapter);
     }
 
     private void topNavBar() {
@@ -190,8 +212,4 @@ public class ShowRunActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 }

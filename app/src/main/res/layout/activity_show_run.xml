@@ -12,6 +12,53 @@
         android:layout_height="wrap_content"
         tools:context=".ShowRunActivity">
 
+        <LinearLayout
+            android:layout_width="235dp"
+            android:layout_height="284dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="1,2">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_column="1"
+                        android:padding="10dp"
+                        android:text="Km"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        />
+
+                    <TextView
+                        android:layout_column="1"
+                        android:padding="10dp"
+                        android:text="Pace"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        />
+                </TableRow>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tableRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </TableLayout>
+
+
+
+        </LinearLayout>
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
