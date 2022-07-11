@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.runner.data.Splits;
 import com.example.runner.databinding.ActivityEndRunSummaryBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,7 +46,6 @@ public class EndRunSummary extends AppCompatActivity {
 
     //binding
     private ActivityEndRunSummaryBinding binding;
-
     //Views
     private SupportMapFragment supportMapFragment;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -54,11 +55,9 @@ public class EndRunSummary extends AppCompatActivity {
     private Bundle extras;
     private String chronometer, distance;
     private TextView distanceTv, timetv;
-    //Button focusBtn, postBtn, deleteBtn;
-
     //Variables:
     private List<LatLng> points;
-
+    private ArrayList<Splits> splitsArrayList;
     //Firebase
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -92,26 +91,25 @@ public class EndRunSummary extends AppCompatActivity {
             distance = extras.getString("distance");
             polylineOptions = (PolylineOptions) extras.get("polylines");
             points = polylineOptions.getPoints();
+            splitsArrayList = (ArrayList<Splits>) extras.get("splits");
         }
+        Log.d("current", "onCreate: "+splitsArrayList.toString());
         binding.distanceTv.setText(distance);
         binding.timeTv.setText("Time: "+chronometer);
-        Log.d("current", "onCreate: "+getCurrentDate());
-        Log.d("current", "onCreate: "+getCurrentTime().substring(0,2));
-        Log.d("current", "onCreate: "+getCurrentDateTime());
-        //tim.setText("Time:\n" + time);
         drawTrack();
-        //Log.d("chronometer", "onCreate: "+chronometer);
 
-        // Create a new user with a first, middle, and last name
+
+        // Create a new run object and store it in firebase
         Map<String, Object> run = new HashMap<>();
         run.put("distance", distance);
         run.put("points", points);
         run.put("timestamp", getCurrentDateTime());
         run.put("chronometer", chronometer);
+        run.put("splits", splitsArrayList);
 
         saveToFireStore(run);
 
-        testRead();
+        //testRead();
 
         setSummaryTextView();
     }
@@ -147,20 +145,17 @@ public class EndRunSummary extends AppCompatActivity {
                 break;
         }
         String timesOfDay = "";
+        // the first 2 numbers of the time - for example 08:50:32, it will take the 08 and call it morning
         int first2 = Integer.parseInt(getCurrentTime().substring(0,2));
 
         if(first2 > 0 && first2 < 5){
             timesOfDay = "Midnight";
-           // binding.textView11.setText("Midnight");
         }else if(first2 > 5 && first2 < 11){
             timesOfDay = "Morning";
-           // binding.textView11.setText("Morning");
         }else if(first2 > 11 && first2 < 18){
             timesOfDay = "Afternoon";
-            //binding.textView11.setText("Afternoon");
         }else{
             timesOfDay = "Evening";
-            //binding.textView11.setText("Evening");
         }
 
         firstLine.append(dayString + " "+getCurrentTime().substring(0,5));
@@ -170,24 +165,24 @@ public class EndRunSummary extends AppCompatActivity {
 
     }
 
-    private void testRead() {
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Toast.makeText(EndRunSummary.this, "Error!", Toast.LENGTH_SHORT).show();
-                    Log.d("EndRunSummary", error.toString());
-                    return;
-                }
-
-                if (value.exists()) {
-                    //Log.d("EndRunSummary1", value.getString("date"));
-                    //Log.d("EndRunSummary2", value.toString());
-                }
-            }
-        });
-
-    }
+//    private void testRead() {
+//        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                if (error != null) {
+//                    Toast.makeText(EndRunSummary.this, "Error!", Toast.LENGTH_SHORT).show();
+//                    Log.d("EndRunSummary", error.toString());
+//                    return;
+//                }
+//
+//                if (value.exists()) {
+//                    //Log.d("EndRunSummary1", value.getString("date"));
+//                    //Log.d("EndRunSummary2", value.toString());
+//                }
+//            }
+//        });
+//
+//    }
 
     private void saveToFireStore(Map<String, Object> run) {
         documentReference.set(run).addOnSuccessListener(new OnSuccessListener<Void>() {

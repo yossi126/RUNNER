@@ -1,11 +1,13 @@
 package com.example.runner.data;
 
-public class Splits {
+import java.io.Serializable;
+
+public class Splits implements Serializable {
 
     private String time;
-    private String km;
+    private int km;
 
-    public Splits(String time, String km) {
+    public Splits(String time, int km) {
         this.time = time;
         this.km = km;
     }
@@ -18,11 +20,11 @@ public class Splits {
         this.time = time;
     }
 
-    public String getKm() {
+    public int getKm() {
         return km;
     }
 
-    public void setKm(String km) {
+    public void setKm(int km) {
         this.km = km;
     }
 
