@@ -53,8 +53,9 @@ public class EndRunSummary extends AppCompatActivity {
     private Polyline polyline;
     private PolylineOptions polylineOptions;
     private Bundle extras;
-    private String chronometer, distance;
+    private String chronometer, distance, avgPace;
     private TextView distanceTv, timetv;
+    private String timesOfDay;
     //Variables:
     private List<LatLng> points;
     private ArrayList<Splits> splitsArrayList;
@@ -98,6 +99,9 @@ public class EndRunSummary extends AppCompatActivity {
         binding.timeTv.setText("Time: "+chronometer);
         drawTrack();
 
+        setSummaryTextView();
+        avgPace = calculateAverageOfTime(splitsArrayList);
+        //Log.d("avgPace", "onCreate: "+avgPace);
 
         // Create a new run object and store it in firebase
         Map<String, Object> run = new HashMap<>();
@@ -106,12 +110,29 @@ public class EndRunSummary extends AppCompatActivity {
         run.put("timestamp", getCurrentDateTime());
         run.put("chronometer", chronometer);
         run.put("splits", splitsArrayList);
+        run.put("timesOfDay", timesOfDay);
+        run.put("avgPace", avgPace);
 
         saveToFireStore(run);
 
         //testRead();
 
-        setSummaryTextView();
+
+    }
+
+        public static String calculateAverageOfTime(ArrayList<Splits> splitsArrayList) {
+            long seconds = 0;
+            for(Splits split : splitsArrayList) {
+                String[] mmss = split.getTime().split(":");
+                seconds += Integer.valueOf(mmss[0]) * 60;
+                seconds += Integer.valueOf(mmss[1]);
+            }
+            seconds /= splitsArrayList.size();
+            long mm = (seconds / 60) % 60;
+            long ss = seconds % 60;
+
+            return String.format("%02d:%02d",mm,ss);
+
     }
 
     private void setSummaryTextView() {
@@ -144,25 +165,27 @@ public class EndRunSummary extends AppCompatActivity {
                 dayString = "Saturday";
                 break;
         }
-        String timesOfDay = "";
+        String timesOfDayTittle = "";
         // the first 2 numbers of the time - for example 08:50:32, it will take the 08 and call it morning
         int first2 = Integer.parseInt(getCurrentTime().substring(0,2));
 
         if(first2 > 0 && first2 < 5){
-            timesOfDay = "Midnight";
+            timesOfDayTittle = "Midnight";
         }else if(first2 > 5 && first2 < 11){
-            timesOfDay = "Morning";
+            timesOfDayTittle = "Morning";
         }else if(first2 > 11 && first2 < 18){
-            timesOfDay = "Afternoon";
+            timesOfDayTittle = "Afternoon";
         }else{
-            timesOfDay = "Evening";
+            timesOfDayTittle = "Evening";
         }
 
+        // set up the text
         firstLine.append(dayString + " "+getCurrentTime().substring(0,5));
         binding.firstLineTv.setText(firstLine);
-        secondLine.append(dayString + " "+timesOfDay+" Run");
+        secondLine.append(dayString + " "+timesOfDayTittle+" Run");
         binding.secondLineTv.setText(secondLine);
-
+        // for saving the timesOfDay in the fire store
+        timesOfDay = secondLine.toString();
     }
 
 //    private void testRead() {

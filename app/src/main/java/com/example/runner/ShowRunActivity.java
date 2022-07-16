@@ -47,7 +47,7 @@ public class ShowRunActivity extends AppCompatActivity {
     //binding
     private ActivityShowRunBinding binding;
     //var
-    private String position, chronometer, distance, timestamp;
+    private String position, chronometer, distance, timestamp, timesOfDay, avgPace;
     private Bundle extras;
     //map
     private List<LatLng> points;
@@ -93,6 +93,7 @@ public class ShowRunActivity extends AppCompatActivity {
 
         }
 
+
         // in this snapshot we getting all in info about the run an putting it in the ui
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -120,9 +121,10 @@ public class ShowRunActivity extends AppCompatActivity {
                             @Override
                             public void onMapReady(@NonNull GoogleMap googleMap) {
                                 googleMap.clear();
+
                                 polyline = googleMap.addPolyline(polylineOptions);
                                 //MarkerOptions options = new MarkerOptions().position(lastLatLng);
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 14));
                                 //googleMap.addMarker(options);
                             }
                         });
@@ -140,13 +142,22 @@ public class ShowRunActivity extends AppCompatActivity {
                         splitsArrayList.add(new Splits(time,km));
 
                     }
+                    Log.d(TAG, "onEvent: "+splitsArrayList);
                     // set up the RecyclerView and the Adapter to organize the table
                     setUpRecyclerView(splitsArrayList);
 
+                    // set up al the values from fire base into the UI
                     chronometer = (String) value.get("chronometer");
+                    binding.timeTextView.setText(chronometer);
                     distance = (String) value.get("distance");
+                    binding.kmTextView.setText(distance);
                     timestamp = (String) value.get("timestamp");
-                    Log.d(TAG, "onEvent: "+chronometer+" " +distance+" "+timestamp);
+                    binding.timeStampTextView.setText(timestamp);
+                    timesOfDay = (String) value.get("timesOfDay");
+                    binding.topAppBar.setTitle(timesOfDay);
+                    avgPace = (String) value.get("avgPace");
+                    binding.avgPaceTextView.setText(avgPace);
+                    //Log.d(TAG, "onEvent: "+chronometer+" " +distance+" "+timestamp);
                 }
             }
         });

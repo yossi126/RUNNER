@@ -105,13 +105,13 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener {
         timerStarted = false;
 
 
-//        focus.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                drawTrack();
-//                Toast.makeText(NewRun.this,"focus?",Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        binding.focusBtnNd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawTrack();
+                Toast.makeText(NewRun.this,"focus?",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // create a location callback
         locationCallback = new LocationCallback() {
@@ -137,7 +137,8 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener {
                         if (km.equals("0.0")) {
                             km = "0.00";
                         }
-                        binding.distanceText.setText("km: " + km);
+                        //binding.distanceText.setText("km: " + km);
+                        binding.distanceText.setText(km);
                         drawTrack();
                     }
                 });
@@ -248,6 +249,11 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("distance", binding.distanceText.getText().toString());
                 intent.putExtra("polylines", polylineOptions);
                 intent.putExtra("splits", splitsArrayList);
+                //int elapsedTimeInSec = (int) ((SystemClock.elapsedRealtime() - binding.timeChronometer.getBase()) / 1000);
+                //int seconds = ((elapsedTimeInSec % 86400) % 3600) % 60;
+               // int minutes = ((elapsedTimeInSec % 86400) % 3600) / 60;
+                //Log.d("TAG", "onLongClick: "+minutes);
+                //Log.d("TAG", "onLongClick: "+seconds);
                 startActivity(intent);
                 finish();
                 // ending the split timer 
