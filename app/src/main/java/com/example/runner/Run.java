@@ -40,6 +40,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.gusakov.library.java.interfaces.OnCountdownCompleted;
 
 public class Run extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -103,11 +104,34 @@ public class Run extends AppCompatActivity implements OnMapReadyCallback{
         binding.startNewRunBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Run.this,NewRun.class));
+                //IF TIMER IS CHECKED START TIMER
+                if (binding.switchMaterial.isChecked()) {
+                    binding.pulseCountDown.start(new OnCountdownCompleted() {
+                        @Override
+                        public void completed() {
+                            // START RUNNING ACTIVITY
+                            startActivity(new Intent(Run.this,NewRun.class));
+                        }
+                    });
+                }
+                else {
+                    startActivity(new Intent(Run.this,NewRun.class));
+                }
             }
         });
 
-
+        //TIMER SWITCH BUTTON
+        binding.switchMaterial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (binding.switchMaterial.isChecked()) {
+                    binding.pulseCountDown.setVisibility(View.VISIBLE);
+                }
+                else {
+                    binding.pulseCountDown.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     private void bottomNavBar() {
