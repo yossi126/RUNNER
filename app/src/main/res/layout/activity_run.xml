@@ -31,7 +31,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="309dp"
-        android:layout_marginTop="20dp"
+        app:layout_constraintDimensionRatio=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
@@ -78,6 +78,37 @@
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:layout_constraintVertical_bias="0.47" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchMaterial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Timer"
+        android:textStyle="bold|italic"
+        style="@style/Widget.App.Switch"
+        app:useMaterialThemeColors="false"
+        app:layout_constraintBottom_toBottomOf="@+id/startNewRunBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/startNewRunBtn"
+        app:layout_constraintTop_toBottomOf="@+id/startNewRunBtn" /><![CDATA[
+    />
+
+    ]]>
+
+    <com.gusakov.library.PulseCountDown
+        android:id="@+id/pulseCountDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5"
+        android:visibility="invisible"
+        android:textColor="@color/amber"
+        android:textSize="120sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchMaterial"
+        app:pc_startValue="5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
