@@ -157,7 +157,6 @@ public class ShowRunActivity extends AppCompatActivity {
                     binding.topAppBar.setTitle(timesOfDay);
                     avgPace = (String) value.get("avgPace");
                     binding.avgPaceTextView.setText(avgPace);
-                    //Log.d(TAG, "onEvent: "+chronometer+" " +distance+" "+timestamp);
                 }
             }
         });

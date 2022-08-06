@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,11 +28,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
-    ActivityLoginBinding binding;
-    //EditText enterEmail;
-    //EditText enterPassword;
-    FirebaseAuth firebaseAuth;
-    //Button loginButton;
+    public static final String USER_PRF = "userPref";
+    private ActivityLoginBinding binding;
+    private FirebaseAuth firebaseAuth;
+    private SharedPreferences sharedPreferences;
+
+
 
     //CREATE HASH PASSWORD
     private static String hashPassword(String password) {
@@ -42,14 +44,27 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_login);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        //enterEmail = findViewById(R.id.edit_text_name_register);
 
+        // yossi edit remember me
+
+        //Shared Preferences
+        sharedPreferences = getSharedPreferences(USER_PRF,MODE_PRIVATE);
+        String saveEmail = sharedPreferences.getString("svEmail","");
+        String savePassword = sharedPreferences.getString("svPassword","");
+        //        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if(sharedPreferences.contains("checked") && sharedPreferences.getBoolean("checked", false) == true){
+            binding.checkBoxRememberMe.setChecked(true);
+        }else{
+            binding.checkBoxRememberMe.setChecked(false);
+
+        }
+        binding.etEmail.setText(saveEmail);
+        binding.etPassword.setText(savePassword);
 
         binding.loginActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +74,8 @@ public class Login extends AppCompatActivity {
                 userLogin();
             }
         });
+
+        // yossi edit remember me
 
         binding.forgotPassTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,12 +104,6 @@ public class Login extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Log.d("TAG", "onBackPressed: ");
     }
 
     private void showRecoverPasswordDialog() {
@@ -193,13 +204,30 @@ public class Login extends AppCompatActivity {
     }
 
     private void userLogin() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         String email = binding.etEmail.getText().toString().trim();
         //String email2 =  binding.
         String password = binding.etPassword.getText().toString().trim();
+        String autoPassword = binding.etPassword.getText().toString().trim();
 
         //CHECK PASS HASH SHA256
         password = hashPassword(password);
 
+        if(binding.checkBoxRememberMe.isChecked()){
+            editor.putBoolean("checked", true);
+            editor.apply();
+            storeToSharedPref(email, autoPassword);
+            validation(email, password);
+
+        }else{
+            // if the check box is not checked
+            getSharedPreferences(USER_PRF,MODE_PRIVATE).edit().clear().commit();
+            validation(email, password);
+
+        }
+    }
+
+    private void validation(String email, String password) {
         if (email.isEmpty()) {
             binding.loginEnterEmailEt.setError("Email is requierd");
             binding.loginEnterEmailEt.requestFocus();
@@ -252,6 +280,13 @@ public class Login extends AppCompatActivity {
                 Log.d("onFailure", "onComplete: " + e.getMessage());
             }
         });
+    }
+
+    private void storeToSharedPref(String email, String password) {
+        SharedPreferences.Editor editor = getSharedPreferences(USER_PRF, MODE_PRIVATE).edit();
+        editor.putString("svEmail",email);
+        editor.putString("svPassword",password);
+        editor.apply();
     }
 
 }
