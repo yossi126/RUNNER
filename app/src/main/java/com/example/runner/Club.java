@@ -59,6 +59,7 @@ public class Club extends AppCompatActivity {
         //GET PATH OF DB NAMED "USERS"
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(true);
 
         //userID = currentFirebaseUser.getUid();
 
@@ -187,12 +188,7 @@ public class Club extends AppCompatActivity {
                     case R.id.logOut:
                         Intent intent = new Intent(Club.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(Club.this, "user is logout", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
                         FirebaseAuth.getInstance().signOut();
                         startActivity(intent);
                         break;
@@ -214,7 +210,6 @@ public class Club extends AppCompatActivity {
     protected void onStop() {
         //WHEN ACTIVITY IS HIDDEN/STOPPED
         super.onStop();
-        Log.i("shukim", "ONSTOP");
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
     }
 
@@ -222,7 +217,6 @@ public class Club extends AppCompatActivity {
     protected void onRestart() {
         //WHEN STARTING ACTIVITY
         super.onRestart();
-        Log.i("shukim", "ONRESTART");
         binding.bottomNavBar.setSelectedItemId(R.id.club);
         overridePendingTransition(0, 0);
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(true);

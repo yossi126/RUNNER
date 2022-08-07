@@ -55,7 +55,7 @@ public class HomePage extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         //SET USER STATUS ONLINE
-        databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(true);
+        //databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(true);
 
         //CHANGE LAST LOGIN PARAMETER FOR USER MANAGEMENT
         lastLogin = getCurrentDateTime();
