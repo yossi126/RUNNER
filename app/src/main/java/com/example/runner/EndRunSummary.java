@@ -101,7 +101,6 @@ public class EndRunSummary extends AppCompatActivity {
 
         setSummaryTextView();
         avgPace = calculateAverageOfTime(splitsArrayList);
-        //Log.d("avgPace", "onCreate: "+avgPace);
 
         // Create a new run object and store it in firebase
         Map<String, Object> run = new HashMap<>();
@@ -115,22 +114,25 @@ public class EndRunSummary extends AppCompatActivity {
 
         saveToFireStore(run);
 
-        //testRead();
 
 
     }
-
-        public static String calculateAverageOfTime(ArrayList<Splits> splitsArrayList) {
+        // calculate the arraylist of the splits when finishing a run
+        public String calculateAverageOfTime(ArrayList<Splits> splitsArrayList) {
             long seconds = 0;
             for(Splits split : splitsArrayList) {
                 String[] mmss = split.getTime().split(":");
                 seconds += Integer.valueOf(mmss[0]) * 60;
                 seconds += Integer.valueOf(mmss[1]);
             }
-            seconds /= splitsArrayList.size();
+            // if the array list of the splits was empty ( zero 0 ), the app will crash, so we added try catch
+            try{
+                seconds /= splitsArrayList.size();
+            }catch (Exception e){
+                Log.d("calculateAverageOfTime", e.getMessage());
+            }
             long mm = (seconds / 60) % 60;
             long ss = seconds % 60;
-
             return String.format("%02d:%02d",mm,ss);
 
     }
@@ -188,24 +190,6 @@ public class EndRunSummary extends AppCompatActivity {
         timesOfDay = secondLine.toString();
     }
 
-//    private void testRead() {
-//        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                if (error != null) {
-//                    Toast.makeText(EndRunSummary.this, "Error!", Toast.LENGTH_SHORT).show();
-//                    Log.d("EndRunSummary", error.toString());
-//                    return;
-//                }
-//
-//                if (value.exists()) {
-//                    //Log.d("EndRunSummary1", value.getString("date"));
-//                    //Log.d("EndRunSummary2", value.toString());
-//                }
-//            }
-//        });
-//
-//    }
 
     private void saveToFireStore(Map<String, Object> run) {
         documentReference.set(run).addOnSuccessListener(new OnSuccessListener<Void>() {

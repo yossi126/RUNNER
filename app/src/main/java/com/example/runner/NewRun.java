@@ -144,7 +144,8 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener {
                         if (km.equals("0.0")) {
                             km = "0.00";
                         }
-                        binding.distanceText.setText("km: " + km);
+                        //binding.distanceText.setText("km: " + km);
+                        binding.distanceText.setText(km);
                         drawTrack();
                     }
                 });

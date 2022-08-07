@@ -52,12 +52,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 public class Profile extends AppCompatActivity {
 
@@ -76,8 +82,10 @@ public class Profile extends AppCompatActivity {
     StorageReference storageReference;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
+    private CollectionReference collectionReference;
     private String userID;
     private FloatingActionButton floatingEditButton;
+
 
 
     // Uri INDICATES WHERE THE IMAGE WILL BE PICKED FROM
@@ -104,6 +112,8 @@ public class Profile extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         userID = firebaseUser.getUid();
+        collectionReference = FirebaseFirestore.getInstance().collection(userID);
+        Log.d("yos1", "onCreate: "+collectionReference);
 
         databaseReference.child(userID).addValueEventListener(new ValueEventListener() {
 
@@ -677,6 +687,42 @@ public class Profile extends AppCompatActivity {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(intent);
                         break;
+                    case R.id.deleteAccount:
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(Profile.this);
+                        dialog.setTitle("Are you sure?");
+                        dialog.setMessage("Deleting this account will remove all your data and you won't be able to access the app.");
+                        dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                firebaseUser.delete()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    //remove all data from real time DB
+                                                    databaseReference.child(userID).removeValue();
+                                                    //
+                                                    //collectionReference.
+                                                    Toast.makeText(Profile.this,"Account Deleted",Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(Profile.this, MainActivity.class);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    startActivity(intent);
+                                                }else{
+                                                    Toast.makeText(Profile.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+                        dialog.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = dialog.create();
+                        alertDialog.show();
+                        break;
                 }
                 return true;
             }
@@ -689,5 +735,6 @@ public class Profile extends AppCompatActivity {
         binding.bottomNavBar.setSelectedItemId(R.id.profile);
         overridePendingTransition(0, 0);
     }
+
 
 }

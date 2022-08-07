@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/top_app_bar"
+            app:menu="@menu/top_app_bar_profile"
             app:title="RUNNER"
             app:titleCentered="true"
             />
