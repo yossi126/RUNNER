@@ -182,7 +182,7 @@ public class EndRunSummary extends AppCompatActivity {
         }
 
         // set up the text
-        firstLine.append(dayString + " "+getCurrentTime().substring(0,5));
+        firstLine.append(getCurrentTime().substring(0,5));
         binding.firstLineTv.setText(firstLine);
         secondLine.append(dayString + " "+timesOfDayTittle+" Run");
         binding.secondLineTv.setText(secondLine);

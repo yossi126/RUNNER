@@ -25,6 +25,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <com.applandeo.materialcalendarview.CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:clickable="false"
+                    app:anotherMonthsDaysLabelsColor="@color/white"
+                    app:eventsEnabled="false"
+                    app:headerColor="#009688"
+                    app:highlightedDaysLabelsColor="@color/accent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialDivider2">
+
+                </com.applandeo.materialcalendarview.CalendarView>
+
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline15"
                     android:layout_width="wrap_content"
@@ -43,23 +60,32 @@
                     android:id="@+id/materialDivider3"
                     android:layout_width="361dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="24dp"
                     app:dividerInsetEnd="16dp"
                     app:dividerInsetStart="16dp"
-                    app:layout_constraintBottom_toTopOf="@+id/calendarView"
                     app:layout_constraintEnd_toStartOf="@+id/guideline12"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/guideline15"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView"
-                    app:layout_constraintVertical_bias="0.612" />
+                    app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/materialDivider2"
+                    android:layout_width="361dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:dividerInsetEnd="16dp"
+                    app:dividerInsetStart="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline12"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/guideline15"
+                    app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="LAST RUN"
+                    android:text="Last Run"
                     android:textAlignment="center"
                     android:textSize="35dp"
                     app:layout_constraintBottom_toTopOf="@+id/cardView"
@@ -68,22 +94,33 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline15"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.applandeo.materialcalendarview.CalendarView
-                    android:id="@+id/calendarView"
+                <TextView
+                    android:id="@+id/textView3"
                     android:layout_width="wrap_content"
-                    android:layout_height="361dp"
-                    android:clickable="false"
-                    app:anotherMonthsDaysLabelsColor="@color/white"
-                    app:eventsEnabled="false"
-                    app:headerColor="#009688"
-                    app:highlightedDaysLabelsColor="@color/accent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/materialDivider3">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Last Track"
+                    android:textAlignment="center"
+                    android:textSize="35dp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline12"
+                    app:layout_constraintStart_toStartOf="@+id/guideline15"
+                    app:layout_constraintTop_toBottomOf="@+id/materialDivider3" />
 
-                </com.applandeo.materialcalendarview.CalendarView>
+                <FrameLayout
+                    android:id="@+id/frameLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                    <fragment
+                        android:id="@+id/google_map_end"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </FrameLayout>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView"
@@ -153,17 +190,6 @@
 
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.applandeo.materialcalendarview.CalendarView
-                android:id="@+id/calendarView3"
-                android:layout_width="wrap_content"
-                android:layout_height="361dp"
-                android:clickable="false"
-                app:anotherMonthsDaysLabelsColor="@color/white"
-                app:eventsEnabled="false"
-                app:headerColor="#009688">
-
-            </com.applandeo.materialcalendarview.CalendarView>
 
         </LinearLayout>
     </ScrollView>

@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.runner.databinding.ActivityHomePageBinding;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
@@ -42,6 +44,8 @@ public class HomePage extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private String lastLogin;
     private List<Calendar> calendars;
+    private SupportMapFragment supportMapFragment;
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +112,9 @@ public class HomePage extends AppCompatActivity {
                                 String t = document.getData().get("timestamp").toString();
                                 String d = document.getData().get("distance").toString();
                                 String c = document.getData().get("chronometer").toString();
-                                binding.timestamp.setText("Time : " + t);
-                                binding.distance.setText("Distance in " + d);
-                                binding.chronometer.setText("Running Time (in min) :" + c);
+                                binding.timestamp.setText("Date : " + t);
+                                binding.distance.setText("Distance : " + d + "km");
+                                binding.chronometer.setText("StopWatch (min) : " + c);
                             }
                         }
                         else {

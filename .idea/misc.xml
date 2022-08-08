@@ -34,7 +34,7 @@
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/round_button.xml" value="0.295" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/round_button_new_run.xml" value="0.295" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_club.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_end_run_summary.xml" value="0.4" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_end_run_summary.xml" value="0.152" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_event_day.xml" value="0.1" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_home_page.xml" value="0.22" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_login.xml" value="0.25" />
@@ -44,6 +44,7 @@
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_profile_edit.xml" value="0.264" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_run.xml" value="0.1659111514052584" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_show_run.xml" value="0.1" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/calendar_day_background.xml" value="0.1" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/content_profile.xml" value="0.24909420289855072" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/day_cell.xml" value="0.1659111514052584" />
