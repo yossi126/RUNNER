@@ -54,7 +54,7 @@ public class EndRunSummary extends AppCompatActivity {
     private PolylineOptions polylineOptions;
     private Bundle extras;
     private String chronometer, distance, avgPace;
-    private TextView distanceTv, timetv;
+    private TextView distanceTv, timetv, paceTv;
     private String timesOfDay;
     //Variables:
     private List<LatLng> points;
@@ -95,13 +95,13 @@ public class EndRunSummary extends AppCompatActivity {
             splitsArrayList = (ArrayList<Splits>) extras.get("splits");
         }
         Log.d("current", "onCreate: "+splitsArrayList.toString());
-        binding.distanceTv.setText(distance);
-        binding.timeTv.setText("Time: "+chronometer);
+        binding.distanceTv.setText(distance + " km");
+        binding.timeTv.setText("Time: " + chronometer);
         drawTrack();
 
         setSummaryTextView();
         avgPace = calculateAverageOfTime(splitsArrayList);
-
+        binding.paceTv.setText("Avg.Pace: " + avgPace);
         // Create a new run object and store it in firebase
         Map<String, Object> run = new HashMap<>();
         run.put("distance", distance);
@@ -252,12 +252,4 @@ public class EndRunSummary extends AppCompatActivity {
         return datetime;
     }
 
-    private static String getCurrentDate() {
-        // creating an id by time and date to the "SavedRuns" children
-        Date dNow = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy");
-        //SimpleDateFormat ft = new SimpleDateFormat("EEEE, d MMMM yyyy HH:mm:ss");
-        String datetime = ft.format(dNow);
-        return datetime;
-    }
 }

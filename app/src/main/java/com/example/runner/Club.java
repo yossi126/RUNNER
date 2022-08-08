@@ -189,6 +189,7 @@ public class Club extends AppCompatActivity {
                         Intent intent = new Intent(Club.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
+
                         FirebaseAuth.getInstance().signOut();
                         startActivity(intent);
                         break;
@@ -211,6 +212,7 @@ public class Club extends AppCompatActivity {
         //WHEN ACTIVITY IS HIDDEN/STOPPED
         super.onStop();
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
+
     }
 
     @Override

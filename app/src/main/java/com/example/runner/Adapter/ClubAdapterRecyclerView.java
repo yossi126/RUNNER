@@ -1,5 +1,6 @@
 package com.example.runner.Adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.runner.R;
@@ -38,6 +40,12 @@ public class ClubAdapterRecyclerView  extends RecyclerView.Adapter <ClubAdapterR
         if(user.getIsConnected() == true){
             holder.imageView.setImageResource(R.drawable.ic_baseline_online);
         }
+        else
+        {
+            //MAKE "LETS RUN BUTTON" OPACITY AND UNCLICKABLE
+            holder.button.setEnabled(false);
+            holder.button.setBackgroundColor(Color.parseColor("#e0f2f1"));
+        }
     }
 
 
@@ -58,5 +66,6 @@ public class ClubAdapterRecyclerView  extends RecyclerView.Adapter <ClubAdapterR
             imageView = itemView.findViewById(R.id.statusImage);
             button = itemView.findViewById(R.id.sendBtn);
         }
+
     }
 }

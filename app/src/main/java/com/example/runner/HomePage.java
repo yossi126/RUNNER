@@ -99,8 +99,12 @@ public class HomePage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            //IF DEFAULT USER HAS NO RUNS SHOW
+                            if (task.getResult().isEmpty())
+                            {
+                                binding.distance.setText("Start Your first run today!");
+                            }
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("logd", document.getId() + " => " + document.getData());
                                 String t = document.getData().get("timestamp").toString();
                                 String d = document.getData().get("distance").toString();
                                 String c = document.getData().get("chronometer").toString();
@@ -108,12 +112,12 @@ public class HomePage extends AppCompatActivity {
                                 binding.distance.setText("Distance in " + d);
                                 binding.chronometer.setText("Running Time (in min) :" + c);
                             }
-                        } else {
+                        }
+                        else {
                             Log.w("logw", "Error getting documents.", task.getException());
                         }
                     }
                 });
-
 
         //SETTING TOP NAV BAR
         topNavBar();

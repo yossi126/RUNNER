@@ -62,6 +62,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -694,6 +695,39 @@ public class Profile extends AppCompatActivity {
                         dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
+                                //DELETE USER PHOTOS FROM FB STORAGE
+                                StorageReference delCover = storage.getReference().child("cover_images/").child(userID);
+                                delCover.delete();
+                                StorageReference delProfile = storage.getReference().child("profile_images/").child(userID);
+                                delProfile.delete();
+
+                                //DELETE USER COLLECTION FROM FB FIRESTORE
+                                collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            //GET AL DOCUMENTS ID TO LIST
+                                            List<String> list = new ArrayList<>();
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                list.add(document.getId());
+                                            }
+                                            int count = 0;
+                                            //DELETE COLLECTION BY DOC ID
+                                            while (!(list.isEmpty()))
+                                            {
+                                                collectionReference.document(list.get(count)).delete();
+                                                list.remove(count);
+                                            }
+                                        }
+
+                                        else {
+                                            Log.d("logd", "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+
+                                //DELETE USER FROM FB AUTHENTICATION AND REALTIME
                                 firebaseUser.delete()
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override

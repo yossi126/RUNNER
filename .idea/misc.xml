@@ -34,6 +34,7 @@
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/round_button.xml" value="0.295" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/drawable/round_button_new_run.xml" value="0.295" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_club.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_end_run_summary.xml" value="0.4" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_event_day.xml" value="0.1" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_home_page.xml" value="0.22" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/layout/activity_login.xml" value="0.25" />
@@ -55,6 +56,8 @@
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar_club.xml" value="0.20599409033347404" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar_endrunsummary.xml" value="0.11628901239846089" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar_new_run.xml" value="0.11628901239846089" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar_profile.xml" value="0.23828125" />
+        <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/menu/top_app_bar_show_run.xml" value="0.23828125" />
         <entry key="..\:/Users/shukim/Desktop/SD/SD/Android-Studio-Projects/RUNNER/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.295" />
         <entry key="..\:/Users/yossib/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.195382642154767" />
         <entry key="..\:/Users/yossib/Desktop/runner/app/src/main/res/drawable/ic_baseline_access_time.xml" value="0.3675" />
