@@ -60,6 +60,9 @@ public class Register extends AppCompatActivity {
         String lastLogin = HomePage.getCurrentDateTime();
         String profilePhoto="1";
         String coverPhoto = "1";
+        String letsRun = "";
+        boolean invitedToRun = false;
+
 
         progressBar.setVisibility(View.GONE);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -128,7 +131,7 @@ public class Register extends AppCompatActivity {
 
                                     String uid = firebaseAuth.getCurrentUser().getUid();
                                     User newUser = new User (name,email,passEncrypt,uid,date,height,weight,gender,
-                                            profilePhoto,coverPhoto,lastLogin);
+                                            profilePhoto,coverPhoto,lastLogin,letsRun,invitedToRun);
 
                                     FirebaseDatabase.getInstance().getReference("users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

@@ -57,7 +57,7 @@
                 android:textSize="20dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/sendBtn"
+                app:layout_constraintEnd_toStartOf="@+id/letsRunBtn"
                 app:layout_constraintHorizontal_bias="0.063"
                 app:layout_constraintStart_toStartOf="@+id/guideline14"
                 app:layout_constraintTop_toTopOf="parent"
@@ -71,7 +71,7 @@
                 app:layout_constraintGuide_percent="0.66" />
 
             <Button
-                android:id="@+id/sendBtn"
+                android:id="@+id/letsRunBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="left"
-                app:constraint_referenced_ids="sendBtn"
+                app:constraint_referenced_ids="letsRunBtn"
                 tools:layout_editor_absoluteX="332dp" />
 
             <androidx.constraintlayout.widget.Barrier

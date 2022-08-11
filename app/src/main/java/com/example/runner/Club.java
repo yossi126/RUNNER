@@ -27,21 +27,26 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Club extends AppCompatActivity {
+public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.OnContactClickListener{
 
     ActivityClubBinding binding;
     private FirebaseUser currentFirebaseUser;
     private DatabaseReference databaseReference;
     private String userID;
     private ArrayList<User> userArrayList;
-    ClubAdapterRecyclerView clubAdapterRecyclerView;
-    String searchUser = "";
+    private ClubAdapterRecyclerView clubAdapterRecyclerView;
+    private  String searchUser = "";
     private EditText etSearch;
     public static User currentUser;
+
+    //get partner var
+    private String letsRun;
+    private boolean invitedToRun;
 
 
     @Override
@@ -64,6 +69,9 @@ public class Club extends AppCompatActivity {
         //userID = currentFirebaseUser.getUid();
 
         userArrayList = new ArrayList<>();
+
+        letsRun = "1";
+        invitedToRun = false;
 
         //SETTING TOP NAV BAR
         topNavBar();
@@ -101,18 +109,18 @@ public class Club extends AppCompatActivity {
                     if (!currentFirebaseUser.getUid().equals(user.getUid())) {
                         userArrayList.add(user);
                     }
+                    clubAdapterRecyclerView = new ClubAdapterRecyclerView(userArrayList,Club.this);
+                    binding.clubRV.setHasFixedSize(true);
+                    binding.clubRV.setLayoutManager(new LinearLayoutManager(Club.this));
+                    binding.clubRV.setAdapter(clubAdapterRecyclerView);
                 }
-                clubAdapterRecyclerView = new ClubAdapterRecyclerView(userArrayList);
-                binding.clubRV.setHasFixedSize(true);
-                binding.clubRV.setLayoutManager(new LinearLayoutManager(Club.this));
-                binding.clubRV.setAdapter(clubAdapterRecyclerView);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
+
+
 
     }
 
@@ -223,4 +231,66 @@ public class Club extends AppCompatActivity {
         overridePendingTransition(0, 0);
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(true);
     }
+
+    @Override
+    public void onContactClick(String partnerUid) {
+        //write to fb realtime
+
+        databaseReference.child(currentFirebaseUser.getUid()).child("letsRun").setValue(partnerUid);
+        databaseReference.child(partnerUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                invitedToRun = (boolean) snapshot.child("invitedToRun").getValue();
+                if(invitedToRun)
+                {
+                        Toast.makeText(Club.this, "user is not available",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //Log.d("TAG", "onDataChange: "+ invitedToRun);
+                    letsRun = (String) snapshot.child("letsRun").getValue();
+                    //Log.d("TAG", "onDataChange: "+ letsRun);
+                    databaseReference.child(currentFirebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            boolean minvitedToRun = (boolean) snapshot.child("invitedToRun").getValue();
+                            if(invitedToRun == true && minvitedToRun == true){
+                                //ALERT DIALOG
+                                Toast.makeText(Club.this, "lets run",Toast.LENGTH_SHORT).show();
+                                //Log.d("TAG", "success: ");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+//                    databaseReference.child(currentFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//
+//                        }
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//                        }
+//                    });
+                }
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        databaseReference.child(partnerUid).child("invitedToRun").setValue(true);
+
+
+
+    }
+
 }
