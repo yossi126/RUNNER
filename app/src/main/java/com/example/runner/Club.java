@@ -125,6 +125,8 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
     }
 
     private void getUser(String searchUser) {
+        Log.i("shukim", "search");
+
         //GET DATA FROM REALTIME FB PATH
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -219,8 +221,11 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
     protected void onStop() {
         //WHEN ACTIVITY IS HIDDEN/STOPPED
         super.onStop();
+        //RESET PARAMETERS
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
-
+        databaseReference.child(currentFirebaseUser.getUid()).child("invitedToRun").setValue(false);
+        databaseReference.child(currentFirebaseUser.getUid()).child("letsRun").setValue("");
+        invitedToRun = false;
     }
 
     @Override
@@ -237,6 +242,7 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
         //write to fb realtime
 
         databaseReference.child(currentFirebaseUser.getUid()).child("letsRun").setValue(partnerUid);
+        //CHECK IF USER IS NOT PAIRING
         databaseReference.child(partnerUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -246,50 +252,40 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
                         Toast.makeText(Club.this, "user is not available",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    //Log.d("TAG", "onDataChange: "+ invitedToRun);
-                    letsRun = (String) snapshot.child("letsRun").getValue();
-                    //Log.d("TAG", "onDataChange: "+ letsRun);
-                    databaseReference.child(currentFirebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            boolean minvitedToRun = (boolean) snapshot.child("invitedToRun").getValue();
-                            if(invitedToRun == true && minvitedToRun == true){
-                                //ALERT DIALOG
-                                Toast.makeText(Club.this, "lets run",Toast.LENGTH_SHORT).show();
-                                //Log.d("TAG", "success: ");
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-//                    databaseReference.child(currentFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//
-//                        }
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//                        }
-//                    });
+                    databaseReference.child(partnerUid).child("invitedToRun").setValue(true);
+                    invitedToRun = true;
                 }
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                Toast.makeText(Club.this, "ERRORRRRRR",Toast.LENGTH_SHORT).show();
+
             }
         });
 
+        //PAIR USERS
+        databaseReference.child(currentFirebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean minvitedToRun = (boolean) snapshot.child("invitedToRun").getValue();
+                if(minvitedToRun && invitedToRun){
+                    //OPEN NEW INTENT
+                    Log.d("shuki", " 2");
+                    Intent intent = new Intent(Club.this, RunTogether.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
 
-        databaseReference.child(partnerUid).child("invitedToRun").setValue(true);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+                Toast.makeText(Club.this, "ERROR",Toast.LENGTH_SHORT).show();
 
+            }
+        });
 
     }
 
