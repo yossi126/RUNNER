@@ -18,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -109,7 +110,7 @@ public class HomePage extends AppCompatActivity {
                                 binding.distance.setText("Start Your first run today!");
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String t = document.getData().get("timestamp").toString();
+                                String t = getTimeStamp((Timestamp) document.getData().get("timestamp"));
                                 String d = document.getData().get("distance").toString();
                                 String c = document.getData().get("chronometer").toString();
                                 binding.timestamp.setText("Date : " + t);
@@ -129,6 +130,20 @@ public class HomePage extends AppCompatActivity {
         //SETTING BOTTOM NAV BAR
         bottomNavBar();
 
+    }
+
+    // method that write back Timestamp to string
+    public String getTimeStamp(Timestamp timestamp) {
+        Date date = new Date(2000, 11, 21);
+        try {
+            date = timestamp.toDate();
+        } catch (Exception e) {
+
+        }
+        long timestampl = date.getTime();
+        java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String dateStr = simpleDateFormat.format(timestampl);
+        return dateStr;
     }
 
     //SETTING BOTTOM NAV BAR

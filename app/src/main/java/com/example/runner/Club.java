@@ -274,7 +274,6 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
                     Log.d("shuki", " 2");
                     Intent intent = new Intent(Club.this, RunTogether.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
                 }

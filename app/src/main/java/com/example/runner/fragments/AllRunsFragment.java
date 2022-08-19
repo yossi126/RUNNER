@@ -6,11 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
 
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,19 +21,23 @@ import com.example.runner.ShowRunActivity;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 
 public class AllRunsFragment extends Fragment{
@@ -53,8 +53,6 @@ public class AllRunsFragment extends Fragment{
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference documentReference;
     private CollectionReference collectionReference;
-
-
     private List<LatLng> points;
 
     public AllRunsFragment() {
@@ -68,76 +66,24 @@ public class AllRunsFragment extends Fragment{
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_all_runs, container, false);
         allRunsListView = view.findViewById(R.id.allRunsTabListView);
-        //itemsAdapter = new ArrayAdapter(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, allRunArrayList);
-        //allRunsListView.setAdapter(itemsAdapter);
         allRunsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                //Toast.makeText(getContext(),"click",Toast.LENGTH_SHORT).show();
-
-                //Navigation.findNavController(view).navigate(R.id.action_allRunsFragment_to_showRunFragment);
-                ShowRunFragment showRunFragment = new ShowRunFragment();
-//                getParentFragmentManager().beginTransaction()
-//                        .setCustomAnimations(
-//                                R.anim.slide_in,  // enter
-//                                R.anim.fade_out,  // exit
-//                                R.anim.fade_in,   // popEnter
-//                                R.anim.slide_out  // popExit
-//                        )
-//                        .replace(((ViewGroup)getView().getParent()).getId(), showRunFragment)
-//                        .addToBackStack(null)
-//                        .commit();
-//                Log.d("ViewGroup", "onItemClick: "+(ViewGroup)getView().getParent());
-
-
-
-//                FragmentManager fragmentManager = getParentFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.setReorderingAllowed(true);
-//                fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,
-//                        android.R.anim.slide_out_right);
-//                fragmentTransaction.replace(((ViewGroup)getView().getParent()).getId(), showRunFragment, null);
-//                fragmentTransaction.commit();
-
-//                fragmentManager.beginTransaction()
-//                        .replace(((ViewGroup)getView().getParent()).getId(),showRunFragment,null )
-//                        .setReorderingAllowed(true)
-//                        .addToBackStack("name").commit();
-
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(((ViewGroup)getView().getParent()).getId(), showRunFragment, "findThisFragment")
-//                        .addToBackStack(null)
-//                        .commit();
-
-                //getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 documentReference = collectionReference.document(allRunArrayList.get(position));
                 documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
                             Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
-                            //Log.d("AllRunsFragment", "onItemClick: "+ error.toString());
                             return;
                         }
                         if (value.exists()) {
-//                            Log.d("TAG", "onEvent: "+value.get("points"));
-//                            points = (List<LatLng>) value.get("points");
-//                            Log.d("TAG", "onEvent: "+points);
                             Intent intent = new Intent(getContext(), ShowRunActivity.class);
-//                            intent.putExtra("distance",value.get("distance").toString());
-//                            intent.putExtra("timestamp",value.get("timestamp").toString());
-//                            intent.putExtra("chronometer",value.get("chronometer").toString());
-//                            intent.putExtra("points", (Parcelable) points);
-                            //intent.putExtra("position",position);
                             intent.putExtra("position",allRunArrayList.get(position));
                             startActivity(intent);
-
                         }
                     }
                 });
-                //startActivity(new Intent(getContext(), ShowRunActivity.class));
-
             }
         });
 
@@ -148,7 +94,6 @@ public class AllRunsFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //GET ALL RUNS FB FIRESTORE
         allRunArrayList = new ArrayList<>();
         // init firebase
@@ -160,29 +105,90 @@ public class AllRunsFragment extends Fragment{
 
         getAllRunList();
 
-
+//        firebaseFirestore.collection("J0RsZAUuh2groBmPnTOagAv3Dro1")
+//                .orderBy("distance", Query.Direction.DESCENDING).limit(1).addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//
+//                for (QueryDocumentSnapshot document : value) {
+//                    document.get("distance");
+//                    Log.d("distance", "onEvent: "+ document.get("distance"));
+//                }
+//
+//            }
+//        });
+//
+//        firebaseFirestore.collection(firebaseUser.getUid())
+//                .orderBy("timestamp", Query.Direction.DESCENDING).limit(1).addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//
+//                for (QueryDocumentSnapshot document : value) {
+//                    Log.d("yoyo2", "onEvent: "+ getTimeStamp((Timestamp) document.get("timestamp")));
+//                }
+//            }
+//        });
 
     }
+        // method that write back Timestamp to string
+        public String getTimeStamp(Timestamp timestamp) {
+            Date date = new Date(2000, 11, 21);
+            try {
+                date = timestamp.toDate();
+            } catch (Exception e) {
+
+            }
+            long timestampl = date.getTime();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String dateStr = simpleDateFormat.format(timestampl);
+            return dateStr;
+        }
 
         private void getAllRunList() {
-        collectionReference.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //GET FIRESTORE DOCUMENT TITLE
-                                String runString = document.getId();
-                                //ADD TO RUN LIST
-                                allRunArrayList.add(runString);
-                            }
+//        collectionReference.get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                //GET FIRESTORE DOCUMENT TITLE
+//                                String runString = document.getId();
+//                                //ADD TO RUN LIST
+//                                allRunArrayList.add(runString);
+//                            }
+//                            itemsAdapter = new ArrayAdapter(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, allRunArrayList);
+//                            allRunsListView.setAdapter(itemsAdapter);
+//                        } else {
+//                            Log.w("TAG", "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+
+            firebaseFirestore.collection(firebaseUser.getUid())
+                    .orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    allRunArrayList.clear();
+                    if(!value.isEmpty()){
+                        for (QueryDocumentSnapshot document : value) {
+                            //GET FIRESTORE DOCUMENT TITLE
+                            String runString = document.getId();
+                            //ADD TO RUN LIST
+                            allRunArrayList.add(runString);
+                        }
+                        try {
                             itemsAdapter = new ArrayAdapter(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, allRunArrayList);
                             allRunsListView.setAdapter(itemsAdapter);
-                        } else {
-                            Log.w("TAG", "Error getting documents.", task.getException());
+                        }catch (Exception e){
+                            Log.d("yossi err", "AllRunsFragment - getAllRunList(): "+e.getMessage());
+//                            Log.d("yossi err", "AllRunsFragment - getAllRunList(): "+error.getMessage());
                         }
+
+                    }else{
+
                     }
-                });
+                }
+            });
     }
 
 }

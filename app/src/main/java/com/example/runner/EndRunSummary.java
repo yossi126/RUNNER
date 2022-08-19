@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
@@ -106,7 +107,8 @@ public class EndRunSummary extends AppCompatActivity {
         Map<String, Object> run = new HashMap<>();
         run.put("distance", distance);
         run.put("points", points);
-        run.put("timestamp", getCurrentDateTime());
+        // FieldValue create timestamp in DB
+        run.put("timestamp", FieldValue.serverTimestamp());
         run.put("chronometer", chronometer);
         run.put("splits", splitsArrayList);
         run.put("timesOfDay", timesOfDay);
@@ -192,6 +194,7 @@ public class EndRunSummary extends AppCompatActivity {
 
 
     private void saveToFireStore(Map<String, Object> run) {
+        //Log.d("yossi err", "EndRunSummary - saveToFireStore: ");
         documentReference.set(run).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

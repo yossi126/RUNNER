@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -37,9 +38,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class ShowRunActivity extends AppCompatActivity {
 
@@ -146,13 +150,17 @@ public class ShowRunActivity extends AppCompatActivity {
                     // set up the RecyclerView and the Adapter to organize the table
                     setUpRecyclerView(splitsArrayList);
 
+
+
                     // set up al the values from fire base into the UI
                     chronometer = (String) value.get("chronometer");
                     binding.timeTextView.setText(chronometer);
                     distance = (String) value.get("distance");
                     binding.kmTextView.setText(distance);
-                    timestamp = (String) value.get("timestamp");
-                    binding.timeStampTextView.setText(timestamp);
+
+                    // value.get("timestamp") is Timestamp so we need to write this code to get it back to string
+                    binding.timeStampTextView.setText(getTimeStamp((Timestamp)value.get("timestamp")));
+
                     timesOfDay = (String) value.get("timesOfDay");
                     binding.topAppBar.setTitle(timesOfDay);
                     avgPace = (String) value.get("avgPace");
@@ -161,6 +169,15 @@ public class ShowRunActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    // method that write back Timestamp to string
+    public String getTimeStamp(Timestamp timestamp){
+        Date date = timestamp.toDate();
+        long timestampl = date.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String dateStr = simpleDateFormat.format(timestampl);
+        return dateStr;
     }
 
     private void setUpRecyclerView(ArrayList<Splits> splitsArrayList){
