@@ -2,11 +2,6 @@ package com.example.runner.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +10,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.runner.R;
 import com.example.runner.ShowRunActivity;
@@ -28,7 +27,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -40,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AllRunsFragment extends Fragment{
+public class AllRunsFragment extends Fragment {
 
     private View view;
     private ListView allRunsListView;
@@ -79,7 +77,7 @@ public class AllRunsFragment extends Fragment{
                         }
                         if (value.exists()) {
                             Intent intent = new Intent(getContext(), ShowRunActivity.class);
-                            intent.putExtra("position",allRunArrayList.get(position));
+                            intent.putExtra("position", allRunArrayList.get(position));
                             startActivity(intent);
                         }
                     }
@@ -102,7 +100,7 @@ public class AllRunsFragment extends Fragment{
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection(firebaseUser.getUid());
 
-
+        //Log.d("yossi err", "AllRunsFragment: hello from fragment");
         getAllRunList();
 
 //        firebaseFirestore.collection("J0RsZAUuh2groBmPnTOagAv3Dro1")
@@ -124,27 +122,28 @@ public class AllRunsFragment extends Fragment{
 //            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 //
 //                for (QueryDocumentSnapshot document : value) {
-//                    Log.d("yoyo2", "onEvent: "+ getTimeStamp((Timestamp) document.get("timestamp")));
+//                    Log.d("yoyo2", "onEvent4: "+ getTimeStamp((Timestamp) document.get("timestamp")));
 //                }
 //            }
 //        });
 
     }
-        // method that write back Timestamp to string
-        public String getTimeStamp(Timestamp timestamp) {
-            Date date = new Date(2000, 11, 21);
-            try {
-                date = timestamp.toDate();
-            } catch (Exception e) {
 
-            }
-            long timestampl = date.getTime();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String dateStr = simpleDateFormat.format(timestampl);
-            return dateStr;
+    // method that write back Timestamp to string
+    public String getTimeStamp(Timestamp timestamp) {
+        Date date = new Date(2000, 11, 21);
+        try {
+            date = timestamp.toDate();
+        } catch (Exception e) {
+
         }
+        long timestampl = date.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String dateStr = simpleDateFormat.format(timestampl);
+        return dateStr;
+    }
 
-        private void getAllRunList() {
+    private void getAllRunList() {
 //        collectionReference.get()
 //                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //                    @Override
@@ -163,32 +162,56 @@ public class AllRunsFragment extends Fragment{
 //                        }
 //                    }
 //                });
-
-            firebaseFirestore.collection(firebaseUser.getUid())
-                    .orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    allRunArrayList.clear();
-                    if(!value.isEmpty()){
-                        for (QueryDocumentSnapshot document : value) {
-                            //GET FIRESTORE DOCUMENT TITLE
-                            String runString = document.getId();
-                            //ADD TO RUN LIST
-                            allRunArrayList.add(runString);
-                        }
-                        try {
-                            itemsAdapter = new ArrayAdapter(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, allRunArrayList);
-                            allRunsListView.setAdapter(itemsAdapter);
-                        }catch (Exception e){
-                            Log.d("yossi err", "AllRunsFragment - getAllRunList(): "+e.getMessage());
-//                            Log.d("yossi err", "AllRunsFragment - getAllRunList(): "+error.getMessage());
-                        }
-
-                    }else{
-
+        //collectionReference.
+        firebaseFirestore.collection(firebaseUser.getUid())
+                .orderBy("timestamp", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //GET FIRESTORE DOCUMENT TITLE
+                        String runString = document.getId();
+                        //ADD TO RUN LIST
+                        allRunArrayList.add(runString);
                     }
+                    try {
+                        itemsAdapter = new ArrayAdapter(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, allRunArrayList);
+                        allRunsListView.setAdapter(itemsAdapter);
+                    } catch (Exception e) {
+                        Log.d("yossi err", "AllRunsFragment - getAllRunList(): " + e.getMessage());
+                    }
+                } else {
+                    Log.w("TAG", "AllRunsFragment - Error getting documents.", task.getException());
                 }
-            });
+            }
+        });
+
+
+//                    firebaseFirestore.collection(firebaseUser.getUid())
+//                .orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                @Override
+//                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                    allRunArrayList.clear();
+//                    if(!value.isEmpty()){
+//                        for (QueryDocumentSnapshot document : value) {
+//                            //GET FIRESTORE DOCUMENT TITLE
+//                            String runString = document.getId();
+//                            //ADD TO RUN LIST
+//                            allRunArrayList.add(runString);
+//                        }
+//                        try {
+//                            itemsAdapter = new ArrayAdapter(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, allRunArrayList);
+//                            allRunsListView.setAdapter(itemsAdapter);
+//                        }catch (Exception e){
+//                            Log.d("yossi err", "AllRunsFragment - getAllRunList(): "+e.getMessage());
+////                            Log.d("yossi err", "AllRunsFragment - getAllRunList(): "+error.getMessage());
+//                        }
+//
+//                    }else{
+//
+//                    }
+//                }
+//            });
     }
 
 }

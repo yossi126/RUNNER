@@ -172,10 +172,15 @@ public class ShowRunActivity extends AppCompatActivity {
     }
 
     // method that write back Timestamp to string
-    public String getTimeStamp(Timestamp timestamp){
-        Date date = timestamp.toDate();
+    public String getTimeStamp(Timestamp timestamp) {
+        Date date = new Date(2000, 11, 21);
+        try {
+            date = timestamp.toDate();
+        } catch (Exception e) {
+
+        }
         long timestampl = date.getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String dateStr = simpleDateFormat.format(timestampl);
         return dateStr;
     }
