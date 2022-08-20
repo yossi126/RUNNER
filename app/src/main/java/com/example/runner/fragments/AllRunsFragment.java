@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ public class AllRunsFragment extends Fragment {
 
     private View view;
     private ListView allRunsListView;
+    private TextView textView;
     //SET ALL RUNS LIST VIEW
     private ArrayList<String> allRunArrayList;
     private ArrayAdapter<String> itemsAdapter;
@@ -77,6 +79,7 @@ public class AllRunsFragment extends Fragment {
                         }
                         if (value.exists()) {
                             Intent intent = new Intent(getContext(), ShowRunActivity.class);
+                            // here we pass the ID of the document that we press and move it to the next activity
                             intent.putExtra("position", allRunArrayList.get(position));
                             startActivity(intent);
                         }
@@ -100,7 +103,6 @@ public class AllRunsFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection(firebaseUser.getUid());
 
-        //Log.d("yossi err", "AllRunsFragment: hello from fragment");
         getAllRunList();
 
 //        firebaseFirestore.collection("J0RsZAUuh2groBmPnTOagAv3Dro1")
@@ -162,12 +164,22 @@ public class AllRunsFragment extends Fragment {
 //                        }
 //                    }
 //                });
-        //collectionReference.
+
+        /*
+        there are 2 kind of timestamps, both of them in the EndRunSummary Activity
+        1. one we use to save the time stamp in the fire store for order - FieldValue.serverTimestamp()
+        2. with the second we only mark the ID of the document - getCurrentDateTime()
+
+        In this code here we are ordering the runs by the 2 option.
+        after that we take only take the ID by string and put it in array list of strings.
+
+        */
         firebaseFirestore.collection(firebaseUser.getUid())
                 .orderBy("timestamp", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    //allRunArrayList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         //GET FIRESTORE DOCUMENT TITLE
                         String runString = document.getId();

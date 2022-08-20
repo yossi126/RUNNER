@@ -158,7 +158,7 @@ public class ShowRunActivity extends AppCompatActivity {
                     distance = (String) value.get("distance");
                     binding.kmTextView.setText(distance);
 
-                    // value.get("timestamp") is Timestamp so we need to write this code to get it back to string
+                    // value.get("timestamp") is Timestamp so we need to use getTimeStamp() to get it back to string
                     binding.timeStampTextView.setText(getTimeStamp((Timestamp)value.get("timestamp")));
 
                     timesOfDay = (String) value.get("timesOfDay");

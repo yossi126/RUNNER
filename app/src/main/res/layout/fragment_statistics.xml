@@ -1,14 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.StatisticsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Statistics" />
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/longestRunSearchIv"
+            android:layout_width="35dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_baseline_search_24"
+            app:layout_constraintEnd_toEndOf="@+id/longestRunTextView"
+            app:layout_constraintStart_toStartOf="@+id/longestRunTextView"
+            app:layout_constraintTop_toBottomOf="@+id/longestRunTextView" />
+
+        <TextView
+            android:id="@+id/longestRunTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="---"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Longest Run"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/longestRunDateTextView"
+            app:layout_constraintStart_toStartOf="@+id/longestRunDateTextView"
+            app:layout_constraintTop_toBottomOf="@+id/longestRunDateTextView" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Total Runs"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/totalRunsTextView"
+            app:layout_constraintStart_toStartOf="@+id/totalRunsTextView"
+            app:layout_constraintTop_toBottomOf="@+id/totalRunsTextView" />
+
+        <TextView
+            android:id="@+id/totalRunsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="-1"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.202"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/totalKmTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="-1"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/totalRunsTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Total Km"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/totalKmTextView"
+            app:layout_constraintStart_toStartOf="@+id/totalKmTextView"
+            app:layout_constraintTop_toBottomOf="@+id/totalKmTextView" />
+
+        <TextView
+            android:id="@+id/longestRunDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="12/12/12"
+            app:layout_constraintEnd_toEndOf="@+id/longestRunSearchIv"
+            app:layout_constraintStart_toStartOf="@+id/longestRunSearchIv"
+            app:layout_constraintTop_toBottomOf="@+id/longestRunSearchIv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

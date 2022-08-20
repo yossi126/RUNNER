@@ -85,6 +85,7 @@ public class EndRunSummary extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        //the ID of every document will be timestamp method that we created  - getCurrentDateTime().
         documentReference = firebaseFirestore.collection(firebaseUser.getUid()).document(getCurrentDateTime());
 
 
@@ -95,7 +96,7 @@ public class EndRunSummary extends AppCompatActivity {
             points = polylineOptions.getPoints();
             splitsArrayList = (ArrayList<Splits>) extras.get("splits");
         }
-        Log.d("current", "onCreate: "+splitsArrayList.toString());
+
         binding.distanceTv.setText(distance + " km");
         binding.timeTv.setText("Time: " + chronometer);
         drawTrack();
@@ -107,7 +108,13 @@ public class EndRunSummary extends AppCompatActivity {
         Map<String, Object> run = new HashMap<>();
         run.put("distance", distance);
         run.put("points", points);
-        // FieldValue create timestamp in DB
+        /*
+        there are 2 kind of timestamps:
+        1. one we use to save the timestamp in the fire store for order - FieldValue.serverTimestamp()
+        2. with the second we only mark the ID of the document. getCurrentDateTime().
+
+        FieldValue create timestamp in DB. i made a change here, originally we put the method getCurrentDateTime().
+        */
         run.put("timestamp", FieldValue.serverTimestamp());
         run.put("chronometer", chronometer);
         run.put("splits", splitsArrayList);
