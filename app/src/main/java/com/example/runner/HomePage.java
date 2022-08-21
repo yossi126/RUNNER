@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,16 +59,31 @@ public class HomePage extends AppCompatActivity {
         //FIREBASE - GET CURRENT USER ID +GET PATH OF DB NAMED "USERS"
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        //SET USER STATUS ONLINE
-        //databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(true);
 
-        //CHANGE LAST LOGIN PARAMETER FOR USER MANAGEMENT
-        lastLogin = getCurrentDateTime();
-        databaseReference.child(firebaseUser.getUid()).child("lastLogin").setValue(lastLogin);
+        //LAST LOGIN WIDGET
+//        databaseReference.child(firebaseUser.getUid()).child("lastLogin").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                lastLogin =String.valueOf(task.getResult().getValue());
+//                if (!task.isSuccessful()) {
+//                    Log.e("shuki", "Error getting data", task.getException());
+//                }
+//                else {
+//                    if (lastLogin == "")
+//                    {
+//                        binding.lastLogin.setText("First Login Welcome");
+//                    }
+//                    else {
+//                        lastLogin =String.valueOf(task.getResult().getValue());
+//                        binding.lastLogin.setText("Last Login " +  lastLogin);
+//                    }
+//                }
+//            }
+//        });
 
-        //CREATE CALENDAR LIST
+
+        //CALENDAR WIDGET - CREATE CALENDAR LIST
         calendars = new ArrayList<>();
-
         //HIGHLIGHT RUNNING DATES IN CALENDAR
         db.collection(firebaseUser.getUid())
                 .get()
@@ -95,8 +111,7 @@ public class HomePage extends AppCompatActivity {
                     }
                 });
 
-
-        //GET USER LAST RUN + ASSIGN IN CARDVIEW
+        //CARD WIDGET - GET USER LAST RUN + ASSIGN IN CARDVIEW
         db.collection(firebaseUser.getUid()).orderBy("timestamp", Query.Direction.DESCENDING).limit(1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

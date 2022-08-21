@@ -70,6 +70,7 @@
         android:id="@+id/distanceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
         android:text="0.30 km"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"

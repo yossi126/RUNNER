@@ -96,7 +96,7 @@ public class EndRunSummary extends AppCompatActivity {
         }
         Log.d("current", "onCreate: "+splitsArrayList.toString());
         binding.distanceTv.setText(distance + " km");
-        binding.timeTv.setText("Time: " + chronometer);
+        binding.timeTv.setText("Total Time : " + chronometer);
         drawTrack();
 
         setSummaryTextView();
@@ -183,7 +183,7 @@ public class EndRunSummary extends AppCompatActivity {
 
         // set up the text
         firstLine.append(getCurrentTime().substring(0,5));
-        binding.firstLineTv.setText(firstLine);
+        binding.firstLineTv.setText("Clock " + firstLine);
         secondLine.append(dayString + " "+timesOfDayTittle+" Run");
         binding.secondLineTv.setText(secondLine);
         // for saving the timesOfDay in the fire store
