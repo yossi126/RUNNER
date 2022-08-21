@@ -261,9 +261,8 @@ public class Login extends AppCompatActivity {
                     // send verified email to user
                     // to do ---> Verification not working now....
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                    String lastLogin = "";
-                    //CHANGE LAST LOGIN PARAMETER
-                    lastLogin = HomePage.getCurrentDateTime();
+                    //CHANGE LAST LOGIN
+                    String lastLogin = HomePage.getCurrentDateTime();
                     databaseReference = FirebaseDatabase.getInstance().getReference("users");
                     databaseReference.child(firebaseUser.getUid()).child("lastLogin").setValue(lastLogin);
                     startActivity(new Intent(Login.this, HomePage.class));

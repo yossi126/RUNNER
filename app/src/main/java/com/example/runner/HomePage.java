@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,10 +22,8 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -44,7 +41,6 @@ public class HomePage extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
-    private String lastLogin;
     private List<Calendar> calendars;
     private SupportMapFragment supportMapFragment;
     private GoogleMap map;
@@ -62,25 +58,24 @@ public class HomePage extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
         //LAST LOGIN WIDGET
-//        databaseReference.child(firebaseUser.getUid()).child("lastLogin").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                lastLogin =String.valueOf(task.getResult().getValue());
-//                if (!task.isSuccessful()) {
-//                    Log.e("shuki", "Error getting data", task.getException());
-//                }
-//                else {
-//                    if (lastLogin == "")
-//                    {
-//                        binding.lastLogin.setText("First Login Welcome");
-//                    }
-//                    else {
-//                        lastLogin =String.valueOf(task.getResult().getValue());
-//                        binding.lastLogin.setText("Last Login " +  lastLogin);
-//                    }
-//                }
-//            }
-//        });
+        databaseReference.child(firebaseUser.getUid()).child("logOut").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                String logOut=String.valueOf(task.getResult().getValue());
+                if (!task.isSuccessful()) {
+                    Log.e("shuki", "Error getting data", task.getException());
+                }
+                else {
+                    if (logOut.equals("1"))
+                    {
+                        binding.lastLogin.setText("First Login Welcome");
+                    }
+                    else {
+                        binding.lastLogin.setText("Last Login " +  logOut);
+                    }
+                }
+            }
+        });
 
 
         //CALENDAR WIDGET - CREATE CALENDAR LIST
@@ -206,6 +201,9 @@ public class HomePage extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.logOut:
+                        String logOut = HomePage.getCurrentDateTime();
+                        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                        databaseReference.child(firebaseUser.getUid()).child("logOut").setValue(logOut);
                         Intent intent = new Intent(HomePage.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         FirebaseAuth.getInstance().signOut();

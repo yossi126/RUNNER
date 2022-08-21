@@ -58,6 +58,7 @@ public class Register extends AppCompatActivity {
         String weight= " ";
         String gender=" ";
         String lastLogin = HomePage.getCurrentDateTime();
+        String logOut="1";
         String profilePhoto="1";
         String coverPhoto = "1";
         String letsRun = "";
@@ -131,7 +132,7 @@ public class Register extends AppCompatActivity {
 
                                     String uid = firebaseAuth.getCurrentUser().getUid();
                                     User newUser = new User (name,email,passEncrypt,uid,date,height,weight,gender,
-                                            profilePhoto,coverPhoto,lastLogin,letsRun,invitedToRun);
+                                            profilePhoto,coverPhoto,lastLogin,logOut,letsRun,invitedToRun);
 
                                     FirebaseDatabase.getInstance().getReference("users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

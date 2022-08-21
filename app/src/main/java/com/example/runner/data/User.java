@@ -17,6 +17,7 @@ public class User {
     private String profilePhoto;
     private String coverPhoto;
     private String lastLogin;
+    private String logOut;
     private boolean isConnected;
     private String letsRun;
     private boolean invitedToRun;
@@ -28,7 +29,7 @@ public class User {
     //NEW USER C'TOR
     public User(String name, String email, String pass, String uid, String date,
                 String height, String weight, String gender, String profilePhoto,
-                String coverPhoto, String lastLogin,String letsRun,boolean invitedToRun) {
+                String coverPhoto, String lastLogin,String logOut,String letsRun,boolean invitedToRun) {
         this.name = name;
         this.email = email;
         this.pass = pass;
@@ -40,6 +41,7 @@ public class User {
         this.profilePhoto = profilePhoto;
         this.coverPhoto = coverPhoto;
         this.lastLogin = lastLogin;
+        this.logOut = logOut;
         this.letsRun = letsRun;
         this.invitedToRun = invitedToRun;
 
@@ -139,6 +141,14 @@ public class User {
 
     public void setLastLogin(String lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public String getLogOut() {
+        return logOut;
+    }
+
+    public void setLogOut(String logOut) {
+        this.logOut = logOut;
     }
 
     public String getLetsRun() {

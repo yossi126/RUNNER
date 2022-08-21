@@ -174,6 +174,9 @@ public class Run extends AppCompatActivity implements OnMapReadyCallback{
             public boolean onMenuItemClick(MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.logOut:
+                        String logOut = HomePage.getCurrentDateTime();
+                        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                        databaseReference.child(firebaseUser.getUid()).child("logOut").setValue(logOut);
                         Intent intent = new Intent(Run.this,MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         databaseReference.child(firebaseUser.getUid()).child("isConnected").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {

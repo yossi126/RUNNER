@@ -683,6 +683,9 @@ public class Profile extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.logOut:
+                        String logOut = HomePage.getCurrentDateTime();
+                        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                        databaseReference.child(firebaseUser.getUid()).child("logOut").setValue(logOut);
                         Intent intent = new Intent(Profile.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         FirebaseAuth.getInstance().signOut();

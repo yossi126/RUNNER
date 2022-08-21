@@ -196,6 +196,9 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.logOut:
+                        String logOut = HomePage.getCurrentDateTime();
+                        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                        databaseReference.child(currentFirebaseUser.getUid()).child("logOut").setValue(logOut);
                         Intent intent = new Intent(Club.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
