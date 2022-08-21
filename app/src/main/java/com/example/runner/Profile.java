@@ -703,29 +703,7 @@ public class Profile extends AppCompatActivity {
                                 delProfile.delete();
 
                                 //DELETE USER COLLECTION FROM FB FIRESTORE
-                                collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            //GET AL DOCUMENTS ID TO LIST
-                                            List<String> list = new ArrayList<>();
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                list.add(document.getId());
-                                            }
-                                            int count = 0;
-                                            //DELETE COLLECTION BY DOC ID
-                                            while (!(list.isEmpty()))
-                                            {
-                                                collectionReference.document(list.get(count)).delete();
-                                                list.remove(count);
-                                            }
-                                        }
-
-                                        else {
-                                            Log.d("logd", "Error getting documents: ", task.getException());
-                                        }
-                                    }
-                                });
+                                deleteFScollection();
 
                                 //DELETE USER FROM FB AUTHENTICATION AND REALTIME
                                 firebaseUser.delete()
@@ -759,6 +737,33 @@ public class Profile extends AppCompatActivity {
                         break;
                 }
                 return true;
+            }
+        });
+    }
+
+    //DELETE USER COLLECTION FROM FB FIRESTORE
+    private void deleteFScollection() {
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    //GET AL DOCUMENTS ID TO LIST
+                    List<String> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        list.add(document.getId());
+                    }
+                    int count = 0;
+                    //DELETE COLLECTION BY DOC ID
+                    while (!(list.isEmpty()))
+                    {
+                        collectionReference.document(list.get(count)).delete();
+                        list.remove(count);
+                    }
+                }
+
+                else {
+                    Log.d("logd", "Error getting documents: ", task.getException());
+                }
             }
         });
     }

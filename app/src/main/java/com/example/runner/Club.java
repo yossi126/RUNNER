@@ -240,7 +240,6 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
     @Override
     public void onContactClick(String partnerUid) {
         //write to fb realtime
-
         databaseReference.child(currentFirebaseUser.getUid()).child("letsRun").setValue(partnerUid);
         //CHECK IF USER IS NOT PAIRING
         databaseReference.child(partnerUid).addListenerForSingleValueEvent(new ValueEventListener() {

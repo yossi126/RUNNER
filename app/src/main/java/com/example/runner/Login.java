@@ -25,12 +25,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Login extends AppCompatActivity {
 
     public static final String USER_PRF = "userPref";
     private ActivityLoginBinding binding;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
     private SharedPreferences sharedPreferences;
 
 
@@ -50,18 +53,17 @@ public class Login extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // yossi edit remember me
-
-        //Shared Preferences
+        //Shared Preferences - yossi edit remember me
         sharedPreferences = getSharedPreferences(USER_PRF,MODE_PRIVATE);
         String saveEmail = sharedPreferences.getString("svEmail","");
         String savePassword = sharedPreferences.getString("svPassword","");
         //        SharedPreferences.Editor editor = sharedPreferences.edit();
-        if(sharedPreferences.contains("checked") && sharedPreferences.getBoolean("checked", false) == true){
+        if(sharedPreferences.contains("checked") && sharedPreferences.getBoolean("checked", false) == true)
+        {
             binding.checkBoxRememberMe.setChecked(true);
-        }else{
+        }
+        else{
             binding.checkBoxRememberMe.setChecked(false);
-
         }
         binding.etEmail.setText(saveEmail);
         binding.etPassword.setText(savePassword);
@@ -76,7 +78,6 @@ public class Login extends AppCompatActivity {
         });
 
         // yossi edit remember me
-
         binding.forgotPassTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -260,6 +261,11 @@ public class Login extends AppCompatActivity {
                     // send verified email to user
                     // to do ---> Verification not working now....
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String lastLogin = "";
+                    //CHANGE LAST LOGIN PARAMETER
+                    lastLogin = HomePage.getCurrentDateTime();
+                    databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                    databaseReference.child(firebaseUser.getUid()).child("lastLogin").setValue(lastLogin);
                     startActivity(new Intent(Login.this, HomePage.class));
                     finish();
 //                    if(firebaseUser.isEmailVerified()){

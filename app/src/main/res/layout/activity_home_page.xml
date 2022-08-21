@@ -78,7 +78,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/guideline12"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/guideline15"
-                    app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+                    app:layout_constraintTop_toBottomOf="@+id/lastLogin" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -95,32 +95,17 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/lastLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Last Track"
+                    android:layout_marginTop="24dp"
+                    android:text="Last Login"
                     android:textAlignment="center"
-                    android:textSize="35dp"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toStartOf="@+id/guideline12"
                     app:layout_constraintStart_toStartOf="@+id/guideline15"
                     app:layout_constraintTop_toBottomOf="@+id/materialDivider3" />
 
-                <FrameLayout
-                    android:id="@+id/frameLayout2"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-                    <fragment
-                        android:id="@+id/google_map_end"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                </FrameLayout>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView"
