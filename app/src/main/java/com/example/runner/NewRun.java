@@ -81,6 +81,7 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener {
     private Double time = 0.0;
     private boolean timerStarted;
     private String currentSplit;
+    private Integer flag=0;
 
 
     @Override
@@ -279,7 +280,17 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.imageButtonStartPause) {
-            startPauseCycle();
+            if(flag==0)
+            {
+                startPauseCycle();
+                binding.topAppBar.setVisibility(View.GONE);
+                flag=1;
+            }
+            else{
+                startPauseCycle();
+                binding.topAppBar.setVisibility(View.VISIBLE);
+                flag=0;
+            }
         } else if (v.getId() == R.id.imageButtonStop) {
             Toast.makeText(this, "Ending run with long click", Toast.LENGTH_SHORT).show();
         }
