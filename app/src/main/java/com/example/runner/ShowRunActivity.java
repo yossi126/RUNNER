@@ -51,7 +51,7 @@ public class ShowRunActivity extends AppCompatActivity {
     //binding
     private ActivityShowRunBinding binding;
     //var
-    private String position, chronometer, distance, timestamp, timesOfDay, avgPace;
+    private String position, chronometer, distance, timesOfDay, avgPace;
     private Bundle extras;
     //map
     private List<LatLng> points;

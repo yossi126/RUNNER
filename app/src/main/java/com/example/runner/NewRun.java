@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -35,6 +37,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -439,4 +443,17 @@ public class NewRun extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem cancelNewRun = menu.findItem(R.id.cancelNewRun);
+        if(true)
+        {
+            cancelNewRun.setVisible(false);
+        }
+        else
+        {
+            cancelNewRun.setVisible(true);
+        }
+        return true;
+    }
 }
