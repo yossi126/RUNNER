@@ -7,11 +7,55 @@
     tools:context=".RunTogether">
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/myName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WELCOME"
+        android:text="myName"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/partnerName"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/partnerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="partnerName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/myName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/myKm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="myKm"
+        app:layout_constraintEnd_toStartOf="@+id/partnerKm"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myName" />
+
+    <TextView
+        android:id="@+id/partnerKm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="partnerKm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/myKm"
+        app:layout_constraintTop_toBottomOf="@+id/partnerName" />
+
+    <TextView
+        android:id="@+id/ourChronmeter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ourChronmeter"
+        app:layout_constraintBottom_toTopOf="@+id/myName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

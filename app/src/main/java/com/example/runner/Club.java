@@ -227,7 +227,7 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
         //RESET PARAMETERS
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
         databaseReference.child(currentFirebaseUser.getUid()).child("invitedToRun").setValue(false);
-        databaseReference.child(currentFirebaseUser.getUid()).child("letsRun").setValue("");
+        //databaseReference.child(currentFirebaseUser.getUid()).child("letsRun").setValue("");
         invitedToRun = false;
     }
 
