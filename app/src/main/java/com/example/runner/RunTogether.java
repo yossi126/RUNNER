@@ -149,9 +149,23 @@ public class RunTogether extends AppCompatActivity {
 //        });
 
         requestLocation();
+        stopButton();
 
 
     }
+
+    private void stopButton() {
+        binding.finishRunTogether.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+                databaseReference.child(currentFirebaseUser.getUid()).child("hasFinished").setValue(true);
+                finish();
+                return false;
+            }
+        });
+    }
+
 
     private void getCurrentLocation() {
         // init the first location to avoid mistakes
@@ -199,5 +213,11 @@ public class RunTogether extends AppCompatActivity {
             lng2 = (float) latLng2.longitude;
             distanceFar += distance(lat1, lng1, lat2, lng2);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 }

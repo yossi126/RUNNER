@@ -22,6 +22,7 @@ public class User {
     private String letsRun;
     private boolean invitedToRun;
     private String currentKm;
+    private boolean hasFinished;
 
 
 
@@ -31,7 +32,8 @@ public class User {
     //NEW USER C'TOR
     public User(String name, String email, String pass, String uid, String date,
                 String height, String weight, String gender, String profilePhoto,
-                String coverPhoto, String lastLogin,String logOut,String letsRun,boolean invitedToRun,String currentKm) {
+                String coverPhoto, String lastLogin,String logOut,String letsRun,boolean invitedToRun,
+                String currentKm, boolean hasFinished) {
         this.name = name;
         this.email = email;
         this.pass = pass;
@@ -176,5 +178,14 @@ public class User {
 
     public void setCurrentKm(String currentKm) {
         this.currentKm = currentKm;
+    }
+
+
+    public boolean isHasFinished() {
+        return hasFinished;
+    }
+
+    public void setHasFinished(boolean hasFinished) {
+        this.hasFinished = hasFinished;
     }
 }
