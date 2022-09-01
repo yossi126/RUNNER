@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".RunTogether">
 
+    <Chronometer
+        android:id="@+id/timeChronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="144dp"
+        android:textColor="@color/primary_text"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/myName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/myName"
         android:layout_width="wrap_content"
@@ -50,22 +62,12 @@
         app:layout_constraintStart_toEndOf="@+id/myKm"
         app:layout_constraintTop_toBottomOf="@+id/partnerName" />
 
-    <TextView
-        android:id="@+id/ourChronmeter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ourChronmeter"
-        app:layout_constraintBottom_toTopOf="@+id/myName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/finishRunTogether"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="116dp"
-        android:text="finish"
+        android:text="End Run"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

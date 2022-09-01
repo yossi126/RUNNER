@@ -65,6 +65,7 @@ public class Register extends AppCompatActivity {
         boolean invitedToRun = false;
         String currentKm = "";
         boolean hasFinished = false;
+        String myChrono = "";
 
 
         progressBar.setVisibility(View.GONE);
@@ -134,7 +135,7 @@ public class Register extends AppCompatActivity {
 
                                     String uid = firebaseAuth.getCurrentUser().getUid();
                                     User newUser = new User (name,email,passEncrypt,uid,date,height,weight,gender,
-                                            profilePhoto,coverPhoto,lastLogin,logOut,letsRun,invitedToRun,currentKm,hasFinished);
+                                            profilePhoto,coverPhoto,lastLogin,logOut,letsRun,invitedToRun,currentKm,hasFinished,myChrono);
 
                                     FirebaseDatabase.getInstance().getReference("users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

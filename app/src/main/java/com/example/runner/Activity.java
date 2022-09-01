@@ -21,6 +21,7 @@ import com.example.runner.Adapter.ViewPagerAdapter;
 import com.example.runner.databinding.ActivityBinding;
 import com.example.runner.databinding.ActivityHomePageBinding;
 import com.example.runner.fragments.AllRunsFragment;
+import com.example.runner.fragments.RunTogetherListFragment;
 import com.example.runner.fragments.StatisticsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -88,6 +89,7 @@ public class Activity extends AppCompatActivity {
         //tabs
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),getLifecycle());
         viewPagerAdapter.addFragment(new AllRunsFragment(), "Runs List",R.drawable.ic_baseline_run_list_24);
+        viewPagerAdapter.addFragment(new RunTogetherListFragment(), "Run Together",R.drawable.ic_baseline_query_stats_24);
         viewPagerAdapter.addFragment(new StatisticsFragment(), "Statistics",R.drawable.ic_baseline_query_stats_24);
         binding.viewPager2.setAdapter(viewPagerAdapter);
 

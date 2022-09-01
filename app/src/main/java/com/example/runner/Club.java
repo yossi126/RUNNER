@@ -21,6 +21,7 @@ import com.example.runner.databinding.ActivityClubBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -122,11 +123,11 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
 
 
 
+
+
     }
 
     private void getUser(String searchUser) {
-        Log.i("shukim", "search");
-
         //GET DATA FROM REALTIME FB PATH
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -227,7 +228,6 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
         //RESET PARAMETERS
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(false);
         databaseReference.child(currentFirebaseUser.getUid()).child("invitedToRun").setValue(false);
-        //databaseReference.child(currentFirebaseUser.getUid()).child("letsRun").setValue("");
         invitedToRun = false;
     }
 
@@ -238,6 +238,13 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
         binding.bottomNavBar.setSelectedItemId(R.id.club);
         overridePendingTransition(0, 0);
         databaseReference.child(currentFirebaseUser.getUid()).child("isConnected").setValue(true);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        databaseReference.child(currentFirebaseUser.getUid()).child("hasFinished").setValue(false);
     }
 
     @Override
@@ -266,28 +273,52 @@ public class Club extends AppCompatActivity implements ClubAdapterRecyclerView.O
             }
         });
 
-        //PAIR USERS
-        databaseReference.child(currentFirebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean minvitedToRun = (boolean) snapshot.child("invitedToRun").getValue();
-                if(minvitedToRun && invitedToRun){
-                    //OPEN NEW INTENT
-                    Log.d("shuki", " 2");
-                    Intent intent = new Intent(Club.this, RunTogether.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
 
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.bottomNavBar), "waiting 10 seconds for partner",
+                Snackbar.LENGTH_SHORT);
+        snackbar.setDuration(10000);
+        snackbar.show();
+        snackbar.addCallback(new Snackbar.Callback() {
+
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                //see Snackbar.Callback docs for event details
+                if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                    // Snackbar closed on its own
+                    databaseReference.child(partnerUid).child("invitedToRun").setValue(false);
+                    databaseReference.child(currentFirebaseUser.getUid()).child("invitedToRun").setValue(false);
+                    Toast.makeText(Club.this, "user not respond", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onShown(Snackbar snackbar) {
+                //PAIR USERS
+                databaseReference.child(currentFirebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                Toast.makeText(Club.this, "ERROR",Toast.LENGTH_SHORT).show();
+                        boolean minvitedToRun = (boolean) snapshot.child("invitedToRun").getValue();
+                        if(minvitedToRun && invitedToRun){
+                            //OPEN NEW INTENT
+                            snackbar.dismiss();
+                            Intent intent = new Intent(Club.this, RunTogether.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+                            startActivity(intent);
+
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                        Toast.makeText(Club.this, "ERROR",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
             }
         });
 
     }
 
-}
+    }

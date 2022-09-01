@@ -7,19 +7,17 @@ import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 
 import com.example.runner.data.User;
-import com.example.runner.databinding.ActivityNewRunBinding;
 import com.example.runner.databinding.ActivityRunTogetherBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,8 +29,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RunTogether extends AppCompatActivity {
 
@@ -41,6 +46,8 @@ public class RunTogether extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private User currentUser;
     private FirebaseUser firebaseUser;
+    private FirebaseFirestore firebaseFirestore;
+    private DocumentReference documentReference;
 
 
     private String km;
@@ -55,6 +62,11 @@ public class RunTogether extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Looper looper;
+
+
+    //Chronometer vars
+    private boolean stopStart;
+    private long pauseOffset;
 
 
     //public static String partnerUid;
@@ -74,6 +86,18 @@ public class RunTogether extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        documentReference = firebaseFirestore.collection("share").document();
+
+        //Chronometer vars
+        pauseOffset = 0;
+        distanceFar = 0;
+        startChronometer();
+
+        String startTime = getCurrentDateTime();
+
+
+
 
         //GET PARTNER AND USER PARAMETERS
         databaseReference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -101,6 +125,7 @@ public class RunTogether extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
 
         distanceFar = 0;
@@ -149,22 +174,103 @@ public class RunTogether extends AppCompatActivity {
 //        });
 
         requestLocation();
-        stopButton();
+        //stopButton();
 
-
-    }
-
-    private void stopButton() {
-        binding.finishRunTogether.setOnLongClickListener(new View.OnLongClickListener() {
+        binding.finishRunTogether.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-                databaseReference.child(currentFirebaseUser.getUid()).child("hasFinished").setValue(true);
-                finish();
-                return false;
+            public void onClick(View view) {
+
+
+                databaseReference.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        String partnerUid = String.valueOf(snapshot.child("letsRun").getValue());
+                        String myname = String.valueOf(snapshot.child("name").getValue());
+                        String mykm = String.valueOf(snapshot.child("currentKm").getValue());
+                        databaseReference.child(firebaseUser.getUid()).child("myChrono").setValue(binding.timeChronometer.getText());
+                        String mychrono = String.valueOf(snapshot.child("myChrono").getValue());
+                        databaseReference.child(firebaseUser.getUid()).child("hasFinished").setValue(true);
+
+                        databaseReference.child(partnerUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String partnerKm = String.valueOf(snapshot.child("currentKm").getValue());
+                                String partnerChrono = String.valueOf(snapshot.child("myChrono").getValue());
+                                String partnerName = String.valueOf(snapshot.child("name").getValue());
+
+                                if((boolean)snapshot.child("hasFinished").getValue() == false){
+                                    fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+                                    pauseChronometer();
+                                }else{
+                                    Map<String, Object> runTogether = new HashMap<>();
+                                    runTogether.put(firebaseUser.getUid(),mykm+" "+mychrono);
+                                    runTogether.put(partnerUid,partnerKm+" "+partnerChrono);
+                                    runTogether.put("runners", partnerName + " & " + myname);
+                                    runTogether.put("startTime",startTime);
+                                    runTogether.put("timestamp", FieldValue.serverTimestamp());
+
+                                    documentReference.set(runTogether).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                        }
+                                    });
+
+                                    //databaseReference.child(firebaseUser.getUid()).child("hasFinished").setValue(false);
+                                    //databaseReference.child(partnerUid).child("hasFinished").setValue(false);
+                                    finish();
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                        databaseReference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String partnerUid = String.valueOf(snapshot.child("letsRun").getValue());
+                                databaseReference.child(partnerUid).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if((boolean)snapshot.child("hasFinished").getValue() == true){
+                                            finish();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+                String partnerid = String.valueOf(databaseReference.child(currentFirebaseUser.getUid()).child("letsRun"));
+                Log.d("TAG", "onClick: "+partnerid);
             }
         });
+
     }
+
+
 
 
     private void getCurrentLocation() {
@@ -218,6 +324,35 @@ public class RunTogether extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
+
+
+    // CHRONOMETER
+    private void startChronometer() {
+        binding.timeChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+        binding.timeChronometer.start();
+    }
+
+    private void pauseChronometer() {
+        binding.timeChronometer.stop();
+        pauseOffset = SystemClock.elapsedRealtime() - binding.timeChronometer.getBase();
+    }
+
+    private void resetChronometer() {
+        binding.timeChronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset = 0;
+    }
+
+    private static String getCurrentDateTime() {
+        // creating an id by time and date to the "SavedRuns" children
+        Date dNow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        //SimpleDateFormat ft = new SimpleDateFormat("EEEE, d MMMM yyyy HH:mm:ss");
+        String datetime = ft.format(dNow);
+        return datetime;
+    }
+
+
+
 }

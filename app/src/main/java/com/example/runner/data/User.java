@@ -23,6 +23,7 @@ public class User {
     private boolean invitedToRun;
     private String currentKm;
     private boolean hasFinished;
+    private String myChrono;
 
 
 
@@ -33,7 +34,7 @@ public class User {
     public User(String name, String email, String pass, String uid, String date,
                 String height, String weight, String gender, String profilePhoto,
                 String coverPhoto, String lastLogin,String logOut,String letsRun,boolean invitedToRun,
-                String currentKm, boolean hasFinished) {
+                String currentKm, boolean hasFinished,String myChrono) {
         this.name = name;
         this.email = email;
         this.pass = pass;
@@ -49,6 +50,7 @@ public class User {
         this.letsRun = letsRun;
         this.invitedToRun = invitedToRun;
         this.currentKm = currentKm;
+        this.myChrono = myChrono;
 
     }
 
@@ -187,5 +189,14 @@ public class User {
 
     public void setHasFinished(boolean hasFinished) {
         this.hasFinished = hasFinished;
+    }
+
+
+    public String getMyChrono() {
+        return myChrono;
+    }
+
+    public void setMyChrono(String myChrono) {
+        this.myChrono = myChrono;
     }
 }
