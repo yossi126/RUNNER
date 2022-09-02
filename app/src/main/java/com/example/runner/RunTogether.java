@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.runner.data.User;
 import com.example.runner.databinding.ActivityRunTogetherBinding;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +46,6 @@ public class RunTogether extends AppCompatActivity {
 
     private FirebaseUser currentFirebaseUser;
     private DatabaseReference databaseReference;
-    private User currentUser;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference documentReference;
@@ -104,7 +105,6 @@ public class RunTogether extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 binding.myName.setText(String.valueOf(snapshot.child("name").getValue()));
-
                 //get partner
                 String partnerUid = String.valueOf(snapshot.child("letsRun").getValue());
                 databaseReference.child(partnerUid).addValueEventListener(new ValueEventListener() {
@@ -112,6 +112,10 @@ public class RunTogether extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         binding.partnerName.setText(String.valueOf(snapshot.child("name").getValue()));
                         binding.partnerKm.setText(String.valueOf(snapshot.child("currentKm").getValue()));
+                        if((boolean)snapshot.child("hasFinished").getValue()==true)
+                        {
+                            binding.imageViewFinish.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     @Override
@@ -191,6 +195,8 @@ public class RunTogether extends AppCompatActivity {
                         databaseReference.child(firebaseUser.getUid()).child("myChrono").setValue(binding.timeChronometer.getText());
                         String mychrono = String.valueOf(snapshot.child("myChrono").getValue());
                         databaseReference.child(firebaseUser.getUid()).child("hasFinished").setValue(true);
+                        //binding.imageViewFinish.setVisibility(View.VISIBLE);
+
 
                         databaseReference.child(partnerUid).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -201,6 +207,10 @@ public class RunTogether extends AppCompatActivity {
 
                                 if((boolean)snapshot.child("hasFinished").getValue() == false){
                                     fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+                                    Snackbar snackbar = Snackbar.make(view, "waiting for partner to end run",
+                                            Snackbar.LENGTH_LONG);
+                                    snackbar.setDuration(20000);
+                                    snackbar.show();
                                     pauseChronometer();
                                 }else{
                                     Map<String, Object> runTogether = new HashMap<>();
@@ -215,10 +225,6 @@ public class RunTogether extends AppCompatActivity {
                                         public void onSuccess(Void unused) {
                                         }
                                     });
-
-                                    //databaseReference.child(firebaseUser.getUid()).child("hasFinished").setValue(false);
-                                    //databaseReference.child(partnerUid).child("hasFinished").setValue(false);
-                                    finish();
                                 }
 
                             }

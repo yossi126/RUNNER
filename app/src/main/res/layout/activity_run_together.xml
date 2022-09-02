@@ -4,72 +4,179 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RunTogether">
+    tools:context=".RunTogether"
+    tools:layout_editor_absoluteY="25dp">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/materialDivider4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:dividerInsetEnd="16dp"
+        app:dividerInsetStart="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline25"
+        app:layout_constraintStart_toStartOf="@+id/guideline24"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/materialDivider3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:dividerInsetEnd="16dp"
+        app:dividerInsetStart="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline25"
+        app:layout_constraintStart_toStartOf="@+id/guideline24"
+        app:layout_constraintTop_toBottomOf="@+id/myKm" />
 
     <Chronometer
         android:id="@+id/timeChronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
         android:textColor="@color/primary_text"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/myName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <TextView
-        android:id="@+id/myName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="myName"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="67dp"
+        android:layout_height="84dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline25"
+        app:layout_constraintStart_toStartOf="@+id/guideline24"
+        app:layout_constraintTop_toTopOf="@+id/guideline27"
+        app:srcCompat="@drawable/ic_timer" />
+
+    <ImageView
+        android:id="@+id/imageViewFinish"
+        android:layout_width="57dp"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="@+id/partnerName"
         app:layout_constraintEnd_toStartOf="@+id/partnerName"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/partnerName"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_finish_flag" />
 
-    <TextView
-        android:id="@+id/partnerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="partnerName"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="327dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_race_track" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="65dp"
+        android:layout_height="98dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/myName"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/imageView7"
+        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:srcCompat="@drawable/ic_road" />
 
-    <TextView
-        android:id="@+id/myKm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="myKm"
-        app:layout_constraintEnd_toStartOf="@+id/partnerKm"
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="67dp"
+        android:layout_height="84dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView6"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myName" />
+        app:layout_constraintTop_toBottomOf="@+id/timeChronometer"
+        app:srcCompat="@drawable/ic_human" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="partnerName"
+        tools:layout_editor_absoluteX="411dp"
+        tools:layout_editor_absoluteY="506dp" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="myName"
+        tools:layout_editor_absoluteX="411dp" />
 
     <TextView
         android:id="@+id/partnerKm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="partnerKm"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="pKm"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/myKm"
+        app:layout_constraintStart_toStartOf="@+id/myKm"
+        app:layout_constraintTop_toTopOf="@+id/partnerName" />
+
+    <TextView
+        android:id="@+id/myName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="myName"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView7"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/myKm"
-        app:layout_constraintTop_toBottomOf="@+id/partnerName" />
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toBottomOf="@+id/materialDivider4" />
+
+    <TextView
+        android:id="@+id/partnerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="pName"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/myName"
+        app:layout_constraintStart_toStartOf="@+id/myName"
+        app:layout_constraintTop_toBottomOf="@+id/materialDivider3" />
+
+    <TextView
+        android:id="@+id/myKm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="myKm"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        app:layout_constraintTop_toTopOf="@+id/myName" />
 
     <Button
         android:id="@+id/finishRunTogether"
-        android:layout_width="wrap_content"
+        android:layout_width="329dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="116dp"
         android:text="End Run"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline25"
+        app:layout_constraintStart_toStartOf="@+id/guideline24"
+        app:layout_constraintTop_toBottomOf="@+id/partnerName" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

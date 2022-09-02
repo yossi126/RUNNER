@@ -88,8 +88,8 @@ public class Activity extends AppCompatActivity {
 
         //tabs
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),getLifecycle());
-        viewPagerAdapter.addFragment(new AllRunsFragment(), "Runs List",R.drawable.ic_baseline_run_list_24);
-        viewPagerAdapter.addFragment(new RunTogetherListFragment(), "Run Together",R.drawable.ic_baseline_query_stats_24);
+        viewPagerAdapter.addFragment(new AllRunsFragment(), "Runner",R.drawable.ic_runner);
+        viewPagerAdapter.addFragment(new RunTogetherListFragment(), "Runners",R.drawable.ic_runners);
         viewPagerAdapter.addFragment(new StatisticsFragment(), "Statistics",R.drawable.ic_baseline_query_stats_24);
         binding.viewPager2.setAdapter(viewPagerAdapter);
 

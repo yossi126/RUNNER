@@ -71,7 +71,7 @@ public class HomePage extends AppCompatActivity {
                         binding.lastLogin.setText("First Login Welcome");
                     }
                     else {
-                        binding.lastLogin.setText("Last Login " +  logOut);
+                        binding.lastLogin.setText("Last Login : " +  logOut);
                     }
                 }
             }
@@ -107,7 +107,7 @@ public class HomePage extends AppCompatActivity {
                     }
                 });
 
-        //CARD WIDGET - GET USER LAST RUN + ASSIGN IN CARDVIEW
+        //CARD WIDGET - GET USER LAST SELF RUN + ASSIGN IN CARDVIEW
         db.collection(firebaseUser.getUid()).orderBy("timestamp", Query.Direction.DESCENDING).limit(1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
