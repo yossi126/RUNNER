@@ -62,7 +62,7 @@
         android:textAlignment="center"
         android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView10"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/kmTextView"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
@@ -126,7 +126,7 @@
         app:layout_constraintEnd_toStartOf="@+id/kmTextView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="@+id/kmTextView"
         tools:textStyle="bold" />
 

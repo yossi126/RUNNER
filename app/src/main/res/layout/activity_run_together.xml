@@ -7,6 +7,24 @@
     tools:context=".RunTogether"
     tools:layout_editor_absoluteY="25dp">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/top_app_bar_endrunsummary"
+            app:title="RUNNER"
+            app:titleCentered="true" />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/materialDivider4"
         android:layout_width="0dp"
@@ -66,7 +84,7 @@
         app:layout_constraintBottom_toTopOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:srcCompat="@mipmap/ic_race_track" />
 
     <ImageView
@@ -155,8 +173,10 @@
         android:text="End Run"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline25"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline24"
-        app:layout_constraintTop_toBottomOf="@+id/partnerName" />
+        app:layout_constraintTop_toBottomOf="@+id/partnerName"
+        app:layout_constraintVertical_bias="0.345" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline24"
@@ -177,6 +197,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintGuide_percent="0.25" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

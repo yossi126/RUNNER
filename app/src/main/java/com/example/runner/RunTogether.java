@@ -2,13 +2,16 @@ package com.example.runner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -88,7 +92,7 @@ public class RunTogether extends AppCompatActivity {
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        documentReference = firebaseFirestore.collection("share").document();
+        //documentReference = firebaseFirestore.collection("share").document();
 
         //Chronometer vars
         pauseOffset = 0;
@@ -212,17 +216,23 @@ public class RunTogether extends AppCompatActivity {
                                     snackbar.setDuration(20000);
                                     snackbar.show();
                                     pauseChronometer();
+
+
                                 }else{
                                     Map<String, Object> runTogether = new HashMap<>();
-                                    runTogether.put(firebaseUser.getUid(),mykm+" "+mychrono);
-                                    runTogether.put(partnerUid,partnerKm+" "+partnerChrono);
-                                    runTogether.put("runners", partnerName + " & " + myname);
+                                    runTogether.put(firebaseUser.getUid(),myname + " " + mykm+" "+mychrono);
+                                    runTogether.put(partnerUid,partnerName + " " + partnerKm+" "+partnerChrono);
+                                    runTogether.put("runners", myname + " & " + partnerName);
                                     runTogether.put("startTime",startTime);
                                     runTogether.put("timestamp", FieldValue.serverTimestamp());
+
+                                    documentReference = firebaseFirestore.collection("share").document( startTime + " " +
+                                            partnerName+ " vs " + myname );
 
                                     documentReference.set(runTogether).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
+
                                         }
                                     });
                                 }
@@ -358,7 +368,6 @@ public class RunTogether extends AppCompatActivity {
         String datetime = ft.format(dNow);
         return datetime;
     }
-
 
 
 }
