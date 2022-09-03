@@ -6,7 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ShowRunTogether">
 
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/materialDivider5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:dividerInsetEnd="16dp"
+        app:dividerInsetStart="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline31"
+        app:layout_constraintStart_toStartOf="@+id/guideline30"
+        app:layout_constraintTop_toTopOf="@+id/guideline32" />
+
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/imageView9"
@@ -37,10 +48,10 @@
 
             <ImageView
                 android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_ampersand" />
+                app:srcCompat="@drawable/ic_human" />
 
             <TextView
                 android:id="@+id/pName"
@@ -68,14 +79,12 @@
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="KM"
-                android:textAlignment="center"
-                android:textSize="30sp" />
+                app:srcCompat="@drawable/ic_road" />
 
             <TextView
                 android:id="@+id/pKm"
@@ -102,14 +111,12 @@
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Stopwatch"
-                android:textAlignment="center"
-                android:textSize="30sp" />
+                app:srcCompat="@drawable/ic_timer" />
 
             <TextView
                 android:id="@+id/pWatch"
@@ -142,8 +149,6 @@
             app:titleCentered="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
-
 
 
     <ImageView
@@ -184,19 +189,25 @@
         android:layout_height="wrap_content"
         android:text="16-07-2022 10:51:48"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toTopOf="@+id/guideline32"
+        app:layout_constraintBottom_toTopOf="@+id/materialDivider5"
         app:layout_constraintEnd_toStartOf="@+id/guideline31"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Time"
+        android:text="Date &amp; Time "
+        android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/startTimer"
-        app:layout_constraintStart_toStartOf="@+id/guideline30" />
+        app:layout_constraintEnd_toEndOf="@+id/startTimer"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/startTimer"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintVertical_chainStyle="packed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -227,7 +227,7 @@ public class RunTogether extends AppCompatActivity {
                                     runTogether.put("timestamp", FieldValue.serverTimestamp());
 
                                     documentReference = firebaseFirestore.collection("share").document( startTime + " " +
-                                            partnerName+ " vs " + myname );
+                                            partnerName+ " & " + myname );
 
                                     documentReference.set(runTogether).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
