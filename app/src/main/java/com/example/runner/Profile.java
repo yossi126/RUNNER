@@ -589,10 +589,15 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    Glide.with(Profile.this)
-                            .load(task.getResult())
-                            .apply(RequestOptions.centerCropTransform())
-                            .into(binding.profilePhoto);
+                    try{
+                        Glide.with(Profile.this)
+                                .load(task.getResult())
+                                .apply(RequestOptions.centerCropTransform())
+                                .into(binding.profilePhoto);
+                    }catch (Exception e){
+                        Log.d("error", "Profile Activity  getProfileImage(): "+e.getMessage());
+                    }
+
                 } else {
                     binding.profilePhoto.setImageResource(R.drawable.profile);
                 }

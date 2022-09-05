@@ -54,6 +54,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
     implementation 'com.applandeo:material-calendar-view:1.7.0'
     implementation 'com.gusakov:pulse-countdown:1.1.0-rc1'
+    //bar chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 
 
