@@ -97,5 +97,38 @@
             app:layout_constraintStart_toStartOf="@+id/longestRunSearchIv"
             app:layout_constraintTop_toBottomOf="@+id/longestRunSearchIv" />
 
+        <TextView
+            android:id="@+id/totalTimeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="00:00:00"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/textView15"
+            app:layout_constraintStart_toStartOf="@+id/textView15"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Total Time"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/totalTimeTv"
+            app:layout_constraintStart_toStartOf="@+id/totalTimeTv"
+            app:layout_constraintTop_toBottomOf="@+id/totalTimeTv" />
+
+
+        <!--Ui component for our bar chart-->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/idBarChart"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
