@@ -10,12 +10,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/materialDivider6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:dividerInsetEnd="16dp"
+            app:dividerInsetStart="16dp"
+            app:dividerThickness="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline34"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/guideline35"
+            app:layout_constraintTop_toTopOf="@+id/guideline37" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="?android:attr/listDivider"
+            android:outlineSpotShadowColor="@color/amber"
+            app:layout_constraintBottom_toTopOf="@+id/guideline36"
+            app:layout_constraintEnd_toStartOf="@+id/guideline34"
+            app:layout_constraintStart_toStartOf="@+id/guideline35"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline34"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.9" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline38"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline35"
@@ -29,7 +63,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_percent="0.44" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline37"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.22" />
 
         <LinearLayout
             android:id="@+id/linearLayout4"
@@ -49,31 +90,6 @@
             </com.github.mikephil.charting.charts.BarChart>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Longest Run"
-            android:textSize="18sp"
-            tools:layout_editor_absoluteX="69dp"
-            tools:layout_editor_absoluteY="263dp" />
-
-        <TextView
-            android:id="@+id/longestRunDateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_long_road"
-            android:text="12/12/12"
-            tools:layout_editor_absoluteX="90dp" />
-
-        <TextView
-            android:id="@+id/longestRunTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="---"
-            android:textSize="18sp"
-            tools:layout_editor_absoluteX="112dp" />
-
 
         <TextView
             android:id="@+id/textView12"
@@ -82,8 +98,10 @@
             android:drawableTop="@drawable/ic_runner"
             android:text="Total Runs"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="223dp"
-            tools:layout_editor_absoluteY="72dp" />
+            app:layout_constraintBottom_toTopOf="@+id/guideline37"
+            app:layout_constraintEnd_toStartOf="@+id/guideline38"
+            app:layout_constraintStart_toStartOf="@+id/guideline35"
+            app:layout_constraintTop_toBottomOf="@+id/totalRunsTextView" />
 
         <TextView
             android:id="@+id/totalRunsTextView"
@@ -91,8 +109,11 @@
             android:layout_height="wrap_content"
             android:text="-1"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="258dp"
-            tools:layout_editor_absoluteY="48dp" />
+            app:layout_constraintBottom_toTopOf="@+id/textView12"
+            app:layout_constraintEnd_toEndOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/totalKmTextView"
@@ -100,8 +121,11 @@
             android:layout_height="wrap_content"
             android:text="-1"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="266dp"
-            tools:layout_editor_absoluteY="145dp" />
+            app:layout_constraintBottom_toTopOf="@+id/textView15"
+            app:layout_constraintEnd_toEndOf="@+id/textView15"
+            app:layout_constraintStart_toStartOf="@+id/textView15"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/textView15"
@@ -110,8 +134,10 @@
             android:drawableTop="@drawable/ic_sneaker"
             android:text="Total Km"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="238dp"
-            tools:layout_editor_absoluteY="169dp" />
+            app:layout_constraintBottom_toTopOf="@+id/guideline37"
+            app:layout_constraintEnd_toStartOf="@+id/guideline34"
+            app:layout_constraintStart_toStartOf="@+id/guideline38"
+            app:layout_constraintTop_toBottomOf="@+id/totalKmTextView" />
 
         <TextView
             android:id="@+id/textView11"
@@ -120,8 +146,10 @@
             android:drawableTop="@drawable/ic_clock"
             android:text="Total Time"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="224dp"
-            tools:layout_editor_absoluteY="241dp" />
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintEnd_toStartOf="@+id/guideline34"
+            app:layout_constraintStart_toStartOf="@+id/guideline38"
+            app:layout_constraintTop_toBottomOf="@+id/totalTimeTv" />
 
         <TextView
             android:id="@+id/totalTimeTv"
@@ -129,8 +157,45 @@
             android:layout_height="wrap_content"
             android:text="00:00:00"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="232dp"
-            tools:layout_editor_absoluteY="217dp" />
+            app:layout_constraintBottom_toTopOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="@+id/textView11"
+            app:layout_constraintStart_toStartOf="@+id/textView11"
+            app:layout_constraintTop_toTopOf="@+id/guideline37"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/longestRunDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_long_road"
+            android:text="12/12/12"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintEnd_toStartOf="@+id/guideline38"
+            app:layout_constraintStart_toStartOf="@+id/guideline35"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Longest Run"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/longestRunDateTextView"
+            app:layout_constraintEnd_toEndOf="@+id/longestRunDateTextView"
+            app:layout_constraintStart_toStartOf="@+id/longestRunDateTextView"
+            app:layout_constraintTop_toBottomOf="@+id/longestRunTextView" />
+
+        <TextView
+            android:id="@+id/longestRunTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="---"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView17"
+            app:layout_constraintEnd_toEndOf="@+id/textView17"
+            app:layout_constraintStart_toStartOf="@+id/textView17"
+            app:layout_constraintTop_toTopOf="@+id/guideline37"
+            app:layout_constraintVertical_chainStyle="packed" />
 
 
         <!--Ui component for our bar chart-->
