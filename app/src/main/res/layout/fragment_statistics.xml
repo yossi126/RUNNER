@@ -166,17 +166,17 @@
             android:id="@+id/longestRunDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_long_road"
             android:text="12/12/12"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
             app:layout_constraintEnd_toStartOf="@+id/guideline38"
             app:layout_constraintStart_toStartOf="@+id/guideline35"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/longestRunSearchIv" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/longestRunSearchIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_long_road"
             android:text="Longest Run"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/longestRunDateTextView"
@@ -190,9 +190,9 @@
             android:layout_height="wrap_content"
             android:text="---"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView17"
-            app:layout_constraintEnd_toEndOf="@+id/textView17"
-            app:layout_constraintStart_toStartOf="@+id/textView17"
+            app:layout_constraintBottom_toTopOf="@+id/longestRunSearchIv"
+            app:layout_constraintEnd_toEndOf="@+id/longestRunSearchIv"
+            app:layout_constraintStart_toStartOf="@+id/longestRunSearchIv"
             app:layout_constraintTop_toTopOf="@+id/guideline37"
             app:layout_constraintVertical_chainStyle="packed" />
 

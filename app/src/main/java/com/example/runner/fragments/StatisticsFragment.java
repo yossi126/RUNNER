@@ -50,8 +50,8 @@ public class StatisticsFragment extends Fragment {
     private CollectionReference collectionReference;
 
     // widgets
-    private TextView totalRunsTv, totalKmTv, longestRunKmTv, longestRunDateTv,totalTimeTv;
-    private ImageView longestRunSearchIv;
+    private TextView totalRunsTv, totalKmTv, longestRunKmTv, longestRunDateTv,totalTimeTv, longestRunSearchIv;
+
     //var
     private String longestRunID;
 
