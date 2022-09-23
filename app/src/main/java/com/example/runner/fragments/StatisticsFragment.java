@@ -41,6 +41,7 @@ import java.util.Arrays;
 
 public class StatisticsFragment extends Fragment {
 
+    //test
     private View view;
     //Firebase
     private FirebaseAuth firebaseAuth;
