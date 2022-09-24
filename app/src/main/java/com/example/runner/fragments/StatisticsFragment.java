@@ -51,7 +51,7 @@ public class StatisticsFragment extends Fragment {
     private CollectionReference collectionReference;
 
     // widgets
-    private TextView totalRunsTv, totalKmTv, longestRunKmTv, longestRunDateTv,totalTimeTv, longestRunSearchIv;
+    private TextView totalRunsTv, totalKmTv, longestRunKmTv, longestRunDateTv,totalTimeTv, longestRunSearchTv;
 
     //var
     private String longestRunID;
@@ -84,13 +84,13 @@ public class StatisticsFragment extends Fragment {
         totalTimeTv = view.findViewById(R.id.totalTimeTv);
         // this on click work the same as in the AllRunsFragment. we pass the ID of the document to the next activity and open the run.
 
-        longestRunSearchIv = view.findViewById(R.id.longestRunSearchIv);
-        longestRunSearchIv.setOnClickListener(new View.OnClickListener() {
+        longestRunSearchTv = view.findViewById(R.id.longestRunSearchTv);
+        longestRunSearchTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(getContext(),ShowRunActivity.class);
-                    intent.putExtra("position", longestRunID);
-                    startActivity(intent);
+                Intent intent = new Intent(getContext(),ShowRunActivity.class);
+                intent.putExtra("position", longestRunID);
+                startActivity(intent);
             }
         });
 
@@ -225,24 +225,24 @@ public class StatisticsFragment extends Fragment {
         firebaseFirestore.collection(firebaseUser.getUid())
                 .orderBy("distance", Query.Direction.DESCENDING)
                 .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        longestRunKmTv.setText((String)document.get("distance"));
-                        longestRunDateTv.setText((String)document.getId().split(" ")[0]);
-                        longestRunDateTv.setVisibility(View.GONE);
-                        //longestRunDateTv.setText((String)document.getId());
-                        //longestRunDateTv.setVisibility(View.GONE);
-                        longestRunID = (String)document.getId();
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                longestRunKmTv.setText((String)document.get("distance"));
+                                longestRunDateTv.setText((String)document.getId().split(" ")[0]);
+                                longestRunDateTv.setVisibility(View.GONE);
+                                //longestRunDateTv.setText((String)document.getId());
+                                //longestRunDateTv.setVisibility(View.GONE);
+                                longestRunID = (String)document.getId();
+                            }
+                        } else {
+                            longestRunKmTv.setText("err");
+                            longestRunDateTv.setText("err");
+                            Log.w("StatisticsFragment", "StatisticsFragment - Error getting QuerySnapshot.", task.getException());
+                        }
                     }
-                } else {
-                    longestRunKmTv.setText("err");
-                    longestRunDateTv.setText("err");
-                    Log.w("StatisticsFragment", "StatisticsFragment - Error getting QuerySnapshot.", task.getException());
-                }
-            }
-        });
+                });
     }
 
     private void getTotalRuns() {
