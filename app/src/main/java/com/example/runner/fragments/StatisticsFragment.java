@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.runner.R;
 import com.example.runner.ShowRunActivity;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -158,15 +159,22 @@ public class StatisticsFragment extends Fragment {
                     // passing our bar data set.
                     barData = new BarData(barDataSet);
 
+
                     // below line is to set data
                     // to our bar chart.
                     barChart.setData(barData);
+                    barChart.setFitBars(true);
 
                     // adding color to our bar data set.
-                    barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+                    barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
                     // setting text color.
                     barDataSet.setValueTextColor(Color.BLACK);
+
+                    YAxis leftAxis = barChart.getAxisLeft();
+                    YAxis rightAxis = barChart.getAxisRight();
+                    leftAxis.setEnabled(false);
+                    rightAxis.setEnabled(false);
 
                     // setting text size
                     barDataSet.setValueTextSize(16f);
