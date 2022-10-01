@@ -71,7 +71,8 @@ public class RunTogetherListFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
-                            Toast.makeText(getContext(), "Error from RunTogetherListFragment!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Error from RunTogetherListFragment!", Toast.LENGTH_SHORT).show();
+                            Log.d("yossiErr", "Error from RunTogetherListFragment!" + error.getMessage());
                             return;
                         }
                         if (value.exists()) {

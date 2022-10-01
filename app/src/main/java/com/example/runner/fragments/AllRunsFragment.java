@@ -74,7 +74,8 @@ public class AllRunsFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
-                            Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
+                            Log.d("yossiErr", "Error from AllRunsFragment!" + error.getMessage());
                             return;
                         }
                         if (value.exists()) {

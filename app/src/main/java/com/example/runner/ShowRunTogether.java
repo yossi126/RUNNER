@@ -64,7 +64,6 @@ public class ShowRunTogether extends AppCompatActivity {
         userArrayList = new ArrayList<>();
 
 
-
         extras = getIntent().getExtras();
         if (extras != null) {
             // for the position of the run in the fire-store
@@ -75,53 +74,55 @@ public class ShowRunTogether extends AppCompatActivity {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value.exists()){
-                    String startTimer = (String) value.get("startTime");
-                    binding.startTimer.setText(startTimer);
+                try {
+                    if (value.exists()) {
+                        String startTimer = (String) value.get("startTime");
+                        binding.startTimer.setText(startTimer);
 
-                    //GET HASHMAP KEYS TO ARRAY LIST-USE OBJECT MAP KEYS TO WRITE TO VIEW
-                    Map<String, Object> runTogether;
-                    runTogether=value.getData();
-                    keys = new ArrayList<>();
-                    for(String key : runTogether.keySet())
-                    {
-                        keys.add(key);
-                    }
+                        //GET HASHMAP KEYS TO ARRAY LIST-USE OBJECT MAP KEYS TO WRITE TO VIEW
+                        Map<String, Object> runTogether;
+                        runTogether = value.getData();
+                        keys = new ArrayList<>();
+                        for (String key : runTogether.keySet()) {
+                            keys.add(key);
+                        }
 
-                    //GET FIRESTORE UID USERS-GET DATA FROM REALTIME FB PATH
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            //FOR EACH USER DO
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                User user = ds.getValue(User.class);
-                                for (int i=0; i < keys.size(); i++)
-                                {
-                                    //CHECK UID KEY == USER.UID
-                                    if (keys.get(i).equals(user.getUid()))
-                                    {
-                                        userArrayList.add(user.getUid());
+                        //GET FIRESTORE UID USERS-GET DATA FROM REALTIME FB PATH
+                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                //FOR EACH USER DO
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    User user = ds.getValue(User.class);
+                                    for (int i = 0; i < keys.size(); i++) {
+                                        //CHECK UID KEY == USER.UID
+                                        if (keys.get(i).equals(user.getUid())) {
+                                            userArrayList.add(user.getUid());
+                                        }
                                     }
                                 }
-                            }
-                            //GET AND WRITE TO VIEW USER LEFT
-                            String uidLeft  = (String)value.get(userArrayList.get(0));
-                            String uidLeftPara [] = uidLeft.split(" ");
-                            binding.mName.setText(uidLeftPara[0]);
-                            binding.mKm.setText(uidLeftPara[1] + " km");
-                            binding.mWatch.setText(uidLeftPara[2]);
+                                //GET AND WRITE TO VIEW USER LEFT
+                                String uidLeft = (String) value.get(userArrayList.get(0));
+                                String uidLeftPara[] = uidLeft.split(" ");
+                                binding.mName.setText(uidLeftPara[0]);
+                                binding.mKm.setText(uidLeftPara[1] + " km");
+                                binding.mWatch.setText(uidLeftPara[2]);
 
-                            //GET AND WRITE TO VIEW USER RIGHT
-                            String uidRight  = (String)value.get(userArrayList.get(1));
-                            String uidRightPara [] = uidRight.split(" ");
-                            binding.pName.setText(uidRightPara[0]);
-                            binding.pKm.setText(uidRightPara[1] + " km");
-                            binding.pWatch.setText(uidRightPara[2]);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    });
+                                //GET AND WRITE TO VIEW USER RIGHT
+                                String uidRight = (String) value.get(userArrayList.get(1));
+                                String uidRightPara[] = uidRight.split(" ");
+                                binding.pName.setText(uidRightPara[0]);
+                                binding.pKm.setText(uidRightPara[1] + " km");
+                                binding.pWatch.setText(uidRightPara[2]);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    Log.d("yossiErr", "ShowRunTogether - onCreate -  onEvent: " + e.getMessage());
                 }
             }
         });

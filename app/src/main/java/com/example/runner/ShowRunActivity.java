@@ -102,70 +102,75 @@ public class ShowRunActivity extends AppCompatActivity {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value.exists()) {
-                    //points = (List<LatLng>) value.get("points");
+                try {
+                    if (value.exists()) {
+                        //points = (List<LatLng>) value.get("points");
 
-                    // getting the points for drawing the map -- references for the points in firebase
-                    final List<HashMap<String, Double>> points = (List<HashMap<String, Double>>) value.get("points");
-                    // array list of all the latitude and longitude
-                    final ArrayList<LatLng> latLngs = new ArrayList<>();
+                        // getting the points for drawing the map -- references for the points in firebase
+                        final List<HashMap<String, Double>> points = (List<HashMap<String, Double>>) value.get("points");
+                        // array list of all the latitude and longitude
+                        final ArrayList<LatLng> latLngs = new ArrayList<>();
 
-                    // looping the points in the firebase into the polylineOptions
-                    for (HashMap<String, Double> point : points) {
-                        // getting the points from firebase into the polylineOptions again
-                        polylineOptions.add(new LatLng(point.get("latitude"), point.get("longitude")));
-                        // for zooming the map
-                        latLngs.add(new LatLng(point.get("latitude"), point.get("longitude")));
+                        // looping the points in the firebase into the polylineOptions
+                        for (HashMap<String, Double> point : points) {
+                            // getting the points from firebase into the polylineOptions again
+                            polylineOptions.add(new LatLng(point.get("latitude"), point.get("longitude")));
+                            // for zooming the map
+                            latLngs.add(new LatLng(point.get("latitude"), point.get("longitude")));
+                        }
+
+                        // if the latLngs is empty the app will crash. so if the user didn't start the run and have no points it will show a toast message
+                        try {
+                            supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                                final LatLng lastLatLng = latLngs.get(latLngs.size() / 2);
+
+                                @Override
+                                public void onMapReady(@NonNull GoogleMap googleMap) {
+                                    googleMap.clear();
+
+                                    polyline = googleMap.addPolyline(polylineOptions);
+                                    //MarkerOptions options = new MarkerOptions().position(lastLatLng);
+                                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 14));
+                                    //googleMap.addMarker(options);
+                                }
+                            });
+                        } catch (Exception e) {
+                            Toast.makeText(ShowRunActivity.this, "there is no road for this run", Toast.LENGTH_LONG).show();
+                        }
+
+                        // getting the splits
+                        final List<HashMap<String, Object>> splits = (List<HashMap<String, Object>>) value.get("splits");
+                        final ArrayList<Splits> splitsArrayList = new ArrayList<>();
+                        for (HashMap<String, Object> split : splits) {
+                            //create split object and store it in the array list
+                            String time = (String) split.get("time");
+                            int km = ((Long) split.get("km")).intValue();
+                            splitsArrayList.add(new Splits(time, km));
+
+                        }
+                        Log.d(TAG, "onEvent: " + splitsArrayList);
+                        // set up the RecyclerView and the Adapter to organize the table
+                        setUpRecyclerView(splitsArrayList);
+
+
+                        // set up al the values from fire base into the UI
+                        chronometer = (String) value.get("chronometer");
+                        binding.timeTextView.setText(chronometer);
+                        distance = (String) value.get("distance");
+                        binding.kmTextView.setText(distance);
+
+                        // value.get("timestamp") is Timestamp so we need to use getTimeStamp() to get it back to string
+                        binding.timeStampTextView.setText(getTimeStamp((Timestamp) value.get("timestamp")));
+
+                        timesOfDay = (String) value.get("timesOfDay");
+                        binding.topAppBar.setTitle(timesOfDay);
+                        avgPace = (String) value.get("avgPace");
+                        binding.avgPaceTextView.setText(avgPace);
                     }
-
-                    // if the latLngs is empty the app will crash. so if the user didn't start the run and have no points it will show a toast message
-                    try {
-                        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                            final LatLng lastLatLng = latLngs.get(latLngs.size() / 2);
-                            @Override
-                            public void onMapReady(@NonNull GoogleMap googleMap) {
-                                googleMap.clear();
-
-                                polyline = googleMap.addPolyline(polylineOptions);
-                                //MarkerOptions options = new MarkerOptions().position(lastLatLng);
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 14));
-                                //googleMap.addMarker(options);
-                            }
-                        });
-                    } catch (Exception e) {
-                        Toast.makeText(ShowRunActivity.this, "there is no road for this run", Toast.LENGTH_LONG).show();
-                    }
-
-                    // getting the splits
-                    final List<HashMap<String, Object>> splits = (List<HashMap<String, Object>>) value.get("splits");
-                    final ArrayList<Splits> splitsArrayList = new ArrayList<>();
-                    for(HashMap<String, Object> split : splits){
-                        //create split object and store it in the array list
-                        String time = (String) split.get("time");
-                        int km = ((Long)split.get("km")).intValue();
-                        splitsArrayList.add(new Splits(time,km));
-
-                    }
-                    Log.d(TAG, "onEvent: "+splitsArrayList);
-                    // set up the RecyclerView and the Adapter to organize the table
-                    setUpRecyclerView(splitsArrayList);
-
-
-
-                    // set up al the values from fire base into the UI
-                    chronometer = (String) value.get("chronometer");
-                    binding.timeTextView.setText(chronometer);
-                    distance = (String) value.get("distance");
-                    binding.kmTextView.setText(distance);
-
-                    // value.get("timestamp") is Timestamp so we need to use getTimeStamp() to get it back to string
-                    binding.timeStampTextView.setText(getTimeStamp((Timestamp)value.get("timestamp")));
-
-                    timesOfDay = (String) value.get("timesOfDay");
-                    binding.topAppBar.setTitle(timesOfDay);
-                    avgPace = (String) value.get("avgPace");
-                    binding.avgPaceTextView.setText(avgPace);
+                } catch (Exception e) {
+                    Log.d("yossiErr", "ShowRunActivity - onCreate -  onEvent: " + e.getMessage());
                 }
+
             }
         });
 
@@ -185,10 +190,10 @@ public class ShowRunActivity extends AppCompatActivity {
         return dateStr;
     }
 
-    private void setUpRecyclerView(ArrayList<Splits> splitsArrayList){
+    private void setUpRecyclerView(ArrayList<Splits> splitsArrayList) {
         binding.tableRecyclerView.hasFixedSize();
         binding.tableRecyclerView.setLayoutManager(new LinearLayoutManager(ShowRunActivity.this));
-        splitsRvAdapter = new SplitsRvAdapter(ShowRunActivity.this,splitsArrayList);
+        splitsRvAdapter = new SplitsRvAdapter(ShowRunActivity.this, splitsArrayList);
         binding.tableRecyclerView.setAdapter(splitsRvAdapter);
     }
 

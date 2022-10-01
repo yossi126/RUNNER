@@ -10,194 +10,147 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toTopOf="@+id/guideline33"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/materialDivider6"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/materialDivider6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:dividerInsetEnd="16dp"
             app:dividerInsetStart="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline34"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/guideline35"
-            app:layout_constraintTop_toTopOf="@+id/guideline37" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:background="?android:attr/listDivider"
-            android:outlineSpotShadowColor="@color/amber"
-            app:layout_constraintBottom_toTopOf="@+id/guideline36"
-            app:layout_constraintEnd_toStartOf="@+id/guideline34"
-            app:layout_constraintStart_toStartOf="@+id/guideline35"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline34"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline38"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline35"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.44" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline37"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.22" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/idBarChart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline36">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/idBarChart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/longestRunTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="15.5"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-            </com.github.mikephil.charting.charts.BarChart>
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/longestRunSearchTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:drawableTop="@drawable/ic_long_road"
+            android:text="Longest Run"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/longestRunDateTextView"
+            app:layout_constraintStart_toStartOf="@+id/longestRunDateTextView"
+            app:layout_constraintTop_toBottomOf="@+id/longestRunDateTextView" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:drawableTop="@drawable/ic_runner"
             android:text="Total Runs"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline37"
-            app:layout_constraintEnd_toStartOf="@+id/guideline38"
-            app:layout_constraintStart_toStartOf="@+id/guideline35"
+            app:layout_constraintEnd_toEndOf="@+id/totalRunsTextView"
+            app:layout_constraintStart_toStartOf="@+id/totalRunsTextView"
             app:layout_constraintTop_toBottomOf="@+id/totalRunsTextView" />
 
         <TextView
             android:id="@+id/totalRunsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-1"
+            android:layout_marginTop="20dp"
+            android:text="15"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView12"
-            app:layout_constraintEnd_toEndOf="@+id/textView12"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.29"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/totalKmTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-1"
+            android:layout_marginTop="20dp"
+            android:text="15.28"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView15"
-            app:layout_constraintEnd_toEndOf="@+id/textView15"
-            app:layout_constraintStart_toStartOf="@+id/textView15"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/totalRunsTextView"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:drawableTop="@drawable/ic_sneaker"
             android:text="Total Km"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline37"
-            app:layout_constraintEnd_toStartOf="@+id/guideline34"
-            app:layout_constraintStart_toStartOf="@+id/guideline38"
+            app:layout_constraintEnd_toEndOf="@+id/totalKmTextView"
+            app:layout_constraintStart_toStartOf="@+id/totalKmTextView"
             app:layout_constraintTop_toBottomOf="@+id/totalKmTextView" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_clock"
-            android:text="Total Time"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-            app:layout_constraintEnd_toStartOf="@+id/guideline34"
-            app:layout_constraintStart_toStartOf="@+id/guideline38"
-            app:layout_constraintTop_toBottomOf="@+id/totalTimeTv" />
-
-        <TextView
-            android:id="@+id/totalTimeTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00:00"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView11"
-            app:layout_constraintEnd_toEndOf="@+id/textView11"
-            app:layout_constraintStart_toStartOf="@+id/textView11"
-            app:layout_constraintTop_toTopOf="@+id/guideline37"
-            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/longestRunDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12/12/12"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-            app:layout_constraintEnd_toStartOf="@+id/guideline38"
-            app:layout_constraintStart_toStartOf="@+id/guideline35"
-            app:layout_constraintTop_toBottomOf="@+id/longestRunSearchIv" />
-
-        <TextView
-            android:id="@+id/longestRunSearchIv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_long_road"
-            android:text="Longest Run"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/longestRunDateTextView"
-            app:layout_constraintEnd_toEndOf="@+id/longestRunDateTextView"
-            app:layout_constraintStart_toStartOf="@+id/longestRunDateTextView"
+            app:layout_constraintEnd_toEndOf="@+id/longestRunTextView"
+            app:layout_constraintStart_toStartOf="@+id/longestRunTextView"
             app:layout_constraintTop_toBottomOf="@+id/longestRunTextView" />
 
         <TextView
-            android:id="@+id/longestRunTextView"
+            android:id="@+id/totalTimeTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="---"
+            android:layout_marginTop="20dp"
+            android:text="00:00:00"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/longestRunSearchIv"
-            app:layout_constraintEnd_toEndOf="@+id/longestRunSearchIv"
-            app:layout_constraintStart_toStartOf="@+id/longestRunSearchIv"
-            app:layout_constraintTop_toTopOf="@+id/guideline37"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintEnd_toEndOf="@+id/textView15"
+            app:layout_constraintStart_toStartOf="@+id/textView15"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:drawableTop="@drawable/ic_baseline_access_time"
+            android:text="Total Time"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/totalTimeTv"
+            app:layout_constraintStart_toStartOf="@+id/totalTimeTv"
+            app:layout_constraintTop_toBottomOf="@+id/totalTimeTv" />
 
 
         <!--Ui component for our bar chart-->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/idBarChart"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/longestRunSearchTv" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="203dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

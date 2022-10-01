@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.runner.R;
 import com.example.runner.ShowRunActivity;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -50,22 +51,16 @@ public class StatisticsFragment extends Fragment {
     private CollectionReference collectionReference;
 
     // widgets
-    private TextView totalRunsTv, totalKmTv, longestRunKmTv, longestRunDateTv,totalTimeTv, longestRunSearchIv;
+    private TextView totalRunsTv, totalKmTv, longestRunKmTv, longestRunDateTv,totalTimeTv, longestRunSearchTv;
 
     //var
     private String longestRunID;
 
-    // variable for our bar chart
-    BarChart barChart;
-
-    // variable for our bar data.
-    BarData barData;
-
-    // variable for our bar data set.
-    BarDataSet barDataSet;
-
-    // array list for storing entries.
-    ArrayList barEntriesArrayList;
+    //bar chart
+    BarChart barChart;// variable for our bar chart
+    BarData barData;// variable for our bar data.
+    BarDataSet barDataSet; // variable for our bar data set.
+    ArrayList barEntriesArrayList;// array list for storing entries.
 
     public StatisticsFragment() {
         // Required empty public constructor
@@ -82,14 +77,13 @@ public class StatisticsFragment extends Fragment {
         longestRunDateTv = view.findViewById(R.id.longestRunDateTextView);
         totalTimeTv = view.findViewById(R.id.totalTimeTv);
         // this on click work the same as in the AllRunsFragment. we pass the ID of the document to the next activity and open the run.
-
-        longestRunSearchIv = view.findViewById(R.id.longestRunSearchIv);
-        longestRunSearchIv.setOnClickListener(new View.OnClickListener() {
+        longestRunSearchTv = view.findViewById(R.id.longestRunSearchTv);
+        longestRunSearchTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(getContext(),ShowRunActivity.class);
-                    intent.putExtra("position", longestRunID);
-                    startActivity(intent);
+                Intent intent = new Intent(getContext(),ShowRunActivity.class);
+                intent.putExtra("position", longestRunID);
+                startActivity(intent);
             }
         });
 
@@ -100,11 +94,6 @@ public class StatisticsFragment extends Fragment {
 
         // initializing variable for bar chart.
         barChart = view.findViewById(R.id.idBarChart);
-
-        // calling method to get bar entries.
-
-
-
 
         return view;
     }
@@ -132,41 +121,35 @@ public class StatisticsFragment extends Fragment {
                 barEntriesArrayList = new ArrayList<>();
                 if (task.isSuccessful()) {
                     int count = 0;
-
                     for (QueryDocumentSnapshot document : task.getResult()){
-                        //Log.d("TAG", "onComplete: "+document.get("distance"));
-                        //Log.d("TAG", "onComplete: "+Float.valueOf((String)document.get("distance")));
                         f[count] = Float.valueOf((String)document.get("distance"));
                         count++;
-
-                        //barEntriesArrayList.add(new BarEntry(count++, Float.valueOf((String)document.get("distance"))));
                     }
-                    Log.d("TAG", "in: "+ Arrays.toString(f));
-                    barEntriesArrayList.add(new BarEntry(1, f[0]));
-                    barEntriesArrayList.add(new BarEntry(2, f[1]));
+                    barEntriesArrayList.add(new BarEntry(1, f[4]));
+                    barEntriesArrayList.add(new BarEntry(2, f[3]));
                     barEntriesArrayList.add(new BarEntry(3, f[2]));
-                    barEntriesArrayList.add(new BarEntry(4, f[3]));
-                    barEntriesArrayList.add(new BarEntry(5, f[4]));
-                    //barEntriesArrayList.add(new BarEntry(6, f[5]));
+                    barEntriesArrayList.add(new BarEntry(4, f[1]));
+                    barEntriesArrayList.add(new BarEntry(5, f[0]));
 
 
                     // creating a new bar data set.
                     barDataSet = new BarDataSet(barEntriesArrayList, "Last 5 Runs");
-
                     // creating a new bar data and
                     // passing our bar data set.
                     barData = new BarData(barDataSet);
-
                     // below line is to set data
                     // to our bar chart.
                     barChart.setData(barData);
-
+                    barChart.setFitBars(true);
                     // adding color to our bar data set.
-                    barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-
+                    barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
                     // setting text color.
                     barDataSet.setValueTextColor(Color.BLACK);
-
+                    //set y axis gone
+                    YAxis leftAxis = barChart.getAxisLeft();
+                    YAxis rightAxis = barChart.getAxisRight();
+                    leftAxis.setEnabled(false);
+                    rightAxis.setEnabled(false);
                     // setting text size
                     barDataSet.setValueTextSize(16f);
                     barChart.getDescription().setEnabled(false);
@@ -174,20 +157,6 @@ public class StatisticsFragment extends Fragment {
             }
         });
         Log.d("TAG", "out: "+ Arrays.toString(f));
-        // adding new entry to our array list with bar
-        // entry and passing x and y axis value to it.
-
-
-
-//        firebaseFirestore.collection(firebaseUser.getUid()).orderBy("timestamp", Query.Direction.DESCENDING).limit(5).addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            float f =22;
-//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                f=Float.valueOf((String)value.getDocuments().get(0).get("distance"));
-//                Log.d("TAG", "snapshot: "+ value.getDocuments().get(0).get("distance"));
-//
-//            }
-//
-//        });
 
     }
 
@@ -212,8 +181,6 @@ public class StatisticsFragment extends Fragment {
                     long mm = (seconds / 60) % 60;
                     long hh = minutesToHours/60;
                     totalTimeTv.setText(String.format("%02d:%02d:%02d",hh,mm,ss));
-                    //Log.d("StatisticsFragment", "getTotalRunningTime: "+String.format("%02d:%02d:%02d",hh,mm,ss));
-                    //Log.d("StatisticsFragment", "getTotalRunningTime: "+totalTimeArrayList.toString());
                 }
 
             }
@@ -224,24 +191,24 @@ public class StatisticsFragment extends Fragment {
         firebaseFirestore.collection(firebaseUser.getUid())
                 .orderBy("distance", Query.Direction.DESCENDING)
                 .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        longestRunKmTv.setText((String)document.get("distance"));
-                        longestRunDateTv.setText((String)document.getId().split(" ")[0]);
-                        longestRunDateTv.setVisibility(View.GONE);
-                        //longestRunDateTv.setText((String)document.getId());
-                        //longestRunDateTv.setVisibility(View.GONE);
-                        longestRunID = (String)document.getId();
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                longestRunKmTv.setText((String)document.get("distance"));
+                                longestRunDateTv.setText((String)document.getId().split(" ")[0]);
+                                longestRunDateTv.setVisibility(View.GONE);
+                                //longestRunDateTv.setText((String)document.getId());
+                                //longestRunDateTv.setVisibility(View.GONE);
+                                longestRunID = (String)document.getId();
+                            }
+                        } else {
+                            longestRunKmTv.setText("err");
+                            longestRunDateTv.setText("err");
+                            Log.w("StatisticsFragment", "StatisticsFragment - Error getting QuerySnapshot.", task.getException());
+                        }
                     }
-                } else {
-                    longestRunKmTv.setText("err");
-                    longestRunDateTv.setText("err");
-                    Log.w("StatisticsFragment", "StatisticsFragment - Error getting QuerySnapshot.", task.getException());
-                }
-            }
-        });
+                });
     }
 
     private void getTotalRuns() {
