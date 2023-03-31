@@ -25,7 +25,7 @@ JAVA is the language that we want to write the application, OOP based and using 
 ### Frontend
 We chose Android Studio platform for creating a mobile app with java. We loved to explore android studio and all her featurers like: Activity Lifecycle and Intents, Fragments,  RecyclerView, Menus, Android Gradle, Visual Layout Editor, Android Google Map, Divice Camera and Location and many more.  
 ### Backend
-Firebase is the best choice when using Android studio. his connectivity with Android studio is easy, and Google docs for developers is very usful. We experience with Realtime Database, Cloud Firestore, Authentication and Cloud Storage.
+Firebase is the best choice when using Android studio. his connectivity with Android studio is easy, and Google docs for developers is very useful. We experience with Realtime Database, Cloud Firestore, Authentication and Cloud Storage.
 
 
 ## 🔗 Downlaod Link for android divices 
