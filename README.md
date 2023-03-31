@@ -2,13 +2,19 @@
 ![Logo](https://lh5.googleusercontent.com/o_IoRKlXmq3BCFsw-SNhprKGCbtU7RmKvu36XnGzPcLqNCg62d_oopKMZcgY9SsxTDc=w2400)
 
 
-## Created by ✍
+## ✍ Created by 
 
 - [@shukimi](https://github.com/shukimi)
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shuki-m-443936192/)
+
 - [@yossi126](https://github.com/yossi126)
 
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yossi-braunshtein-a93b82200/)
 
-## About 📖 
+
+
+## 📖 About  
 
 This application was created for our graduation project.
 
@@ -22,8 +28,10 @@ We chose Android Studio platform for creating a mobile app with java. We loved t
 Firebase is the best choice when using Android studio. his connectivity with Android studio is easy, and Google docs for developers is very usful. We experience with Realtime Database, Cloud Firestore, Authentication and Cloud Storage.
 
 
+## 🔗 Downlaod Link for android divices 
+<a href="https://drive.google.com/file/d/1Un__LtODdpZhf93rrPwME9TGp0-AnjmC/view?usp=share_link">Download</a>
 
-## Screenshots 📸 
+## 📸 Screenshots 
 
 #### - Opening, register and login pages:
 <p float="left">
@@ -54,3 +62,4 @@ Firebase is the best choice when using Android studio. his connectivity with And
 <img src="https://drive.google.com/uc?export=view&id=1IQsGRar6LSLtrsiQpOZmOEdez1t0s3G4" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="250" height="500" />
 
 </p>
+
