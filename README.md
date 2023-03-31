@@ -46,8 +46,10 @@ Firebase
 <img src="https://drive.google.com/uc?export=view&id=1OuvwFisnyGTL9TKbMIKooMDP-SiJxyGP" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="470" height="413" />
 </p>
 
-- Home screen widgets and profile page:
+- Home screen widgets ,profile and statistics page:
 <p float="left">
 <img src="https://drive.google.com/uc?export=view&id=143EBSD7PoIlFNDB4sliMoM1eFj4iWGrC" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="250" height="500" />
 <img src="https://drive.google.com/uc?export=view&id=1vYJYNyeF0J2M1F0E1hSxJrMHbZRisT7l" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="250" height="500" />
+<img src="https://drive.google.com/uc?export=view&id=1IQsGRar6LSLtrsiQpOZmOEdez1t0s3G4" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="250" height="500" />
+
 </p>
