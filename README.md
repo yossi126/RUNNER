@@ -12,7 +12,7 @@
 
 This application was created for our graduation project.
 
-Because both of us love doing sport (and especially running !), we decided to make a running application with the help of some of our friends.
+Because both of us love doing sport (and especially running !), we decided to make a running application with the help of some of our friends:
 
 ### Language
 JAVA is the language that we want to write the application OOP based and using data structure.
