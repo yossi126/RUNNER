@@ -4,11 +4,11 @@
 
 ## ✍ Created by 
 
-- [@shukimi](https://github.com/shukimi)
+[@shukimi](https://github.com/shukimi) 
 
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shuki-m-443936192/)
 
-- [@yossi126](https://github.com/yossi126)
+[@yossi126](https://github.com/yossi126)
 
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yossi-braunshtein-a93b82200/)
 
