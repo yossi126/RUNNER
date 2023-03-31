@@ -15,11 +15,11 @@ This application was created for our graduation project.
 Because both of us love doing sport (and especially running !), we decided to make a running application with the help of some of our friends.
 
 ### Language
-JAVA
+JAVA is the language that we want to write the application OOP based and using data structure.
 ### Frontend
 We chose Android Studio platform for creating a mobile app with java. We loved to explore android studio and all her featurers like: Activity Lifecycle and Intents, Fragments,  RecyclerView, Menus, Android Gradle, Visual Layout Editor, Android Google Map, Divice Camera and Location and many more.  
 ### Backend
-Firebase is the best choise when using Android studio. his connectivity with Android studio is easy to integration, and Google docs for developers is very usful. We experience with Realtime Database, Cloud Firestore, Authentication and Cloud Storage.
+Firebase is the best choice when using Android studio. his connectivity with Android studio is easy, and Google docs for developers is very usful. We experience with Realtime Database, Cloud Firestore, Authentication and Cloud Storage.
 
 
 
